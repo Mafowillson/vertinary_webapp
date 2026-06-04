@@ -19,9 +19,9 @@ const AuthLayout = ({ children, quote }) => (
       {/* Logo */}
       <Link to="/" className="relative z-10 inline-block">
         <img
-          src="/academydeseleveurs.png"
+          src="/academydeseleveurs.jpg"
           alt="Académie des Éleveurs"
-          className="h-16 w-auto brightness-0 invert"
+          className="h-10 w-auto brightness-0 invert"
         />
       </Link>
 
@@ -73,9 +73,9 @@ const AuthLayout = ({ children, quote }) => (
       <div className="lg:hidden mb-8">
         <Link to="/">
           <img
-            src="/academydeseleveurs.png"
+            src="/academydeseleveurs.jpg"
             alt="Académie des Éleveurs"
-            className="h-14 w-auto mx-auto"
+            className="h-10 w-auto mx-auto"
           />
         </Link>
       </div>

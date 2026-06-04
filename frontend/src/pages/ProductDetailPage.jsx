@@ -7,23 +7,40 @@ import { useLanguage } from '../contexts/LanguageContext'
 import { useCart } from '../contexts/CartContext'
 import CountdownTimer from '../components/CountdownTimer/CountdownTimer'
 import { formatCurrency } from '../utils/formatters'
-import { 
-  FiDownload, 
-  FiShoppingCart, 
-  FiMessageCircle, 
-  FiArrowLeft, 
-  FiStar,
-  FiCheck,
-  FiShield,
-  FiClock,
-  FiZap,
-  FiBookOpen,
-  FiFileText,
-  FiVideo,
-  FiShare2,
-  FiHeart,
-  FiPlus
+import {
+  FiDownload, FiShoppingCart, FiMessageCircle, FiArrowLeft, FiStar,
+  FiCheck, FiShield, FiClock, FiZap, FiBookOpen, FiFileText, FiVideo,
+  FiShare2, FiHeart, FiPlay, FiHeadphones, FiAward,
 } from 'react-icons/fi'
+
+const FORMAT_MAP = {
+  'PDF Guide':     { label: 'PDF',    gradient: 'from-amber-400 to-orange-600',   badgeBg: 'bg-amber-500',   Icon: FiFileText   },
+  'Video Lecture': { label: 'VIDÉO',  gradient: 'from-blue-500 to-indigo-700',    badgeBg: 'bg-blue-600',    Icon: FiPlay       },
+  'E-book':        { label: 'E-BOOK', gradient: 'from-violet-500 to-purple-700',  badgeBg: 'bg-violet-600',  Icon: FiBookOpen   },
+  'Audio':         { label: 'AUDIO',  gradient: 'from-teal-400 to-emerald-600',   badgeBg: 'bg-teal-600',    Icon: FiHeadphones },
+}
+const DEFAULT_FMT = {
+  label: 'PDF', gradient: 'from-emerald-500 to-teal-700', badgeBg: 'bg-emerald-600', Icon: FiFileText,
+}
+
+const CROSS_SVG = `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
+
+function PlaceholderCover({ format }) {
+  const { gradient, Icon } = FORMAT_MAP[format] || DEFAULT_FMT
+  return (
+    <div className={`absolute inset-0 bg-gradient-to-br ${gradient}`}>
+      <div className="absolute inset-0 opacity-[0.12]" style={{ backgroundImage: CROSS_SVG }} />
+      <div className="absolute -right-16 -top-16 w-72 h-72 rounded-full bg-white/10" />
+      <div className="absolute -left-8 bottom-0 w-48 h-48 rounded-full bg-black/10" />
+      <div className="absolute right-10 bottom-10 w-20 h-20 rounded-full bg-white/[0.07]" />
+      <div className="absolute inset-0 flex items-center justify-center">
+        <div className="w-24 h-24 rounded-3xl bg-white/20 ring-1 ring-white/30 backdrop-blur-sm flex items-center justify-center shadow-2xl">
+          <Icon className="w-12 h-12 text-white drop-shadow-sm" />
+        </div>
+      </div>
+    </div>
+  )
+}
 
 const ProductDetailPage = () => {
   const { id } = useParams()
@@ -37,10 +54,9 @@ const ProductDetailPage = () => {
   const [activeTab, setActiveTab] = useState('description')
   const [imageZoom, setImageZoom] = useState(false)
   const [cartAdded, setCartAdded] = useState(false)
+  const [imgError, setImgError] = useState(false)
 
-  useEffect(() => {
-    setTranslationFunction(t)
-  }, [t])
+  useEffect(() => { setTranslationFunction(t) }, [t])
 
   useEffect(() => {
     const loadProduct = async () => {
@@ -66,14 +82,10 @@ const ProductDetailPage = () => {
 
   const handleAddToCart = () => {
     if (!product) return
-    
-    // Check if user is authenticated
     if (!isAuthenticated) {
       navigate('/login', { state: { returnTo: `/products/${id}` } })
       return
     }
-    
-    // Prepare product data for cart (handle both API and mock formats)
     const cartProduct = {
       id: product.id,
       title: product.title,
@@ -85,436 +97,391 @@ const ProductDetailPage = () => {
       category: product.category,
       format: product.format || 'PDF Guide',
     }
-    
     addToCart(cartProduct)
     setCartAdded(true)
-    
-    // Reset the added state after 2 seconds
     setTimeout(() => setCartAdded(false), 2000)
   }
 
-  // Handle both API format and mock format
   const originalPrice = product?.original_price || product?.originalPrice
-  const imageUrl = product?.image_url || product?.imageUrl
-  const price = product?.price
-  const description = product?.description
+  const imageUrl      = product?.image_url || product?.imageUrl
+  const price         = product?.price
+  const description   = product?.description
 
+  // ── Loading ──────────────────────────────────────────────────────────────
   if (loading) {
     return (
-      <div className="flex justify-center items-center min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-16 w-16 border-4 border-green-600 border-t-transparent mx-auto mb-4"></div>
-          <p className="text-gray-600 font-medium">Chargement du produit...</p>
+          <div className="w-12 h-12 rounded-full border-4 border-emerald-200 border-t-emerald-600 animate-spin mx-auto" />
+          <p className="mt-4 text-slate-500 text-sm font-medium">Chargement du produit…</p>
         </div>
       </div>
     )
   }
 
+  // ── Not found ────────────────────────────────────────────────────────────
   if (!product) {
     return (
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 text-center bg-gradient-to-br from-gray-50 to-gray-100 min-h-screen">
-        <div className="max-w-md mx-auto">
-          <div className="w-24 h-24 bg-gray-200 rounded-full flex items-center justify-center mx-auto mb-6">
-            <FiFileText className="w-12 h-12 text-gray-400" />
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center px-4">
+        <div className="text-center max-w-sm">
+          <div className="w-20 h-20 rounded-2xl bg-slate-100 flex items-center justify-center mx-auto mb-5">
+            <FiFileText className="w-10 h-10 text-slate-300" />
           </div>
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">{t('detail.productNotFound', { ns: 'product' })}</h2>
-          <p className="text-gray-600 mb-6">Le produit que vous recherchez n'existe pas ou a été supprimé.</p>
-          <Link 
-            to="/products" 
-            className="inline-flex items-center space-x-2 px-6 py-3 bg-green-600 hover:bg-green-700 text-white rounded-xl font-semibold transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+          <h2 className="text-xl font-bold text-slate-900 mb-2">
+            {t('detail.productNotFound', { ns: 'product' })}
+          </h2>
+          <p className="text-slate-500 text-sm mb-6">
+            Le produit que vous recherchez n'existe pas ou a été supprimé.
+          </p>
+          <Link
+            to="/products"
+            className="inline-flex items-center gap-2 px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-bold rounded-xl transition-all shadow-sm shadow-emerald-200"
           >
-            <FiArrowLeft className="w-5 h-5" />
-            <span>{t('detail.backToProducts', { ns: 'product' })}</span>
+            <FiArrowLeft className="w-4 h-4" />
+            {t('detail.backToProducts', { ns: 'product' })}
           </Link>
         </div>
       </div>
     )
   }
 
-  // Handle both field names (offer_end_date from backend, discount_end_date from mock)
-  const discountEndDate = product.discount_end_date || product.discountEndDate || product.offer_end_date || product.offerEndDate
+  const discountEndDate   = product.discount_end_date || product.discountEndDate || product.offer_end_date || product.offerEndDate
   const discountPercentage = originalPrice && price < originalPrice
     ? Math.round(((originalPrice - price) / originalPrice) * 100)
     : 0
-  // Show discount if originalPrice > price, even without an end date (but if there's an end date, it must be valid)
   const hasActiveDiscount = discountPercentage > 0 && (!discountEndDate || new Date(discountEndDate) > new Date())
-  
-  // Determine format
-  const format = product.format || 'PDF Guide'
-  const formatIcon = format === 'Video Lecture' ? FiVideo : format === 'E-book' ? FiBookOpen : FiFileText
-  const FormatIcon = formatIcon
 
-  // Calculate rating (mock - would come from reviews)
-  const rating = 4.8
+  const format      = product.format || 'PDF Guide'
+  const fmt         = FORMAT_MAP[format] || DEFAULT_FMT
+  const rating      = 4.8
   const reviewCount = product.purchase_count || product.purchaseCount || 0
   const downloadCount =
-    product.download_count ??
-    product.downloadCount ??
-    product.sold ??
-    product.purchase_count ??
-    product.purchaseCount ??
-    0
+    product.download_count ?? product.downloadCount ??
+    product.sold ?? product.purchase_count ?? product.purchaseCount ?? 0
+
+  const TABS = [
+    { id: 'description', label: 'Description' },
+    { id: 'details',     label: 'Détails' },
+    { id: 'reviews',     label: `Avis (${reviewCount})` },
+  ]
 
   return (
-    <div className="bg-gradient-to-br from-gray-50 via-white to-gray-50 min-h-screen">
-      {/* Breadcrumb Navigation */}
-      <div className="bg-white border-b border-gray-200 sticky top-0 z-40 shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+    <div className="bg-slate-50 min-h-screen">
+
+      {/* ═══ Sticky top bar ══════════════════════════════════════════════ */}
+      <div className="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-slate-200/80 shadow-sm">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 flex items-center justify-between gap-4">
           <Link
             to="/products"
-            className="inline-flex items-center space-x-2 text-gray-600 hover:text-green-600 transition-colors group"
+            className="inline-flex items-center gap-2 text-sm font-semibold text-slate-600 hover:text-emerald-700 transition-colors group shrink-0"
           >
-            <FiArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
-            <span className="text-sm font-medium">Retour aux produits</span>
+            <FiArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
+            Catalogue
           </Link>
+          <p className="hidden sm:block text-xs text-slate-400 truncate">{product.title}</p>
+          <span className={`${fmt.badgeBg} text-white text-[10px] font-extrabold px-2.5 py-1 rounded-lg shrink-0`}>
+            {fmt.label}
+          </span>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 mb-12">
-          {/* Product Image Section */}
-          <div className="relative">
-            <div className="lg:sticky lg:top-24">
-              <div 
-                className="relative bg-white rounded-2xl overflow-hidden shadow-xl border border-gray-100 group cursor-zoom-in"
-                onClick={() => setImageZoom(!imageZoom)}
-              >
-                {imageUrl ? (
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-14 mb-12">
+
+          {/* ═══ Left: product visual ════════════════════════════════════ */}
+          <div className="lg:sticky lg:top-20 self-start">
+            {/* Cover */}
+            <div
+              className="relative rounded-2xl overflow-hidden bg-slate-200 shadow-lg border border-slate-100/80 group cursor-zoom-in"
+              style={{ aspectRatio: '4 / 3' }}
+              onClick={() => setImageZoom((z) => !z)}
+            >
+              {imageUrl && !imgError ? (
+                <>
                   <img
                     src={imageUrl}
                     alt={product.title}
-                    className={`w-full h-64 sm:h-80 md:h-96 lg:h-[600px] object-cover transition-transform duration-300 ${imageZoom ? 'scale-110' : 'group-hover:scale-105'}`}
+                    onError={() => setImgError(true)}
+                    className={`w-full h-full object-cover transition-transform duration-500 ${
+                      imageZoom ? 'scale-110' : 'group-hover:scale-105'
+                    }`}
                   />
-                ) : (
-                  <div className="w-full h-64 sm:h-80 md:h-96 lg:h-[600px] flex items-center justify-center bg-gradient-to-br from-green-100 via-green-50 to-green-100">
-                    <span className="text-green-600 text-6xl sm:text-8xl">📚</span>
-                  </div>
-                )}
-                
-                {/* Discount Badge Overlay */}
-                {hasActiveDiscount && (
-                  <div className="absolute top-3 left-3 sm:top-6 sm:left-6">
-                    <div className="bg-gradient-to-r from-red-600 to-orange-600 text-white px-3 py-1.5 sm:px-6 sm:py-3 rounded-lg sm:rounded-xl shadow-2xl transform -rotate-3 animate-pulse">
-                      <div className="flex items-center gap-1 sm:gap-2">
-                        <FiZap className="w-4 h-4 sm:w-5 sm:h-5" />
-                        <span className="font-bold text-sm sm:text-lg">-{discountPercentage}%</span>
-                      </div>
-                    </div>
-                  </div>
-                )}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
+                </>
+              ) : (
+                <PlaceholderCover format={format} />
+              )}
 
-                {/* Format Badge */}
-                <div className="absolute top-3 right-3 sm:top-6 sm:right-6">
-                  <div className="bg-white/90 backdrop-blur-sm px-2 py-1 sm:px-4 sm:py-2 rounded-lg sm:rounded-xl shadow-lg flex items-center gap-1 sm:gap-2">
-                    <FormatIcon className="w-4 h-4 sm:w-5 sm:h-5 text-green-600" />
-                    <span className="font-semibold text-gray-900 text-xs sm:text-sm">{format}</span>
-                  </div>
+              {/* Discount badge */}
+              {hasActiveDiscount && (
+                <div className="absolute top-4 left-4">
+                  <span className="inline-flex items-center gap-1 bg-rose-500 text-white text-sm font-extrabold px-3 py-1.5 rounded-xl shadow-lg">
+                    <FiZap className="w-3.5 h-3.5" />
+                    -{discountPercentage}%
+                  </span>
                 </div>
+              )}
 
-                {/* Favorite Button */}
-                <button className="absolute bottom-3 right-3 sm:bottom-6 sm:right-6 bg-white/90 backdrop-blur-sm p-2 sm:p-3 rounded-full shadow-lg hover:bg-white transition-all hover:scale-110">
-                  <FiHeart className="w-4 h-4 sm:w-5 sm:h-5 text-gray-600 hover:text-red-500 transition-colors" />
-                </button>
-              </div>
+              {/* Top-seller badge */}
+              {(product.bestseller || downloadCount > 50) && (
+                <div className="absolute top-4 right-4">
+                  <span className="inline-flex items-center gap-1 bg-amber-400 text-amber-950 text-[11px] font-extrabold px-2.5 py-1.5 rounded-xl shadow-lg">
+                    <FiAward className="w-3.5 h-3.5" />
+                    TOP VENTE
+                  </span>
+                </div>
+              )}
 
-              {/* Share Button */}
-              <div className="mt-4 flex items-center justify-center gap-4">
-                <button className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors text-sm font-medium text-gray-700">
-                  <FiShare2 className="w-4 h-4" />
-                  <span>Partager</span>
-                </button>
-              </div>
+              {/* Favorite */}
+              <button className="absolute bottom-4 right-4 w-9 h-9 bg-white/90 backdrop-blur-sm rounded-full shadow-md flex items-center justify-center hover:bg-white hover:scale-110 transition-all">
+                <FiHeart className="w-4 h-4 text-slate-500 hover:text-rose-500 transition-colors" />
+              </button>
+            </div>
+
+            {/* Below-image row */}
+            <div className="mt-4 flex items-center gap-3">
+              <button className="flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 rounded-xl text-sm font-semibold text-slate-600 hover:bg-slate-50 hover:border-slate-300 transition-all shadow-sm">
+                <FiShare2 className="w-4 h-4" />
+                Partager
+              </button>
+              {downloadCount > 0 && (
+                <p className="ml-auto text-xs text-slate-400 tabular-nums">
+                  {downloadCount.toLocaleString()} ventes
+                </p>
+              )}
             </div>
           </div>
 
-          {/* Product Details Section */}
-          <div className="space-y-6">
-            {/* Title and Rating */}
+          {/* ═══ Right: product details ══════════════════════════════════ */}
+          <div className="space-y-5">
+
+            {/* Category + title + rating */}
             <div>
-              <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4 leading-tight">
+              <p className="text-emerald-700 text-[11px] font-extrabold uppercase tracking-widest mb-2">
+                {product.category || 'Ressource vétérinaire'}
+              </p>
+              <h1 className="text-2xl sm:text-3xl lg:text-[2rem] font-extrabold text-slate-900 leading-tight mb-3">
                 {product.title}
               </h1>
-              
-              {/* Rating and Reviews */}
-              <div className="flex items-center gap-4 mb-4">
-                <div className="flex items-center gap-1">
+              <div className="flex flex-wrap items-center gap-3">
+                <div className="flex items-center gap-0.5">
                   {[...Array(5)].map((_, i) => (
-                    <FiStar 
-                      key={i} 
-                      className={`w-5 h-5 ${i < Math.floor(rating) ? 'text-yellow-400 fill-current' : 'text-gray-300'}`} 
+                    <FiStar
+                      key={i}
+                      className={`w-4 h-4 ${
+                        i < Math.floor(rating) ? 'text-amber-400 fill-current' : 'text-slate-200 fill-current'
+                      }`}
                     />
                   ))}
-                  <span className="ml-2 text-gray-700 font-semibold">{rating}</span>
+                  <span className="ml-1.5 text-sm font-bold text-slate-700">{rating}</span>
                 </div>
-                <span className="text-sm text-gray-600 tabular-nums">
-                  {downloadCount.toLocaleString()} vendus
-                </span>
-              </div>
-
-              {/* Category Badge */}
-              <div className="inline-flex items-center gap-2 px-4 py-2 bg-green-50 border border-green-200 rounded-lg">
-                <span className="text-green-700 font-semibold text-sm">
-                  {product.category || 'RESSOURCE VÉTÉRINAIRE'}
-                </span>
+                {downloadCount > 0 && (
+                  <span className="text-sm text-slate-400 tabular-nums">
+                    {downloadCount.toLocaleString()} vendus
+                  </span>
+                )}
               </div>
             </div>
 
-            {/* Limited Time Discount Banner */}
+            {/* Limited offer strip */}
             {hasActiveDiscount && discountEndDate && (
-              <div className="bg-gradient-to-r from-red-500 via-orange-500 to-red-600 rounded-xl sm:rounded-2xl p-4 sm:p-6 text-white shadow-xl transform hover:scale-[1.02] transition-transform">
-                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 sm:gap-0 mb-4">
-                  <div className="flex items-center gap-2 sm:gap-3">
-                    <div className="w-10 h-10 sm:w-12 sm:h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center flex-shrink-0">
-                      <FiZap className="w-5 h-5 sm:w-6 sm:h-6" />
-                    </div>
-                    <div>
-                      <h3 className="font-bold text-lg sm:text-xl">OFFRE LIMITÉE</h3>
-                      <p className="text-red-50 text-xs sm:text-sm">Économisez {formatCurrency(originalPrice - price)}</p>
-                    </div>
+              <div className="bg-rose-50 border border-rose-200/80 rounded-2xl p-4">
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-8 h-8 rounded-xl bg-rose-500 flex items-center justify-center shrink-0">
+                    <FiZap className="w-4 h-4 text-white" />
                   </div>
-                  <div className="text-left sm:text-right">
-                    <div className="text-2xl sm:text-3xl font-bold">{discountPercentage}%</div>
-                    <div className="text-xs sm:text-sm text-red-50">DE RÉDUCTION</div>
+                  <div>
+                    <p className="text-sm font-extrabold text-rose-900 leading-tight">Offre limitée</p>
+                    <p className="text-xs text-rose-600 mt-0.5">
+                      Économisez {formatCurrency(originalPrice - price)} — expire bientôt
+                    </p>
                   </div>
                 </div>
-                <div className="bg-white/10 backdrop-blur-sm rounded-lg sm:rounded-xl p-3 sm:p-4">
-                  <p className="text-xs sm:text-sm font-semibold mb-2 sm:mb-3 flex items-center gap-2">
-                    <FiClock className="w-3 h-3 sm:w-4 sm:h-4" />
-                    Cette offre expire dans:
+                <div className="bg-white/70 rounded-xl p-3 border border-rose-100">
+                  <p className="flex items-center gap-1.5 text-[10px] font-extrabold uppercase tracking-widest text-rose-400 mb-2">
+                    <FiClock className="w-3 h-3" />
+                    Cette offre expire dans
                   </p>
                   <CountdownTimer targetDate={discountEndDate} />
                 </div>
               </div>
             )}
 
-            {/* Pricing Card */}
-            <div className={`rounded-2xl p-4 sm:p-6 lg:p-8 shadow-xl border-2 transition-all ${
-              hasActiveDiscount 
-                ? 'bg-gradient-to-br from-red-50 to-orange-50 border-red-300' 
-                : 'bg-gradient-to-br from-green-50 to-green-100 border-green-200'
-            }`}>
-              <div className="space-y-3 sm:space-y-4">
-                {originalPrice && hasActiveDiscount && (
-                  <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-3">
-                    <span className="text-xl sm:text-2xl text-gray-400 line-through font-medium">
-                      {formatCurrency(originalPrice)}
-                    </span>
-                    <span className="bg-red-600 text-white px-2 py-1 sm:px-3 sm:py-1 rounded-lg text-xs sm:text-sm font-bold">
-                      ÉCONOMISEZ {formatCurrency(originalPrice - price)}
-                    </span>
-                  </div>
-                )}
-                
-                <div className="flex flex-wrap items-baseline gap-3 sm:gap-4">
-                  <span className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold ${hasActiveDiscount ? 'text-red-600' : 'text-green-600'}`}>
-                    {formatCurrency(price)}
+            {/* Price card */}
+            <div className="bg-white rounded-2xl border border-slate-200/80 shadow-sm p-5">
+              {originalPrice && hasActiveDiscount && (
+                <div className="flex items-center gap-2 mb-1.5">
+                  <span className="text-base text-slate-400 line-through font-medium tabular-nums">
+                    {formatCurrency(originalPrice)}
                   </span>
-                  {hasActiveDiscount && (
-                    <span className="bg-gradient-to-r from-red-600 to-orange-600 text-white px-3 py-1 sm:px-5 sm:py-2 rounded-lg sm:rounded-xl text-lg sm:text-xl lg:text-2xl font-bold shadow-lg">
-                      -{discountPercentage}%
-                    </span>
-                  )}
+                  <span className="bg-rose-100 text-rose-700 text-xs font-extrabold px-2 py-0.5 rounded-lg">
+                    -{discountPercentage}%
+                  </span>
                 </div>
+              )}
+              <span
+                className={`text-4xl sm:text-5xl font-extrabold tabular-nums leading-none ${
+                  hasActiveDiscount ? 'text-rose-600' : 'text-slate-900'
+                }`}
+              >
+                {formatCurrency(price)}
+              </span>
+              {hasActiveDiscount && (
+                <p className="mt-1.5 text-sm text-slate-400">au lieu de {formatCurrency(originalPrice)}</p>
+              )}
+            </div>
 
-                {hasActiveDiscount && (
-                  <p className="text-red-700 font-semibold text-lg flex items-center gap-2">
-                    <FiZap className="w-5 h-5" />
-                    Prix promotionnel - Offre expire bientôt!
-                  </p>
+            {/* Feature pills */}
+            <div className="grid grid-cols-3 gap-2.5">
+              {[
+                { Icon: FiDownload, title: 'Téléchargement', sub: 'Immédiat' },
+                { Icon: FiShield,   title: 'Garantie',      sub: '30 jours' },
+                { Icon: fmt.Icon,   title: 'Format',        sub: fmt.label  },
+              ].map(({ Icon, title, sub }) => (
+                <div
+                  key={title}
+                  className="bg-white rounded-xl border border-slate-100 shadow-sm p-3.5 flex flex-col items-center text-center hover:shadow transition-shadow"
+                >
+                  <div className="w-8 h-8 rounded-lg bg-emerald-50 flex items-center justify-center mb-2">
+                    <Icon className="w-4 h-4 text-emerald-600" />
+                  </div>
+                  <p className="text-[11px] font-bold text-slate-800 leading-tight">{title}</p>
+                  <p className="text-[10px] text-slate-400 mt-0.5">{sub}</p>
+                </div>
+              ))}
+            </div>
+
+            {/* CTA buttons */}
+            <div className="space-y-2.5">
+              <button
+                onClick={handlePurchase}
+                className="w-full flex items-center justify-center gap-3 bg-emerald-600 hover:bg-emerald-700 active:scale-[0.99] text-white font-extrabold py-4 px-6 rounded-xl text-base transition-all shadow-md shadow-emerald-200/80 hover:shadow-lg hover:shadow-emerald-200/80 hover:-translate-y-0.5"
+              >
+                <FiDownload className="w-5 h-5" />
+                {t('detail.downloadNow', { ns: 'product' })}
+              </button>
+
+              <button
+                onClick={handleAddToCart}
+                disabled={!product || cartAdded || (product && isInCart(product.id))}
+                className={`w-full flex items-center justify-center gap-3 font-bold py-4 px-6 rounded-xl text-sm transition-all border-2 ${
+                  !product || cartAdded || (product && isInCart(product.id))
+                    ? 'border-slate-200 bg-slate-50 text-slate-400 cursor-not-allowed'
+                    : 'border-emerald-600 text-emerald-700 hover:bg-emerald-50 hover:-translate-y-0.5 active:scale-[0.99]'
+                }`}
+              >
+                {cartAdded || (product && isInCart(product.id)) ? (
+                  <>
+                    <FiCheck className="w-4 h-4" />
+                    {product && isInCart(product.id)
+                      ? t('detail.inCart', { ns: 'product' })
+                      : t('detail.addedToCart', { ns: 'product' })}
+                  </>
+                ) : (
+                  <>
+                    <FiShoppingCart className="w-4 h-4" />
+                    {t('detail.addToCart', { ns: 'product' })}
+                  </>
                 )}
-              </div>
-            </div>
-
-            {/* Key Features */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <div className="bg-white rounded-xl p-4 border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
-                <FiDownload className="w-6 h-6 text-green-600 mb-2" />
-                <p className="font-semibold text-gray-900 text-sm">Téléchargement</p>
-                <p className="text-gray-600 text-xs">Immédiat</p>
-              </div>
-              <div className="bg-white rounded-xl p-4 border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
-                <FiShield className="w-6 h-6 text-green-600 mb-2" />
-                <p className="font-semibold text-gray-900 text-sm">Garantie</p>
-                <p className="text-gray-600 text-xs">Satisfait ou remboursé</p>
-              </div>
-              <div className="bg-white rounded-xl p-4 border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
-                <FiCheck className="w-6 h-6 text-green-600 mb-2" />
-                <p className="font-semibold text-gray-900 text-sm">Format</p>
-                <p className="text-gray-600 text-xs">{format}</p>
-              </div>
-            </div>
-
-            {/* Action Buttons */}
-            <div className="space-y-4">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <button
-                  onClick={handlePurchase}
-                  className="w-full bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-bold py-5 px-6 rounded-xl transition-all duration-200 flex items-center justify-center space-x-3 shadow-xl hover:shadow-2xl transform hover:-translate-y-1 text-lg"
-                >
-                  <FiDownload className="w-6 h-6" />
-                  <span>{t('detail.downloadNow', { ns: 'product' })}</span>
-                </button>
-
-                <button
-                  onClick={handleAddToCart}
-                  disabled={!product || cartAdded || (product && isInCart(product.id))}
-                  className={`w-full font-bold py-5 px-6 rounded-xl transition-all duration-200 flex items-center justify-center space-x-3 shadow-xl hover:shadow-2xl transform hover:-translate-y-1 text-lg ${
-                    !product || cartAdded || (product && isInCart(product.id))
-                      ? 'bg-gray-400 text-white cursor-not-allowed'
-                      : 'bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white'
-                  }`}
-                >
-                  {cartAdded || (product && isInCart(product.id)) ? (
-                    <>
-                      <FiCheck className="w-6 h-6" />
-                      <span>{product && isInCart(product.id) ? t('detail.inCart', { ns: 'product' }) : t('detail.addedToCart', { ns: 'product' })}</span>
-                    </>
-                  ) : (
-                    <>
-                      <FiPlus className="w-6 h-6" />
-                      <span>{t('detail.addToCart', { ns: 'product' })}</span>
-                    </>
-                  )}
-                </button>
-              </div>
+              </button>
 
               {socialLinks.whatsapp && (
                 <a
                   href={socialLinks.whatsapp}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full bg-green-500 hover:bg-green-600 text-white font-semibold py-4 px-6 rounded-xl transition-all duration-200 flex items-center justify-center space-x-3 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+                  className="w-full flex items-center justify-center gap-3 bg-[#25D366] hover:bg-[#1ebe5d] text-white font-bold py-3.5 px-6 rounded-xl text-sm transition-all shadow-sm hover:shadow hover:-translate-y-0.5"
                 >
-                  <FiMessageCircle className="w-5 h-5" />
-                  <span>{t('services.contactWhatsApp', { ns: 'common' })}</span>
+                  <FiMessageCircle className="w-4 h-4" />
+                  {t('services.contactWhatsApp', { ns: 'common' })}
                 </a>
               )}
             </div>
 
-            {/* Trust Badges */}
-            <div className="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
-              <div className="flex items-center justify-around text-center">
-                <div>
-                  <FiShield className="w-8 h-8 text-green-600 mx-auto mb-2" />
-                  <p className="text-xs text-gray-600 font-medium">Paiement sécurisé</p>
+            {/* Trust strip */}
+            <div className="flex items-center justify-around py-4 px-5 bg-white rounded-xl border border-slate-100 shadow-sm">
+              {[
+                { Icon: FiShield,   text: 'Paiement sécurisé' },
+                { Icon: FiDownload, text: 'Accès immédiat' },
+                { Icon: FiCheck,    text: 'Garantie qualité' },
+              ].map(({ Icon, text }) => (
+                <div key={text} className="flex flex-col items-center gap-1.5 text-center">
+                  <div className="w-8 h-8 rounded-full bg-emerald-50 flex items-center justify-center">
+                    <Icon className="w-4 h-4 text-emerald-600" />
+                  </div>
+                  <p className="text-[10px] text-slate-500 font-semibold leading-tight max-w-[5rem]">{text}</p>
                 </div>
-                <div>
-                  <FiDownload className="w-8 h-8 text-green-600 mx-auto mb-2" />
-                  <p className="text-xs text-gray-600 font-medium">Accès immédiat</p>
-                </div>
-                <div>
-                  <FiCheck className="w-8 h-8 text-green-600 mx-auto mb-2" />
-                  <p className="text-xs text-gray-600 font-medium">Garantie qualité</p>
-                </div>
-              </div>
+              ))}
             </div>
           </div>
         </div>
 
-        {/* Description and Details Tabs */}
-        <div className="mt-12 bg-white rounded-2xl shadow-xl border border-gray-200 overflow-hidden">
-          {/* Tab Navigation */}
-          <div className="border-b border-gray-200 bg-gray-50">
+        {/* ═══ Tabs section ════════════════════════════════════════════════ */}
+        <div className="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+          {/* Tab nav */}
+          <div className="border-b border-slate-100 bg-slate-50/50">
             <div className="flex overflow-x-auto">
-              <button
-                onClick={() => setActiveTab('description')}
-                className={`px-6 py-4 font-semibold text-sm transition-colors border-b-2 ${
-                  activeTab === 'description'
-                    ? 'border-green-600 text-green-600 bg-white'
-                    : 'border-transparent text-gray-600 hover:text-gray-900'
-                }`}
-              >
-                Description
-              </button>
-              <button
-                onClick={() => setActiveTab('details')}
-                className={`px-6 py-4 font-semibold text-sm transition-colors border-b-2 ${
-                  activeTab === 'details'
-                    ? 'border-green-600 text-green-600 bg-white'
-                    : 'border-transparent text-gray-600 hover:text-gray-900'
-                }`}
-              >
-                Détails
-              </button>
-              <button
-                onClick={() => setActiveTab('reviews')}
-                className={`px-6 py-4 font-semibold text-sm transition-colors border-b-2 ${
-                  activeTab === 'reviews'
-                    ? 'border-green-600 text-green-600 bg-white'
-                    : 'border-transparent text-gray-600 hover:text-gray-900'
-                }`}
-              >
-                Avis ({reviewCount})
-              </button>
+              {TABS.map(({ id, label }) => (
+                <button
+                  key={id}
+                  onClick={() => setActiveTab(id)}
+                  className={`shrink-0 px-6 py-4 text-sm font-bold transition-all border-b-2 ${
+                    activeTab === id
+                      ? 'border-emerald-600 text-emerald-700 bg-white'
+                      : 'border-transparent text-slate-500 hover:text-slate-800 hover:bg-white/60'
+                  }`}
+                >
+                  {label}
+                </button>
+              ))}
             </div>
           </div>
 
-          {/* Tab Content */}
-          <div className="p-8">
+          {/* Tab content */}
+          <div className="p-6 sm:p-8">
             {activeTab === 'description' && (
-              <div className="prose max-w-none">
-                <p className="text-gray-700 leading-relaxed whitespace-pre-line text-lg">
-                  {description || t('detail.noDescriptionAvailable', { ns: 'product' })}
-                </p>
-              </div>
+              <p className="text-slate-700 leading-relaxed text-base whitespace-pre-line">
+                {description || t('detail.noDescriptionAvailable', { ns: 'product' })}
+              </p>
             )}
 
             {activeTab === 'details' && (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="space-y-4">
-                  <div className="flex items-start gap-3">
-                    <FormatIcon className="w-5 h-5 text-green-600 mt-1 flex-shrink-0" />
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                {[
+                  { Icon: fmt.Icon,   label: 'Format',          value: format },
+                  { Icon: FiDownload, label: 'Téléchargement',  value: 'Immédiat après achat' },
+                  { Icon: FiShield,   label: 'Garantie',        value: 'Satisfait ou remboursé sous 30 jours' },
+                  { Icon: FiStar,     label: 'Note',            value: `${rating}/5.0 — ${reviewCount} avis` },
+                  { Icon: FiCheck,    label: 'Qualité',         value: 'Contenu vérifié et approuvé' },
+                  { Icon: FiDownload, label: 'Ventes',          value: downloadCount.toLocaleString() },
+                ].map(({ Icon, label, value }) => (
+                  <div
+                    key={label}
+                    className="flex items-start gap-3 p-4 rounded-xl bg-slate-50 border border-slate-100"
+                  >
+                    <div className="w-8 h-8 rounded-lg bg-emerald-100 flex items-center justify-center shrink-0 mt-0.5">
+                      <Icon className="w-4 h-4 text-emerald-700" />
+                    </div>
                     <div>
-                      <p className="font-semibold text-gray-900">Format</p>
-                      <p className="text-gray-600">{format}</p>
+                      <p className="text-[10px] font-extrabold text-slate-400 uppercase tracking-wide mb-0.5">
+                        {label}
+                      </p>
+                      <p className="text-sm font-semibold text-slate-800">{value}</p>
                     </div>
                   </div>
-                  <div className="flex items-start gap-3">
-                    <FiDownload className="w-5 h-5 text-green-600 mt-1 flex-shrink-0" />
-                    <div>
-                      <p className="font-semibold text-gray-900">Téléchargement</p>
-                      <p className="text-gray-600">Immédiat après achat</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <FiDownload className="w-5 h-5 text-green-600 mt-1 flex-shrink-0" />
-                    <div>
-                      <p className="font-semibold text-gray-900">Ventes</p>
-                      <p className="text-gray-600 tabular-nums">{downloadCount.toLocaleString()}</p>
-                    </div>
-                  </div>
-                </div>
-                <div className="space-y-4">
-                  <div className="flex items-start gap-3">
-                    <FiShield className="w-5 h-5 text-green-600 mt-1 flex-shrink-0" />
-                    <div>
-                      <p className="font-semibold text-gray-900">Garantie</p>
-                      <p className="text-gray-600">Satisfait ou remboursé sous 30 jours</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <FiCheck className="w-5 h-5 text-green-600 mt-1 flex-shrink-0" />
-                    <div>
-                      <p className="font-semibold text-gray-900">Qualité</p>
-                      <p className="text-gray-600">Contenu vérifié et approuvé</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <FiStar className="w-5 h-5 text-green-600 mt-1 flex-shrink-0" />
-                    <div>
-                      <p className="font-semibold text-gray-900">Note</p>
-                      <p className="text-gray-600">{rating}/5.0 basé sur {reviewCount} {reviewCount === 1 ? 'avis' : 'avis'}</p>
-                    </div>
-                  </div>
-                </div>
+                ))}
               </div>
             )}
 
             {activeTab === 'reviews' && (
-              <div className="text-center py-12">
-                <FiStar className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-                <p className="text-gray-600 text-lg mb-2">Aucun avis pour le moment</p>
-                <p className="text-gray-500">Soyez le premier à laisser un avis sur ce produit!</p>
+              <div className="flex flex-col items-center py-10 text-center">
+                <div className="flex items-center gap-1 mb-4">
+                  {[...Array(5)].map((_, i) => (
+                    <FiStar key={i} className="w-8 h-8 text-slate-200 fill-current" />
+                  ))}
+                </div>
+                <p className="text-slate-700 font-bold mb-1">Aucun avis pour le moment</p>
+                <p className="text-slate-400 text-sm">Soyez le premier à laisser un avis sur ce produit !</p>
               </div>
             )}
           </div>

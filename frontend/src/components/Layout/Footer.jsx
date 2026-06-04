@@ -44,9 +44,9 @@ const Footer = () => {
           <div className="lg:col-span-1">
             <Link to="/" className="inline-block mb-5">
               <img
-                src="/academydeseleveurs.png"
+                src="/academydeseleveurs.jpg"
                 alt="Académie des Éleveurs"
-                className="h-16 w-auto brightness-0 invert opacity-90"
+                className="h-10 w-auto brightness-0 invert opacity-90"
               />
             </Link>
             <p className="text-sm leading-relaxed mb-6 text-gray-500">

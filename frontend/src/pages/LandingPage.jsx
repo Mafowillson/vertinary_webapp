@@ -1,16 +1,15 @@
 import { useEffect, useMemo } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import {
-  FiShoppingCart, FiArrowRight, FiCheckCircle,
+  FiArrowRight, FiCheckCircle,
   FiYoutube, FiFacebook, FiPhone, FiClock,
-  FiBook, FiAward, FiCheck
+  FiBook, FiAward
 } from 'react-icons/fi'
 import { categories, featuredResources, founderData } from '../data/mockHomePage'
 import { formatCurrency } from '../utils/formatters'
 import { useCountdown } from '../utils/countdown'
 import { getServices } from '../data/mockServices'
 import { useLanguage } from '../contexts/LanguageContext'
-import { useCart } from '../contexts/CartContext'
 import ServiceCard from '../components/ServiceCard/ServiceCard'
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -18,7 +17,6 @@ import ServiceCard from '../components/ServiceCard/ServiceCard'
 // ─────────────────────────────────────────────────────────────────────────────
 
 const FeaturedResourceCard = ({ resource }) => {
-  const { addToCart, isInCart } = useCart()
   const originalPrice = resource.originalPrice || resource.original_price
   const discountEndDate =
     resource.discountEndDate ||
@@ -34,91 +32,70 @@ const FeaturedResourceCard = ({ resource }) => {
   const discountPercentage = hasActiveDiscount
     ? Math.round(((originalPrice - resource.price) / originalPrice) * 100)
     : 0
-  const inCart = isInCart(resource.id)
-
-  const handleCartClick = (e) => {
-    e.preventDefault()
-    e.stopPropagation()
-    if (!inCart) addToCart(resource)
-  }
 
   return (
     <Link
       to={`/products/${resource.id}`}
-      className="group block bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-green-200"
+      className="group flex flex-col bg-white rounded-2xl overflow-hidden border border-gray-100 hover:border-[#1A7A6E]/30 hover:shadow-2xl transition-all duration-300 hover:-translate-y-1"
     >
       {/* Image */}
-      <div className="relative overflow-hidden">
+      <div className="relative overflow-hidden shrink-0">
         <img
           src={resource.imageUrl}
           alt={resource.title}
-          className="w-full h-44 object-cover group-hover:scale-105 transition-transform duration-500"
+          className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+        {/* Scrim */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+
+        {/* Top-left badges */}
         <div className="absolute top-3 left-3 flex flex-col gap-1.5">
-          <span className="bg-[#1A7A6E] text-white text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wide">
+          <span className="bg-[#1A7A6E] text-white text-[10px] font-bold px-2.5 py-1 rounded-lg uppercase tracking-wide shadow-md">
             {resource.tag}
           </span>
           {hasActiveDiscount && (
-            <span className="bg-red-500 text-white text-[10px] font-bold px-2.5 py-1 rounded-full animate-pulse">
+            <span className="bg-rose-500 text-white text-[10px] font-bold px-2.5 py-1 rounded-lg shadow-md">
               -{discountPercentage}% OFF
             </span>
           )}
         </div>
       </div>
 
-      {/* Content */}
-      <div className="p-4">
-        <h3 className="text-sm font-bold text-gray-900 mb-3 line-clamp-2 leading-snug min-h-[2.5rem]">
+      {/* Body */}
+      <div className="flex flex-col flex-1 p-5">
+        <h3 className="text-sm font-bold text-gray-900 leading-snug line-clamp-2 mb-3 min-h-[2.5rem]">
           {resource.title}
         </h3>
 
         {/* Countdown */}
         {hasActiveDiscount && hasDiscountDate && !isExpired && (
-          <div className="mb-3 flex items-center gap-2 bg-orange-50 border border-orange-100 rounded-xl px-3 py-2">
-            <FiClock className="w-3.5 h-3.5 text-orange-500 flex-shrink-0" />
-            <div className="flex items-center gap-1.5 text-orange-600 text-xs font-semibold">
-              <span>Expire dans</span>
-              <span className="font-mono bg-orange-100 px-1.5 py-0.5 rounded font-bold">
+          <div className="mb-3 flex items-center gap-2 bg-amber-50 border border-amber-100 rounded-xl px-3 py-2">
+            <FiClock className="w-3.5 h-3.5 text-amber-500 shrink-0" />
+            <span className="text-amber-700 text-xs font-semibold">
+              Expire dans{' '}
+              <span className="font-mono font-bold">
                 {timeLeft.days > 0 ? `${timeLeft.days}j ` : ''}
-                {String(timeLeft.hours).padStart(2, '0')}h{String(timeLeft.minutes).padStart(2, '0')}m
+                {String(timeLeft.hours).padStart(2, '0')}h {String(timeLeft.minutes).padStart(2, '0')}m
               </span>
-            </div>
+            </span>
           </div>
         )}
 
-        {/* Price + Cart */}
-        <div className="flex items-end justify-between gap-2">
-          <div>
+        {/* Price row */}
+        <div className="mt-auto pt-4 border-t border-gray-100 flex items-center justify-between gap-2">
+          <div className="leading-none">
             {hasActiveDiscount && (
-              <span className="text-xs text-gray-400 line-through block">
+              <span className="block text-[11px] text-gray-400 line-through mb-0.5 tabular-nums">
                 {formatCurrency(originalPrice)}
               </span>
             )}
-            <span className={`text-lg font-extrabold ${hasActiveDiscount ? 'text-red-600' : 'text-gray-900'}`}>
+            <span className={`text-lg font-extrabold tabular-nums ${hasActiveDiscount ? 'text-rose-600' : 'text-gray-900'}`}>
               {formatCurrency(resource.price)}
             </span>
           </div>
-          <button
-            onClick={handleCartClick}
-            className={`flex items-center gap-1.5 text-xs font-bold px-3 py-2 rounded-xl transition-all duration-200 ${
-              inCart
-                ? 'bg-green-100 text-green-700 cursor-default'
-                : 'bg-[#1A7A6E] hover:bg-[#155f55] text-white shadow-sm hover:shadow-md'
-            }`}
-          >
-            {inCart ? (
-              <>
-                <FiCheck className="w-3.5 h-3.5" />
-                <span>Ajouté</span>
-              </>
-            ) : (
-              <>
-                <FiShoppingCart className="w-3.5 h-3.5" />
-                <span>Ajouter</span>
-              </>
-            )}
-          </button>
+          <span className="inline-flex items-center gap-1.5 text-[#1A7A6E] text-xs font-bold group-hover:gap-2.5 transition-all">
+            Découvrir <FiArrowRight className="w-3.5 h-3.5" />
+          </span>
         </div>
       </div>
     </Link>

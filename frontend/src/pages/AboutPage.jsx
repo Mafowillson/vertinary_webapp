@@ -1,184 +1,262 @@
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { FiYoutube, FiFacebook, FiPhone, FiMail, FiMapPin, FiBook, FiUsers, FiAward, FiTarget, FiHeart, FiArrowRight, FiCheckCircle } from 'react-icons/fi'
+import {
+  FiYoutube, FiFacebook, FiPhone, FiMapPin,
+  FiBook, FiUsers, FiAward, FiTarget, FiHeart,
+  FiArrowRight, FiCheckCircle, FiPlay, FiStar,
+  FiTrendingUp, FiGlobe, FiZap
+} from 'react-icons/fi'
 import { founderData } from '../data/mockHomePage'
 
 const AboutPage = () => {
-  const missionPoints = [
-    'Partager des connaissances vétérinaires accessibles à tous',
-    'Éduquer les éleveurs camerounais et internationaux',
-    'Créer une communauté d\'apprentissage continue',
-    'Démocratiser l\'accès à l\'information en élevage',
-    'Contribuer au développement de l\'agriculture durable'
+  const [activeTab, setActiveTab] = useState(0)
+
+  const pillars = [
+    {
+      icon: FiBook,
+      title: 'Éducation',
+      description: 'Rendre les connaissances vétérinaires accessibles à chaque éleveur, partout.',
+      color: 'from-emerald-500 to-teal-600',
+      bg: 'bg-emerald-50',
+    },
+    {
+      icon: FiGlobe,
+      title: 'Portée Mondiale',
+      description: 'Connecter les éleveurs camerounais et internationaux autour du savoir partagé.',
+      color: 'from-teal-500 to-cyan-600',
+      bg: 'bg-teal-50',
+    },
+    {
+      icon: FiZap,
+      title: 'Innovation',
+      description: "Créer des produits et outils innovants pour accélérer la croissance en élevage.",
+      color: 'from-cyan-500 to-blue-600',
+      bg: 'bg-cyan-50',
+    },
+    {
+      icon: FiHeart,
+      title: 'Passion',
+      description: "Chaque contenu naît d'une passion authentique pour le bien-être animal.",
+      color: 'from-green-500 to-emerald-600',
+      bg: 'bg-green-50',
+    },
   ]
 
   const milestones = [
-    { year: '2020', title: 'Début du parcours', description: 'Commencement des études en médecine vétérinaire' },
-    { year: '2021', title: 'Création de contenu', description: 'Lancement de la chaîne YouTube et page Facebook' },
-    { year: '2022', title: 'Premier livre publié', description: 'Publication du premier livre "TOUT SUR L\'ÉLEVAGE"' },
-    { year: '2023', title: 'Fondation de l\'Académie', description: 'Création de l\'Académie des Éleveurs' },
-    { year: '2024', title: 'Plateforme digitale', description: 'Lancement de la plateforme web pour partager les connaissances' }
+    { year: '2020', emoji: '🎓', title: 'Début du parcours', description: 'Commencement des études en médecine vétérinaire' },
+    { year: '2021', emoji: '📹', title: 'Création de contenu', description: 'Lancement de la chaîne YouTube et page Facebook' },
+    { year: '2022', emoji: '📚', title: 'Premier livre', description: 'Publication du premier livre "TOUT SUR L\'ÉLEVAGE"' },
+    { year: '2023', emoji: '🏛️', title: "L'Académie", description: "Création de l'Académie des Éleveurs" },
+    { year: '2024', emoji: '🚀', title: 'Plateforme digitale', description: 'Lancement de la plateforme web éducative' },
   ]
 
-  const impactStats = [
-    { icon: FiUsers, value: '5,000+', label: 'Éleveurs formés' },
-    { icon: FiBook, value: '50+', label: 'Guides créés' },
-    { icon: FiAward, value: '4+', label: 'Années d\'expérience' },
-    { icon: FiTarget, value: '100+', label: 'Vidéos éducatives' }
+  const stats = [
+    { icon: FiUsers, value: '5 000+', label: 'Éleveurs formés', color: 'text-emerald-600', bg: 'bg-emerald-100' },
+    { icon: FiBook, value: '50+', label: 'Guides créés', color: 'text-teal-600', bg: 'bg-teal-100' },
+    { icon: FiStar, value: '4+', label: "Années d'expertise", color: 'text-cyan-600', bg: 'bg-cyan-100' },
+    { icon: FiPlay, value: '100+', label: 'Vidéos éducatives', color: 'text-green-600', bg: 'bg-green-100' },
+  ]
+
+  const credentials = [
+    { icon: FiAward, label: 'Étudiant Docteur en Médecine Vétérinaire', sub: 'Formation continue' },
+    { icon: FiTrendingUp, label: 'Ingénieur en Production Animale', sub: 'Expertise en gestion animale' },
+    { icon: FiBook, label: 'Auteur — série "TOUT SUR L\'ÉLEVAGE"', sub: 'Plusieurs livres publiés' },
+    { icon: FiTarget, label: "Fondateur de l'Académie des Éleveurs", sub: 'Plateforme éducative' },
+    { icon: FiZap, label: "Fabricant de l'Accélérateur de Croissance Bio", sub: 'Produit innovant' },
+    { icon: FiUsers, label: 'Créateur de contenu éducatif', sub: 'YouTube & Facebook' },
   ]
 
   return (
-    <div className="bg-white min-h-screen">
-      {/* Hero Section */}
-      <section className="relative py-20 bg-gradient-to-br from-green-50 via-white to-green-50 overflow-hidden">
-        <div className="absolute inset-0 opacity-5">
-          <div className="absolute top-10 left-10 w-72 h-72 bg-green-600 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-10 right-10 w-96 h-96 bg-green-400 rounded-full blur-3xl"></div>
-        </div>
-        
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            {/* Left Content */}
-            <div>
-              <div className="inline-flex items-center gap-2 px-4 py-2 bg-green-100 border border-green-200 rounded-full text-sm font-semibold text-green-700 mb-6">
+    <div className="bg-white min-h-screen overflow-x-hidden">
+
+      {/* ── HERO ─────────────────────────────────────────────────────── */}
+      <section className="relative min-h-[92vh] flex items-center bg-[#0d1f1e] overflow-hidden">
+        {/* Large decorative letters */}
+        <span className="pointer-events-none select-none absolute -right-8 top-1/2 -translate-y-1/2 text-[28vw] font-black text-white/[0.03] leading-none tracking-tighter">
+          ADE
+        </span>
+
+        {/* Gradient blobs */}
+        <div className="absolute top-0 left-0 w-[600px] h-[600px] bg-[#1A7A6E]/20 rounded-full blur-[120px] -translate-x-1/2 -translate-y-1/2" />
+        <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-teal-500/10 rounded-full blur-[100px]" />
+
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-24">
+          <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 items-center">
+
+            {/* Text — takes 3/5 */}
+            <div className="lg:col-span-3 space-y-8">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-[#1A7A6E]/40 bg-[#1A7A6E]/10 text-sm font-semibold text-emerald-400">
                 <FiCheckCircle className="w-4 h-4" />
-                <span>Fondateur & Expert Vérifié</span>
+                Fondateur & Expert Vérifié
               </div>
-              
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight">
-                Rencontrez{' '}
-                <span className="text-green-600">{founderData.name}</span>
+
+              <h1 className="text-5xl sm:text-6xl lg:text-7xl font-black text-white leading-[1.05] tracking-tight">
+                La vision<br />
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#1A7A6E] via-emerald-400 to-teal-300">
+                  derrière<br />l'Académie
+                </span>
               </h1>
-              
-              <p className="text-xl text-gray-600 mb-8 leading-relaxed">
+
+              <p className="text-gray-400 text-lg leading-relaxed max-w-xl">
                 {founderData.description}
               </p>
 
-              {/* Social Links */}
-              <div className="flex items-center gap-4 mb-8">
+              {/* Social links */}
+              <div className="flex flex-wrap gap-3">
                 <a
                   href={founderData.socialLinks.youtube}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-2 px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors"
+                  target="_blank" rel="noopener noreferrer"
+                  className="group flex items-center gap-2 px-5 py-2.5 bg-red-600 hover:bg-red-500 text-white rounded-xl font-semibold text-sm transition-all shadow-lg hover:shadow-red-600/30 hover:-translate-y-0.5"
                 >
-                  <FiYoutube className="w-5 h-5" />
-                  <span>YouTube</span>
+                  <FiYoutube className="w-4 h-4" /> YouTube
                 </a>
                 <a
                   href={founderData.socialLinks.facebook}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
+                  target="_blank" rel="noopener noreferrer"
+                  className="flex items-center gap-2 px-5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white rounded-xl font-semibold text-sm transition-all shadow-lg hover:shadow-blue-600/30 hover:-translate-y-0.5"
                 >
-                  <FiFacebook className="w-5 h-5" />
-                  <span>Facebook</span>
+                  <FiFacebook className="w-4 h-4" /> Facebook
                 </a>
                 <a
                   href={founderData.socialLinks.whatsapp}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors"
+                  target="_blank" rel="noopener noreferrer"
+                  className="flex items-center gap-2 px-5 py-2.5 bg-[#1A7A6E] hover:bg-emerald-500 text-white rounded-xl font-semibold text-sm transition-all shadow-lg hover:shadow-emerald-600/30 hover:-translate-y-0.5"
                 >
-                  <FiPhone className="w-5 h-5" />
-                  <span>WhatsApp</span>
+                  <FiPhone className="w-4 h-4" /> WhatsApp
                 </a>
               </div>
 
-              {/* Location */}
-              <div className="flex items-center gap-2 text-gray-600">
-                <FiMapPin className="w-5 h-5 text-green-600" />
-                <span>{founderData.location}</span>
+              <div className="flex items-center gap-2 text-gray-500 text-sm">
+                <FiMapPin className="w-4 h-4 text-emerald-500" />
+                {founderData.location}
               </div>
             </div>
 
-            {/* Right Image */}
-            <div className="relative">
-              <div className="relative rounded-2xl overflow-hidden shadow-2xl">
+            {/* Photo card — takes 2/5 */}
+            <div className="lg:col-span-2 relative">
+              {/* Glowing border frame */}
+              <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-[#1A7A6E] via-teal-400 to-emerald-300 blur-md opacity-40 scale-105" />
+              <div className="relative rounded-3xl overflow-hidden border border-white/10 shadow-2xl">
                 <img
                   src={founderData.imageUrl}
                   alt={founderData.name}
                   className="w-full h-auto object-cover"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-green-900/20 to-transparent"></div>
+                {/* Name card overlay */}
+                <div className="absolute bottom-0 left-0 right-0 p-5 bg-gradient-to-t from-black/80 via-black/40 to-transparent">
+                  <p className="text-white font-black text-lg leading-tight">{founderData.name}</p>
+                  <p className="text-emerald-400 text-xs font-semibold mt-1 uppercase tracking-wider">{founderData.role}</p>
+                </div>
               </div>
-              {/* Decorative elements */}
-              <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-green-100 rounded-full opacity-50 blur-2xl"></div>
-              <div className="absolute -top-6 -left-6 w-24 h-24 bg-green-200 rounded-full opacity-30 blur-xl"></div>
+
+              {/* Floating stat badge */}
+              <div className="absolute -right-4 top-8 bg-white rounded-2xl shadow-2xl px-4 py-3 text-center min-w-[90px]">
+                <p className="text-2xl font-black text-[#1A7A6E]">50+</p>
+                <p className="text-[10px] text-gray-500 font-semibold uppercase tracking-wide">Guides</p>
+              </div>
+              <div className="absolute -left-4 bottom-20 bg-white rounded-2xl shadow-2xl px-4 py-3 text-center min-w-[90px]">
+                <p className="text-2xl font-black text-[#1A7A6E]">5K+</p>
+                <p className="text-[10px] text-gray-500 font-semibold uppercase tracking-wide">Éleveurs</p>
+              </div>
             </div>
           </div>
         </div>
+
+        {/* Bottom fade */}
+        <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-white to-transparent" />
       </section>
 
-      {/* Mission Section */}
+      {/* ── STATS STRIP ──────────────────────────────────────────────── */}
       <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Notre Mission
-            </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              {founderData.mission}
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {missionPoints.map((point, index) => (
-              <div
-                key={index}
-                className="bg-green-50 border border-green-100 rounded-xl p-6 hover:shadow-lg transition-shadow"
-              >
-                <div className="flex items-start gap-4">
-                  <div className="flex-shrink-0 w-10 h-10 bg-green-600 rounded-full flex items-center justify-center">
-                    <FiCheckCircle className="w-6 h-6 text-white" />
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {stats.map((s, i) => {
+              const Icon = s.icon
+              return (
+                <div key={i} className="group relative rounded-2xl border border-gray-100 bg-white p-6 hover:border-[#1A7A6E]/30 hover:shadow-xl transition-all hover:-translate-y-1">
+                  <div className={`inline-flex w-12 h-12 rounded-xl ${s.bg} items-center justify-center mb-4`}>
+                    <Icon className={`w-6 h-6 ${s.color}`} />
                   </div>
-                  <p className="text-gray-700 font-medium">{point}</p>
+                  <p className="text-4xl font-black text-gray-900">{s.value}</p>
+                  <p className="text-sm text-gray-500 mt-1 font-medium">{s.label}</p>
+                  <div className="absolute bottom-0 left-6 right-6 h-0.5 bg-gradient-to-r from-[#1A7A6E] to-teal-400 rounded-full scale-x-0 group-hover:scale-x-100 transition-transform origin-left" />
                 </div>
-              </div>
-            ))}
+              )
+            })}
           </div>
         </div>
       </section>
 
-      {/* Journey Timeline */}
-      <section className="py-16 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Notre Parcours
-            </h2>
-            <p className="text-lg text-gray-600">
-              L'évolution de l'Académie des Éleveurs au fil des années
-            </p>
+      {/* ── PILLARS ──────────────────────────────────────────────────── */}
+      <section className="py-20 bg-gray-950 relative overflow-hidden">
+        <div className="pointer-events-none absolute inset-0">
+          <div className="absolute top-0 left-1/4 w-96 h-96 bg-[#1A7A6E]/10 rounded-full blur-[100px]" />
+          <div className="absolute bottom-0 right-1/4 w-72 h-72 bg-teal-600/10 rounded-full blur-[80px]" />
+        </div>
+
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-14">
+            <p className="text-[#1A7A6E] font-bold text-sm uppercase tracking-[0.2em] mb-3">Ce qui nous guide</p>
+            <h2 className="text-4xl md:text-5xl font-black text-white">Nos quatre piliers</h2>
           </div>
 
-          <div className="relative">
-            {/* Timeline line */}
-            <div className="absolute left-4 sm:left-8 md:left-1/2 top-0 bottom-0 w-0.5 bg-green-200 transform md:-translate-x-1/2"></div>
-
-            <div className="space-y-8 sm:space-y-12">
-              {milestones.map((milestone, index) => (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            {pillars.map((p, i) => {
+              const Icon = p.icon
+              return (
                 <div
-                  key={index}
-                  className={`relative flex items-center ${
-                    index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'
-                  }`}
+                  key={i}
+                  className="group relative rounded-2xl border border-white/5 bg-white/5 backdrop-blur-sm p-7 hover:bg-white/10 transition-all hover:-translate-y-1 cursor-default"
                 >
-                  {/* Timeline dot */}
-                  <div className="absolute left-4 sm:left-8 md:left-1/2 w-3 h-3 sm:w-4 sm:h-4 bg-green-600 rounded-full border-2 sm:border-4 border-white shadow-lg transform md:-translate-x-1/2 z-10"></div>
+                  <div className={`inline-flex w-12 h-12 rounded-xl bg-gradient-to-br ${p.color} items-center justify-center mb-5 shadow-lg`}>
+                    <Icon className="w-6 h-6 text-white" />
+                  </div>
+                  <h3 className="text-white font-bold text-lg mb-2">{p.title}</h3>
+                  <p className="text-gray-400 text-sm leading-relaxed">{p.description}</p>
 
-                  {/* Content */}
-                  <div
-                    className={`ml-8 sm:ml-16 md:ml-0 md:w-5/12 ${
-                      index % 2 === 0 ? 'md:mr-auto md:pr-8' : 'md:ml-auto md:pl-8'
-                    }`}
-                  >
-                    <div className="bg-white rounded-xl p-4 sm:p-6 shadow-md hover:shadow-lg transition-shadow border border-gray-100">
-                      <div className="flex items-center gap-3 mb-3">
-                        <span className="text-xl sm:text-2xl font-bold text-green-600">{milestone.year}</span>
-                        <div className="h-px flex-1 bg-gray-200"></div>
-                      </div>
-                      <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2">{milestone.title}</h3>
-                      <p className="text-sm sm:text-base text-gray-600">{milestone.description}</p>
+                  {/* Accent line */}
+                  <div className={`absolute top-0 left-0 w-full h-0.5 rounded-t-2xl bg-gradient-to-r ${p.color} opacity-0 group-hover:opacity-100 transition-opacity`} />
+                </div>
+              )
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* ── TIMELINE ─────────────────────────────────────────────────── */}
+      <section className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-14">
+            <p className="text-[#1A7A6E] font-bold text-sm uppercase tracking-[0.2em] mb-3">Évolution</p>
+            <h2 className="text-4xl md:text-5xl font-black text-gray-900">Notre parcours</h2>
+          </div>
+
+          {/* Horizontal scroll on mobile, flex on desktop */}
+          <div className="relative">
+            {/* Connector line */}
+            <div className="hidden md:block absolute top-8 left-0 right-0 h-0.5 bg-gradient-to-r from-[#1A7A6E] via-teal-400 to-emerald-300" />
+
+            <div className="flex flex-col md:flex-row gap-6 md:gap-0">
+              {milestones.map((m, i) => (
+                <div key={i} className="md:flex-1 flex flex-row md:flex-col items-start md:items-center gap-4 md:gap-0 group">
+                  {/* Dot */}
+                  <div className="relative flex-shrink-0 md:mb-6">
+                    <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#1A7A6E] to-teal-400 flex items-center justify-center text-2xl shadow-lg group-hover:scale-110 transition-transform md:mx-auto">
+                      {m.emoji}
+                    </div>
+                    <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-white border-2 border-[#1A7A6E] rounded-full flex items-center justify-center">
+                      <div className="w-2 h-2 rounded-full bg-[#1A7A6E]" />
+                    </div>
+                  </div>
+
+                  {/* Card */}
+                  <div className="md:mt-6 md:mx-3 flex-1 md:flex-none">
+                    <div className="bg-gray-50 border border-gray-100 rounded-2xl p-5 md:text-center hover:border-[#1A7A6E]/30 hover:shadow-lg transition-all">
+                      <span className="inline-block text-xs font-black text-[#1A7A6E] bg-[#1A7A6E]/10 px-3 py-1 rounded-full mb-2">
+                        {m.year}
+                      </span>
+                      <h3 className="font-bold text-gray-900 text-base">{m.title}</h3>
+                      <p className="text-gray-500 text-sm mt-1 leading-relaxed">{m.description}</p>
                     </div>
                   </div>
                 </div>
@@ -188,22 +266,42 @@ const AboutPage = () => {
         </div>
       </section>
 
-      {/* Impact Stats */}
-      <section className="py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            {impactStats.map((stat, index) => {
-              const Icon = stat.icon
+      {/* ── CREDENTIALS TABS ─────────────────────────────────────────── */}
+      <section className="py-20 bg-gray-50">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <p className="text-[#1A7A6E] font-bold text-sm uppercase tracking-[0.2em] mb-3">Expertise</p>
+            <h2 className="text-4xl md:text-5xl font-black text-gray-900">Réalisations & Reconnaissances</h2>
+          </div>
+
+          {/* Tab switcher */}
+          <div className="flex gap-2 justify-center mb-10 flex-wrap">
+            {['Formation', 'Innovation'].map((tab, i) => (
+              <button
+                key={i}
+                onClick={() => setActiveTab(i)}
+                className={`px-6 py-2.5 rounded-xl font-bold text-sm transition-all ${
+                  activeTab === i
+                    ? 'bg-[#1A7A6E] text-white shadow-lg shadow-[#1A7A6E]/30'
+                    : 'bg-white text-gray-600 border border-gray-200 hover:border-[#1A7A6E]/40'
+                }`}
+              >
+                {tab}
+              </button>
+            ))}
+          </div>
+
+          {/* Tab content */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            {credentials.slice(activeTab === 0 ? 0 : 3, activeTab === 0 ? 3 : 6).map((c, i) => {
+              const Icon = c.icon
               return (
-                <div
-                  key={index}
-                  className="bg-gradient-to-br from-green-50 to-white border border-green-100 rounded-xl p-6 text-center hover:shadow-lg transition-all"
-                >
-                  <div className="inline-flex items-center justify-center w-16 h-16 bg-green-600 rounded-full mb-4">
-                    <Icon className="w-8 h-8 text-white" />
+                <div key={i} className="bg-white border border-gray-100 rounded-2xl p-6 hover:border-[#1A7A6E]/30 hover:shadow-lg transition-all group">
+                  <div className="w-11 h-11 rounded-xl bg-[#1A7A6E]/10 flex items-center justify-center mb-4 group-hover:bg-[#1A7A6E]/20 transition-colors">
+                    <Icon className="w-5 h-5 text-[#1A7A6E]" />
                   </div>
-                  <div className="text-3xl font-bold text-gray-900 mb-2">{stat.value}</div>
-                  <div className="text-sm text-gray-600">{stat.label}</div>
+                  <h4 className="font-bold text-gray-900 text-sm leading-snug mb-1">{c.label}</h4>
+                  <p className="text-gray-500 text-xs">{c.sub}</p>
                 </div>
               )
             })}
@@ -211,125 +309,65 @@ const AboutPage = () => {
         </div>
       </section>
 
-      {/* Achievements Section */}
-      <section className="py-16 bg-gradient-to-br from-green-50 to-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-white rounded-2xl border border-gray-200 p-8 md:p-12 shadow-lg">
-            <div className="text-center mb-8">
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-                Réalisations & Reconnaissances
-              </h2>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {/* Left Column */}
-              <div>
-                <h3 className="text-xl font-bold text-gray-900 mb-6">Formation & Expertise</h3>
-                <div className="space-y-4">
-                  <div className="flex items-start gap-3">
-                    <FiAward className="w-6 h-6 text-green-600 mt-1 flex-shrink-0" />
-                    <div>
-                      <h4 className="font-semibold text-gray-900">Étudiant Docteur en Médecine Vétérinaire</h4>
-                      <p className="text-gray-600 text-sm">Formation continue en médecine vétérinaire</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <FiAward className="w-6 h-6 text-green-600 mt-1 flex-shrink-0" />
-                    <div>
-                      <h4 className="font-semibold text-gray-900">Ingénieur en Production Animale</h4>
-                      <p className="text-gray-600 text-sm">Expertise en gestion et production animale</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <FiBook className="w-6 h-6 text-green-600 mt-1 flex-shrink-0" />
-                    <div>
-                      <h4 className="font-semibold text-gray-900">Auteur de la série "TOUT SUR L'ÉLEVAGE"</h4>
-                      <p className="text-gray-600 text-sm">Plusieurs livres publiés sur l'élevage</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Right Column */}
-              <div>
-                <h3 className="text-xl font-bold text-gray-900 mb-6">Innovation & Impact</h3>
-                <div className="space-y-4">
-                  <div className="flex items-start gap-3">
-                    <FiTarget className="w-6 h-6 text-green-600 mt-1 flex-shrink-0" />
-                    <div>
-                      <h4 className="font-semibold text-gray-900">Fondateur de l'Académie des Éleveurs</h4>
-                      <p className="text-gray-600 text-sm">Plateforme éducative pour éleveurs</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <FiHeart className="w-6 h-6 text-green-600 mt-1 flex-shrink-0" />
-                    <div>
-                      <h4 className="font-semibold text-gray-900">Fabricant de l'Accélérateur de Croissance Bio</h4>
-                      <p className="text-gray-600 text-sm">Produit innovant pour l'élevage</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <FiUsers className="w-6 h-6 text-green-600 mt-1 flex-shrink-0" />
-                    <div>
-                      <h4 className="font-semibold text-gray-900">Créateur de contenu éducatif</h4>
-                      <p className="text-gray-600 text-sm">YouTube et Facebook avec milliers de vues</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Vision Section */}
-      <section className="py-16 bg-white">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-8">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Vision pour l'Avenir
-            </h2>
-          </div>
-
-          <div className="bg-gradient-to-br from-green-50 to-white rounded-2xl p-8 md:p-12 border border-green-100">
-            <p className="text-lg text-gray-700 leading-relaxed mb-6">
-              Notre vision est de créer une communauté mondiale d'éleveurs éduqués et prospères, où les connaissances en médecine vétérinaire sont accessibles à tous, indépendamment de leur localisation géographique ou de leurs ressources financières.
-            </p>
-            <p className="text-lg text-gray-700 leading-relaxed mb-6">
-              Nous croyons fermement que l'éducation est la clé du succès en élevage. En partageant nos connaissances et notre expérience, nous contribuons à améliorer la qualité des soins aux animaux et à renforcer l'industrie de l'élevage au Cameroun et au-delà.
-            </p>
-            <p className="text-lg text-gray-700 leading-relaxed">
-              Rejoignez-nous dans cette mission de partage et d'apprentissage continu. Ensemble, nous pouvons faire une différence significative dans la vie des éleveurs et de leurs animaux.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="py-16 bg-green-700">
+      {/* ── VISION QUOTE ─────────────────────────────────────────────── */}
+      <section className="py-20 bg-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-            Prêt à commencer votre parcours d'apprentissage?
+          <p className="text-[#1A7A6E] font-bold text-sm uppercase tracking-[0.2em] mb-6">Notre vision</p>
+          <blockquote className="relative">
+            <span className="absolute -top-8 left-0 text-[120px] leading-none text-[#1A7A6E]/10 font-black select-none">"</span>
+            <p className="relative text-2xl md:text-3xl font-bold text-gray-900 leading-relaxed">
+              Créer une communauté mondiale d'éleveurs éduqués et prospères, où les connaissances vétérinaires sont accessibles à{' '}
+              <span className="text-[#1A7A6E]">tous, partout.</span>
+            </p>
+          </blockquote>
+
+          <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6 text-left">
+            {[
+              { title: 'Accessibilité', body: "L'information ne devrait pas être un privilège. Nous la démocratisons." },
+              { title: 'Communauté', body: "Ensemble, nous construisons un réseau d'éleveurs solidaires et informés." },
+              { title: 'Durabilité', body: "Un élevage éduqué, c'est une agriculture plus durable pour demain." },
+            ].map((card, i) => (
+              <div key={i} className="border-l-4 border-[#1A7A6E] pl-5 py-1">
+                <h4 className="font-bold text-gray-900 mb-1">{card.title}</h4>
+                <p className="text-gray-500 text-sm leading-relaxed">{card.body}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── CTA ──────────────────────────────────────────────────────── */}
+      <section className="relative overflow-hidden">
+        {/* Diagonal slice */}
+        <div className="absolute inset-0 bg-[#0d1f1e]" />
+        <div className="absolute inset-0 opacity-20"
+          style={{ backgroundImage: 'radial-gradient(circle at 20% 50%, #1A7A6E 0%, transparent 60%), radial-gradient(circle at 80% 50%, #0d9488 0%, transparent 60%)' }}
+        />
+
+        <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-24 text-center">
+          <p className="text-emerald-400 font-bold text-sm uppercase tracking-[0.2em] mb-4">Rejoignez-nous</p>
+          <h2 className="text-4xl md:text-6xl font-black text-white mb-6 leading-tight">
+            Prêt à transformer<br />votre élevage ?
           </h2>
-          <p className="text-white/90 text-lg mb-8">
-            Explorez nos ressources, formations et livres pour améliorer vos compétences en élevage.
+          <p className="text-gray-400 text-lg mb-10 max-w-xl mx-auto">
+            Explorez nos ressources, formations et livres pour maîtriser votre métier d'éleveur.
           </p>
+
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               to="/products"
-              className="px-6 py-3 bg-white text-green-700 rounded-lg font-semibold hover:bg-gray-100 transition-colors inline-flex items-center justify-center gap-2"
+              className="group inline-flex items-center justify-center gap-2 px-8 py-4 bg-[#1A7A6E] hover:bg-emerald-500 text-white rounded-xl font-bold text-base transition-all shadow-xl hover:shadow-emerald-600/40 hover:-translate-y-0.5"
             >
-              <span>Voir les Ressources</span>
-              <FiArrowRight className="w-5 h-5" />
+              Voir les ressources
+              <FiArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </Link>
             <a
               href={founderData.socialLinks.whatsapp}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-6 py-3 bg-green-600 hover:bg-green-800 text-white rounded-lg font-semibold transition-colors inline-flex items-center justify-center gap-2"
+              target="_blank" rel="noopener noreferrer"
+              className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white/10 hover:bg-white/20 border border-white/20 text-white rounded-xl font-bold text-base transition-all hover:-translate-y-0.5"
             >
               <FiPhone className="w-5 h-5" />
-              <span>Nous Contacter</span>
+              Nous contacter
             </a>
           </div>
         </div>

@@ -63,9 +63,9 @@ const Header = () => {
           {/* Logo */}
           <Link to="/" className="flex-shrink-0">
             <img
-              src="/academydeseleveurs.png"
+              src="/academydeseleveurs.jpg"
               alt="Académie des Éleveurs"
-              className="h-14 w-auto"
+              className="h-10 w-auto"
             />
           </Link>
 
