@@ -3,7 +3,9 @@ import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../../contexts/AuthContext'
 import { useLanguage } from '../../contexts/LanguageContext'
 import { useCart } from '../../contexts/CartContext'
-import { FiMenu, FiX, FiUser, FiShoppingCart } from 'react-icons/fi'
+import {
+  FiMenu, FiX, FiUser, FiShoppingCart, FiLogOut
+} from 'react-icons/fi'
 import CurrencySelector from '../CurrencySelector/CurrencySelector'
 import LanguageSwitcher from '../LanguageSwitcher'
 
@@ -18,6 +20,11 @@ const Header = () => {
   const cartItemCount = getCartItemCount()
   const tc = (key) => t(key, { ns: 'common' })
 
+  const isActive = (path) => {
+    if (path === '/') return location.pathname === '/'
+    return location.pathname.startsWith(path)
+  }
+
   const handleLogout = () => {
     logout()
     navigate('/')
@@ -27,262 +34,252 @@ const Header = () => {
   const handleSectionClick = (sectionId, e) => {
     e.preventDefault()
     setMobileMenuOpen(false)
-
     if (location.pathname === '/') {
-      const element = document.getElementById(sectionId)
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth', block: 'start' })
-      }
+      const el = document.getElementById(sectionId)
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
     } else {
       navigate('/')
       setTimeout(() => {
-        const element = document.getElementById(sectionId)
-        if (element) {
-          element.scrollIntoView({ behavior: 'smooth', block: 'start' })
-        }
+        const el = document.getElementById(sectionId)
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
       }, 100)
     }
   }
 
+  const navLinks = [
+    { label: tc('nav.home'),       to: '/',         type: 'link' },
+    { label: tc('nav.catalogue'),  to: '/products', type: 'link' },
+    { label: tc('nav.categories'), hash: 'categories', type: 'hash' },
+    { label: tc('nav.resources'),  hash: 'resources',  type: 'hash' },
+    { label: tc('nav.services'),   to: '/services', type: 'link' },
+    { label: tc('nav.about'),      hash: 'about',   type: 'hash' },
+  ]
+
   return (
-    <header className="sticky top-0 z-50 w-full bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-[#dbe6df] dark:border-[#2a3a2e]">
+    <header className="sticky top-0 z-50 w-full bg-white/95 backdrop-blur-md border-b border-gray-100 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
-        <div className="h-16 flex items-center justify-between">
-          <Link to="/" className="flex items-center gap-2">
+        <div className="h-16 flex items-center justify-between gap-4">
+
+          {/* Logo */}
+          <Link to="/" className="flex-shrink-0">
             <img
               src="/academydeseleveurs.png"
               alt="Académie des Éleveurs"
-              className="h-16 w-auto"
+              className="h-14 w-auto"
             />
           </Link>
 
-          <nav className="hidden md:flex items-center gap-6 lg:gap-8">
-            <Link
-              to="/"
-              className="text-sm font-semibold text-gray-900 dark:text-white hover:text-[#1A7A6E] dark:hover:text-green-500 transition-colors"
-            >
-              {tc('nav.home')}
-            </Link>
-            <Link
-              to="/products"
-              className="text-sm font-semibold text-gray-900 dark:text-white hover:text-[#1A7A6E] dark:hover:text-green-500 transition-colors"
-            >
-              {tc('nav.catalogue')}
-            </Link>
-            <a
-              href="#categories"
-              onClick={(e) => handleSectionClick('categories', e)}
-              className="text-sm font-semibold text-gray-900 dark:text-white hover:text-[#1A7A6E] dark:hover:text-green-500 transition-colors cursor-pointer"
-            >
-              {tc('nav.categories')}
-            </a>
-            <a
-              href="#resources"
-              onClick={(e) => handleSectionClick('resources', e)}
-              className="text-sm font-semibold text-gray-900 dark:text-white hover:text-[#1A7A6E] dark:hover:text-green-500 transition-colors cursor-pointer"
-            >
-              {tc('nav.resources')}
-            </a>
-            <a
-              href="#services"
-              onClick={(e) => handleSectionClick('services', e)}
-              className="text-sm font-semibold text-gray-900 dark:text-white hover:text-[#1A7A6E] dark:hover:text-green-500 transition-colors cursor-pointer"
-            >
-              {tc('nav.services')}
-            </a>
-            <a
-              href="#about"
-              onClick={(e) => handleSectionClick('about', e)}
-              className="text-sm font-semibold text-gray-900 dark:text-white hover:text-[#1A7A6E] dark:hover:text-green-500 transition-colors cursor-pointer"
-            >
-              {tc('nav.about')}
-            </a>
+          {/* Desktop Nav */}
+          <nav className="hidden lg:flex items-center gap-0.5">
+            {navLinks.map((link) => {
+              const active = link.type === 'link' && isActive(link.to)
+              if (link.type === 'hash') {
+                return (
+                  <a
+                    key={link.hash}
+                    href={`#${link.hash}`}
+                    onClick={(e) => handleSectionClick(link.hash, e)}
+                    className="relative px-3 py-2 text-sm font-semibold text-gray-600 hover:text-[#1A7A6E] hover:bg-green-50 rounded-lg transition-all cursor-pointer"
+                  >
+                    {link.label}
+                  </a>
+                )
+              }
+              return (
+                <Link
+                  key={link.to}
+                  to={link.to}
+                  className={`relative px-3 py-2 text-sm font-semibold rounded-lg transition-all ${
+                    active
+                      ? 'text-[#1A7A6E] bg-green-50'
+                      : 'text-gray-600 hover:text-[#1A7A6E] hover:bg-green-50'
+                  }`}
+                >
+                  {link.label}
+                  {active && (
+                    <span className="absolute bottom-0.5 left-3 right-3 h-0.5 bg-[#1A7A6E] rounded-full" />
+                  )}
+                </Link>
+              )
+            })}
           </nav>
 
-          <div className="hidden md:flex items-center gap-3 lg:gap-4">
+          {/* Desktop Actions */}
+          <div className="hidden lg:flex items-center gap-2">
             <LanguageSwitcher />
             <CurrencySelector />
+
             {isAuthenticated ? (
-              <>
+              <div className="flex items-center gap-1.5 pl-3 ml-1 border-l border-gray-200">
                 {isAdmin() && (
                   <Link
                     to="/admin"
-                    className="text-sm font-semibold text-gray-900 dark:text-white hover:text-[#1A7A6E] dark:hover:text-green-500 transition-colors"
+                    className="text-sm font-semibold text-gray-700 hover:text-[#1A7A6E] hover:bg-green-50 px-3 py-2 rounded-lg transition-all"
                   >
                     {tc('nav.admin')}
                   </Link>
                 )}
                 <Link
                   to="/cart"
-                  className="relative p-2 text-gray-900 dark:text-white hover:text-[#1A7A6E] dark:hover:text-green-500 transition-colors"
+                  className="relative p-2.5 text-gray-600 hover:text-[#1A7A6E] hover:bg-green-50 rounded-xl transition-all"
                   title={tc('nav.cart')}
                 >
                   <FiShoppingCart className="w-5 h-5" />
                   {cartItemCount > 0 && (
-                    <span className="absolute -top-1 -right-1 bg-[#1A7A6E] text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+                    <span className="absolute -top-0.5 -right-0.5 min-w-[18px] h-[18px] bg-[#1A7A6E] text-white text-[10px] font-extrabold rounded-full flex items-center justify-center px-1 leading-none">
                       {cartItemCount > 9 ? '9+' : cartItemCount}
                     </span>
                   )}
                 </Link>
-                <div className="flex items-center gap-3 pl-4 border-l border-gray-200 dark:border-gray-700">
-                  <span className="text-sm text-gray-900 dark:text-white flex items-center gap-1">
-                    <FiUser className="w-4 h-4" />
-                    <span className="hidden lg:inline">{user?.email}</span>
-                  </span>
+                <div className="flex items-center gap-1 pl-1 border-l border-gray-200">
+                  <div className="w-8 h-8 rounded-xl bg-green-100 flex items-center justify-center" title={user?.email}>
+                    <FiUser className="w-4 h-4 text-[#1A7A6E]" />
+                  </div>
                   <button
                     type="button"
                     onClick={handleLogout}
-                    className="text-sm font-semibold text-gray-900 dark:text-white hover:text-red-600 dark:hover:text-red-500 transition-colors"
+                    title={tc('nav.logout')}
+                    className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-xl transition-all"
                   >
-                    {tc('nav.logout')}
+                    <FiLogOut className="w-4 h-4" />
                   </button>
                 </div>
-              </>
+              </div>
             ) : (
-              <>
+              <div className="flex items-center gap-2 pl-3 ml-1 border-l border-gray-200">
                 <Link
                   to="/login"
-                  className="text-sm font-semibold text-gray-900 dark:text-white hover:text-[#1A7A6E] dark:hover:text-green-500 transition-colors px-4 py-2"
+                  className="text-sm font-bold text-gray-700 hover:text-[#1A7A6E] hover:bg-green-50 px-4 py-2 rounded-xl transition-all"
                 >
                   {tc('nav.login')}
                 </Link>
                 <Link
                   to="/register"
-                  className="bg-[#1A7A6E] hover:brightness-105 text-white text-sm font-bold px-5 py-2 rounded-lg transition-all"
+                  className="text-sm font-bold bg-[#1A7A6E] hover:bg-[#155f55] text-white px-5 py-2 rounded-xl transition-all shadow-sm hover:shadow-md"
                 >
                   {tc('nav.register')}
                 </Link>
-              </>
+              </div>
             )}
           </div>
 
-          <button
-            type="button"
-            className="md:hidden p-2 text-gray-900 dark:text-white hover:text-[#1A7A6E] dark:hover:text-green-500 transition-colors"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            aria-label={tc('nav.toggleMenu')}
-          >
-            {mobileMenuOpen ? <FiX className="w-6 h-6" /> : <FiMenu className="w-6 h-6" />}
-          </button>
+          {/* Mobile: Cart + Hamburger */}
+          <div className="lg:hidden flex items-center gap-1">
+            {isAuthenticated && (
+              <Link
+                to="/cart"
+                className="relative p-2 text-gray-600 hover:text-[#1A7A6E] hover:bg-green-50 rounded-xl transition-all"
+              >
+                <FiShoppingCart className="w-5 h-5" />
+                {cartItemCount > 0 && (
+                  <span className="absolute -top-0.5 -right-0.5 min-w-[16px] h-4 bg-[#1A7A6E] text-white text-[10px] font-extrabold rounded-full flex items-center justify-center px-0.5 leading-none">
+                    {cartItemCount > 9 ? '9+' : cartItemCount}
+                  </span>
+                )}
+              </Link>
+            )}
+            <button
+              type="button"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="p-2 text-gray-700 hover:text-[#1A7A6E] hover:bg-green-50 rounded-xl transition-all"
+              aria-label={tc('nav.toggleMenu')}
+            >
+              {mobileMenuOpen ? <FiX className="w-5 h-5" /> : <FiMenu className="w-5 h-5" />}
+            </button>
+          </div>
         </div>
+      </div>
 
-        {mobileMenuOpen && (
-          <div className="md:hidden border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">
-            <nav className="flex flex-col space-y-4 py-4">
-              <Link
-                to="/"
-                className="px-2 text-gray-900 dark:text-white hover:text-[#1A7A6E] dark:hover:text-green-500 transition-colors text-sm font-medium"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                {tc('nav.home')}
-              </Link>
-              <Link
-                to="/products"
-                className="px-2 text-gray-900 dark:text-white hover:text-[#1A7A6E] dark:hover:text-green-500 transition-colors text-sm font-medium"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                {tc('nav.catalogue')}
-              </Link>
-              <a
-                href="#categories"
-                onClick={(e) => handleSectionClick('categories', e)}
-                className="px-2 text-gray-900 dark:text-white hover:text-[#1A7A6E] dark:hover:text-green-500 transition-colors text-sm font-medium cursor-pointer"
-              >
-                {tc('nav.categories')}
-              </a>
-              <a
-                href="#resources"
-                onClick={(e) => handleSectionClick('resources', e)}
-                className="px-2 text-gray-900 dark:text-white hover:text-[#1A7A6E] dark:hover:text-green-500 transition-colors text-sm font-medium cursor-pointer"
-              >
-                {tc('nav.resources')}
-              </a>
-              <a
-                href="#services"
-                onClick={(e) => handleSectionClick('services', e)}
-                className="px-2 text-gray-900 dark:text-white hover:text-[#1A7A6E] dark:hover:text-green-500 transition-colors text-sm font-medium cursor-pointer"
-              >
-                {tc('nav.services')}
-              </a>
-              <a
-                href="#about"
-                onClick={(e) => handleSectionClick('about', e)}
-                className="px-2 text-gray-900 dark:text-white hover:text-[#1A7A6E] dark:hover:text-green-500 transition-colors text-sm font-medium cursor-pointer"
-              >
-                {tc('nav.about')}
-              </a>
+      {/* Mobile Menu */}
+      {mobileMenuOpen && (
+        <div className="lg:hidden border-t border-gray-100 bg-white shadow-lg">
+          <div className="max-w-7xl mx-auto px-4 py-3 space-y-0.5">
+            {navLinks.map((link) => {
+              const active = link.type === 'link' && isActive(link.to)
+              if (link.type === 'hash') {
+                return (
+                  <a
+                    key={link.hash}
+                    href={`#${link.hash}`}
+                    onClick={(e) => handleSectionClick(link.hash, e)}
+                    className="block px-4 py-2.5 text-sm font-semibold text-gray-700 hover:text-[#1A7A6E] hover:bg-green-50 rounded-xl transition-all cursor-pointer"
+                  >
+                    {link.label}
+                  </a>
+                )
+              }
+              return (
+                <Link
+                  key={link.to}
+                  to={link.to}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={`block px-4 py-2.5 text-sm font-semibold rounded-xl transition-all ${
+                    active
+                      ? 'text-[#1A7A6E] bg-green-50'
+                      : 'text-gray-700 hover:text-[#1A7A6E] hover:bg-green-50'
+                  }`}
+                >
+                  {link.label}
+                </Link>
+              )
+            })}
 
-              <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
-                <div className="flex flex-wrap items-center gap-3 px-2 py-2">
-                  <LanguageSwitcher />
-                  <CurrencySelector />
+            {/* Language + Currency */}
+            <div className="flex flex-wrap items-center gap-3 px-4 pt-3 pb-2 border-t border-gray-100 !mt-3">
+              <LanguageSwitcher />
+              <CurrencySelector />
+            </div>
+
+            {/* Auth */}
+            {isAuthenticated ? (
+              <div className="px-4 pt-3 pb-2 border-t border-gray-100 !mt-3 space-y-2">
+                {isAdmin() && (
+                  <Link
+                    to="/admin"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="block px-4 py-2.5 text-sm font-semibold text-gray-700 hover:text-[#1A7A6E] hover:bg-green-50 rounded-xl transition-all"
+                  >
+                    {tc('nav.admin')}
+                  </Link>
+                )}
+                <div className="flex items-center justify-between py-1">
+                  <div className="flex items-center gap-2.5">
+                    <div className="w-8 h-8 rounded-xl bg-green-100 flex items-center justify-center flex-shrink-0">
+                      <FiUser className="w-4 h-4 text-[#1A7A6E]" />
+                    </div>
+                    <span className="text-sm text-gray-600 truncate max-w-[180px]">{user?.email}</span>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={handleLogout}
+                    className="flex items-center gap-1.5 text-sm font-semibold text-red-500 hover:bg-red-50 px-3 py-2 rounded-xl transition-all"
+                  >
+                    <FiLogOut className="w-4 h-4" />
+                    {tc('nav.logout')}
+                  </button>
                 </div>
               </div>
-
-              {isAuthenticated ? (
-                <>
-                  {isAdmin() && (
-                    <Link
-                      to="/admin"
-                      className="px-2 text-gray-900 dark:text-white hover:text-[#1A7A6E] dark:hover:text-green-500 transition-colors text-sm font-medium"
-                      onClick={() => setMobileMenuOpen(false)}
-                    >
-                      {tc('nav.admin')}
-                    </Link>
-                  )}
-                  <Link
-                    to="/cart"
-                    className="px-2 text-gray-900 dark:text-white hover:text-[#1A7A6E] dark:hover:text-green-500 transition-colors text-sm font-medium flex items-center gap-2"
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    <div className="relative">
-                      <FiShoppingCart className="w-5 h-5" />
-                      {cartItemCount > 0 && (
-                        <span className="absolute -top-1 -right-1 bg-[#1A7A6E] text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
-                          {cartItemCount > 9 ? '9+' : cartItemCount}
-                        </span>
-                      )}
-                    </div>
-                    <span>
-                      {tc('nav.cart')} {cartItemCount > 0 && `(${cartItemCount})`}
-                    </span>
-                  </Link>
-                  <div className="pt-4 border-t border-gray-200 dark:border-gray-700 px-2">
-                    <div className="flex items-center space-x-2 text-gray-900 dark:text-white mb-2">
-                      <FiUser className="w-4 h-4" />
-                      <span className="text-sm">{user?.email}</span>
-                    </div>
-                    <button
-                      type="button"
-                      onClick={handleLogout}
-                      className="text-gray-900 dark:text-white hover:text-red-600 dark:hover:text-red-500 transition-colors text-sm font-medium"
-                    >
-                      {tc('nav.logout')}
-                    </button>
-                  </div>
-                </>
-              ) : (
-                <div className="pt-4 border-t border-gray-200 dark:border-gray-700 space-y-2 px-2">
-                  <Link
-                    to="/login"
-                    className="block text-gray-900 dark:text-white hover:text-[#1A7A6E] dark:hover:text-green-500 transition-colors text-sm font-medium"
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    {tc('nav.login')}
-                  </Link>
-                  <Link
-                    to="/register"
-                    className="block px-4 py-2 bg-[#1A7A6E] hover:brightness-105 text-white rounded-lg transition-colors text-center text-sm font-medium"
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    {tc('nav.register')}
-                  </Link>
-                </div>
-              )}
-            </nav>
+            ) : (
+              <div className="px-4 pt-3 pb-2 border-t border-gray-100 !mt-3 flex gap-3">
+                <Link
+                  to="/login"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="flex-1 text-center py-2.5 text-sm font-bold text-gray-700 border-2 border-gray-200 hover:border-gray-300 rounded-xl transition-all"
+                >
+                  {tc('nav.login')}
+                </Link>
+                <Link
+                  to="/register"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="flex-1 text-center py-2.5 text-sm font-bold bg-[#1A7A6E] hover:bg-[#155f55] text-white rounded-xl transition-all shadow-sm"
+                >
+                  {tc('nav.register')}
+                </Link>
+              </div>
+            )}
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </header>
   )
 }

@@ -1,7 +1,15 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { FiAlertCircle, FiCheckCircle, FiLock, FiRefreshCw, FiArrowLeft } from 'react-icons/fi'
+import { FiAlertCircle, FiArrowLeft, FiArrowRight, FiMail } from 'react-icons/fi'
 import { authService } from '../../services/authService'
+import AuthLayout from '../../components/Layout/AuthLayout'
+
+const Spinner = () => (
+  <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24" fill="none">
+    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+  </svg>
+)
 
 const ForgotPasswordPage = () => {
   const [email, setEmail] = useState('')
@@ -13,7 +21,6 @@ const ForgotPasswordPage = () => {
     e.preventDefault()
     setError('')
     setLoading(true)
-
     try {
       await authService.forgotPassword(email.trim())
       setSuccess(true)
@@ -25,105 +32,93 @@ const ForgotPasswordPage = () => {
   }
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full">
-        {/* Main Reset Password Card */}
-        <div className="bg-white rounded-lg shadow-sm p-8 space-y-6">
-          {/* Header with Icon */}
-          <div className="text-center space-y-4">
-            <div className="flex justify-center">
-              <div className="w-16 h-16 bg-green-600 rounded-full flex items-center justify-center">
-                <FiRefreshCw className="w-8 h-8 text-white" />
+    <AuthLayout quote="Pas de panique, on vous aide à retrouver l'accès à votre compte.">
+      <div className="space-y-6">
+
+        {/* Icon + heading */}
+        <div className="space-y-4">
+          <div className="w-14 h-14 bg-green-50 border border-green-100 rounded-2xl flex items-center justify-center">
+            <FiMail className="w-6 h-6 text-[#1A7A6E]" />
+          </div>
+          <div>
+            <h1 className="text-2xl font-extrabold text-gray-900">Mot de passe oublié ?</h1>
+            <p className="mt-1 text-sm text-gray-500">
+              Entrez votre email et nous vous enverrons un lien de réinitialisation.
+            </p>
+          </div>
+        </div>
+
+        {success ? (
+          /* ── Success state ── */
+          <div className="space-y-6">
+            <div className="bg-green-50 border border-green-200 rounded-2xl p-5 text-center space-y-2">
+              <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto">
+                <svg className="w-6 h-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                </svg>
               </div>
-            </div>
-            <div>
-              <h2 className="text-3xl font-bold text-gray-900">
-                Réinitialiser votre mot de passe
-              </h2>
-              <p className="mt-2 text-sm text-gray-500">
-                Entrez votre adresse email et nous vous enverrons un lien pour réinitialiser votre mot de passe.
+              <p className="text-sm font-semibold text-green-800">Email envoyé !</p>
+              <p className="text-sm text-green-700">
+                Si un compte existe pour <strong>{email}</strong>, vous recevrez un lien de réinitialisation dans quelques minutes.
               </p>
             </div>
+            <p className="text-xs text-gray-500 text-center">
+              Vérifiez vos spams si vous ne voyez pas l'email.
+            </p>
           </div>
+        ) : (
+          /* ── Form state ── */
+          <div className="space-y-4">
+            {error && (
+              <div className="flex items-start gap-3 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl text-sm">
+                <FiAlertCircle className="w-4 h-4 mt-0.5 flex-shrink-0" />
+                <span>{error}</span>
+              </div>
+            )}
 
-          {/* Form */}
-          {!success ? (
-            <form className="space-y-5" onSubmit={handleSubmit}>
-              {error && (
-                <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg flex items-center space-x-2">
-                  <FiAlertCircle className="w-5 h-5" />
-                  <span>{error}</span>
-                </div>
-              )}
-              
-              <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1.5">
-                  Adresse Email
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div className="space-y-1.5">
+                <label htmlFor="email" className="block text-sm font-semibold text-gray-700">
+                  Adresse email
                 </label>
                 <input
                   id="email"
-                  name="email"
                   type="email"
                   autoComplete="email"
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none transition-colors"
-                  placeholder="e.g. name@email.com"
+                  placeholder="vous@exemple.com"
+                  className="w-full px-4 py-3 text-sm border border-gray-200 rounded-xl bg-gray-50 focus:bg-white focus:border-[#1A7A6E] focus:ring-2 focus:ring-[#1A7A6E]/20 outline-none transition-all placeholder-gray-400"
                 />
               </div>
 
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full flex items-center justify-center gap-2 bg-[#1A7A6E] hover:bg-[#155f55] text-white font-bold py-3 rounded-xl transition-all duration-200 shadow-sm hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {loading ? 'Envoi en cours...' : 'Envoyer le lien de réinitialisation'}
+                {loading ? (
+                  <><Spinner /> Envoi en cours...</>
+                ) : (
+                  <>Envoyer le lien <FiArrowRight className="w-4 h-4" /></>
+                )}
               </button>
             </form>
-          ) : (
-            <div className="text-center space-y-4">
-              <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg">
-                <p className="text-sm">
-                  Si un compte existe avec cette adresse email, nous vous avons envoyé un lien de réinitialisation du mot de passe.
-                </p>
-              </div>
-            </div>
-          )}
-
-          {/* Back to Login Link */}
-          <div className="text-center pt-4">
-            <Link
-              to="/login"
-              className="text-sm text-gray-700 hover:text-gray-900 font-medium flex items-center justify-center space-x-2"
-            >
-              <FiArrowLeft className="w-4 h-4" />
-              <span>Retour à la connexion</span>
-            </Link>
           </div>
+        )}
 
-          {/* Security Badges */}
-          <div className="flex items-center justify-center space-x-4 pt-6 border-t border-gray-200">
-            <div className="flex items-center space-x-2 text-gray-500 text-xs">
-              <FiCheckCircle className="w-4 h-4 text-green-600" />
-              <span className="font-medium">CONFORME HIPAA</span>
-            </div>
-            <span className="text-gray-400">•</span>
-            <div className="flex items-center space-x-2 text-gray-500 text-xs">
-              <FiLock className="w-4 h-4 text-green-600" />
-              <span className="font-medium">CRYPTAGE 256 BITS</span>
-            </div>
-          </div>
-        </div>
+        {/* Back to login */}
+        <Link
+          to="/login"
+          className="flex items-center justify-center gap-2 text-sm font-semibold text-gray-500 hover:text-gray-800 transition-colors pt-2 border-t border-gray-100"
+        >
+          <FiArrowLeft className="w-4 h-4" />
+          Retour à la connexion
+        </Link>
 
-        {/* Footer */}
-        <div className="mt-8 text-center">
-          <p className="text-xs text-gray-500">
-            © {new Date().getFullYear()} Académie des Éleveurs. Tous droits réservés.
-          </p>
-        </div>
       </div>
-    </div>
+    </AuthLayout>
   )
 }
 
