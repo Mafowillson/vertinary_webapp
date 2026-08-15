@@ -9,11 +9,14 @@ import {
   FiActivity,
   FiArrowUpRight,
   FiArrowDownRight,
+  FiAlertCircle,
 } from 'react-icons/fi'
+import { adminService } from '../../services/adminService'
 
 const Analytics = () => {
-  const [timeframe, setTimeframe] = useState('monthly') // 'daily', 'weekly', 'monthly', 'yearly'
+  const [timeframe, setTimeframe] = useState('monthly') // 'weekly', 'monthly', 'yearly'
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState('')
   const [analytics, setAnalytics] = useState({
     totalRevenue: 0,
     totalOrders: 0,
@@ -23,7 +26,9 @@ const Analytics = () => {
     ordersGrowth: 0,
     usersGrowth: 0,
     conversionRate: 0,
+    conversionRateDelta: 0,
     averageOrderValue: 0,
+    labels: [],
     revenueData: [],
     ordersData: [],
     usersData: [],
@@ -36,81 +41,15 @@ const Analytics = () => {
 
   const loadAnalytics = async () => {
     setLoading(true)
-    // Simulate API call
-    setTimeout(() => {
-      // Mock data based on timeframe
-      const mockData = {
-        monthly: {
-          totalRevenue: 12500000,
-          totalOrders: 591,
-          totalProducts: 12,
-          totalUsers: 450,
-          revenueGrowth: 12.5,
-          ordersGrowth: 8.3,
-          usersGrowth: 15.2,
-          conversionRate: 3.2,
-          averageOrderValue: 21150,
-          revenueData: [850000, 920000, 1100000, 980000, 1250000, 1180000, 1250000],
-          ordersData: [45, 52, 68, 58, 75, 71, 82],
-          usersData: [320, 350, 380, 400, 420, 435, 450],
-          topProducts: [
-            { name: 'Advanced Cattle Breeding', sales: 156, revenue: 18720000 },
-            { name: 'Poultry Management Guide', sales: 124, revenue: 10540000 },
-            { name: 'Veterinary Basics', sales: 98, revenue: 9310000 },
-            { name: 'Livestock Health Management', sales: 87, revenue: 13050000 },
-            { name: 'Animal Nutrition Guide', sales: 76, revenue: 5700000 },
-          ],
-        },
-        weekly: {
-          totalRevenue: 3200000,
-          totalOrders: 152,
-          totalProducts: 12,
-          totalUsers: 450,
-          revenueGrowth: 5.2,
-          ordersGrowth: 3.1,
-          usersGrowth: 4.8,
-          conversionRate: 3.2,
-          averageOrderValue: 21050,
-          revenueData: [420000, 480000, 520000, 450000, 580000, 550000, 600000],
-          ordersData: [18, 22, 24, 20, 28, 26, 30],
-          usersData: [420, 425, 430, 435, 440, 445, 450],
-          topProducts: [
-            { name: 'Advanced Cattle Breeding', sales: 42, revenue: 5040000 },
-            { name: 'Poultry Management Guide', sales: 35, revenue: 2975000 },
-            { name: 'Veterinary Basics', sales: 28, revenue: 2660000 },
-            { name: 'Livestock Health Management', sales: 25, revenue: 3750000 },
-            { name: 'Animal Nutrition Guide', sales: 22, revenue: 1650000 },
-          ],
-        },
-        yearly: {
-          totalRevenue: 145000000,
-          totalOrders: 6842,
-          totalProducts: 12,
-          totalUsers: 450,
-          revenueGrowth: 28.5,
-          ordersGrowth: 22.1,
-          usersGrowth: 35.8,
-          conversionRate: 3.2,
-          averageOrderValue: 21180,
-          revenueData: [
-            8500000, 9200000, 11000000, 9800000, 12500000, 11800000, 12500000, 13200000,
-            12800000, 14500000, 13800000, 15000000,
-          ],
-          ordersData: [420, 450, 520, 480, 620, 590, 680, 720, 700, 820, 780, 850],
-          usersData: [280, 310, 350, 380, 400, 420, 435, 440, 445, 448, 449, 450],
-          topProducts: [
-            { name: 'Advanced Cattle Breeding', sales: 1842, revenue: 221040000 },
-            { name: 'Poultry Management Guide', sales: 1456, revenue: 123760000 },
-            { name: 'Veterinary Basics', sales: 1152, revenue: 109440000 },
-            { name: 'Livestock Health Management', sales: 1024, revenue: 153600000 },
-            { name: 'Animal Nutrition Guide', sales: 896, revenue: 67200000 },
-          ],
-        },
-      }
-
-      setAnalytics(mockData[timeframe] || mockData.monthly)
+    setError('')
+    try {
+      const data = await adminService.getAnalytics(timeframe)
+      setAnalytics(data)
+    } catch (err) {
+      setError(err.message || 'Impossible de charger les statistiques.')
+    } finally {
       setLoading(false)
-    }, 500)
+    }
   }
 
   const formatCurrency = (amount) => {
@@ -156,40 +95,16 @@ const Analytics = () => {
       value: `${analytics.conversionRate}%`,
       icon: FiTrendingUp,
       iconColor: 'bg-orange-100 text-orange-600',
-      growth: 0.5,
-      trend: 'up',
+      growth: analytics.conversionRateDelta,
+      trend: analytics.conversionRateDelta >= 0 ? 'up' : 'down',
+      suffix: ' pts',
     },
   ]
 
   const maxRevenue = Math.max(...analytics.revenueData, 1)
   const maxOrders = Math.max(...analytics.ordersData, 1)
   const maxUsers = Math.max(...analytics.usersData, 1)
-
-  const getLabels = () => {
-    switch (timeframe) {
-      case 'weekly':
-        return ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim']
-      case 'monthly':
-        return ['Sem. 1', 'Sem. 2', 'Sem. 3', 'Sem. 4', 'Sem. 5', 'Sem. 6', 'Sem. 7']
-      case 'yearly':
-        return [
-          'Jan',
-          'Fév',
-          'Mar',
-          'Avr',
-          'Mai',
-          'Juin',
-          'Juil',
-          'Août',
-          'Sep',
-          'Oct',
-          'Nov',
-          'Déc',
-        ]
-      default:
-        return []
-    }
-  }
+  const getLabels = () => analytics.labels
 
   if (loading) {
     return (
@@ -226,6 +141,13 @@ const Analytics = () => {
         </div>
       </div>
 
+      {error && (
+        <div className="flex items-start gap-3 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl text-sm">
+          <FiAlertCircle className="w-4 h-4 mt-0.5 flex-shrink-0" />
+          <span>{error}</span>
+        </div>
+      )}
+
       {/* Key Metrics Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         {statCards.map((card, index) => {
@@ -243,7 +165,7 @@ const Analytics = () => {
                   }`}
                 >
                   <TrendIcon className="w-4 h-4" />
-                  <span>{Math.abs(card.growth)}%</span>
+                  <span>{Math.abs(card.growth)}{card.suffix || '%'}</span>
                 </div>
               </div>
               <p className="text-sm text-gray-600 mb-1">{card.label}</p>
@@ -390,6 +312,9 @@ const Analytics = () => {
         {/* Top Products */}
         <div className="bg-white rounded-lg shadow-sm p-6">
           <h2 className="text-lg font-semibold text-gray-900 mb-6">Meilleurs produits</h2>
+          {analytics.topProducts.length === 0 ? (
+            <p className="text-sm text-gray-500">Aucune vente sur cette période.</p>
+          ) : (
           <div className="space-y-4">
             {analytics.topProducts.map((product, index) => (
               <div key={index} className="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg transition-colors">
@@ -410,6 +335,7 @@ const Analytics = () => {
               </div>
             ))}
           </div>
+          )}
         </div>
       </div>
     </div>

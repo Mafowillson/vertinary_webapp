@@ -16,8 +16,10 @@ import {
   FiDownload,
   FiTrendingUp,
   FiMoreHorizontal,
+  FiAlertCircle,
 } from 'react-icons/fi'
 import { useAuth } from '../../contexts/AuthContext'
+import { adminService } from '../../services/adminService'
 import ProductsManagement from './ProductsManagement'
 import OrdersManagement from './OrdersManagement'
 import SettingsManagement from './SettingsManagement'
@@ -29,21 +31,31 @@ const AdminDashboard = () => {
   const navigate = useNavigate()
   const { user, logout } = useAuth()
   const [timeframe, setTimeframe] = useState('weekly')
+  const [analytics, setAnalytics] = useState(null)
+  const [recentOrders, setRecentOrders] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState('')
 
-  // Mock data for dashboard
-  const [dashboardData, setDashboardData] = useState({
-    totalSales: 25000000,
-    totalDownloads: 1240,
-    activeProducts: 48,
-    newCustomers: 156,
-    salesGrowth: 12.5,
-    downloadsGrowth: 5.2,
-    customersGrowth: 18.3,
-    monthlyProgress: 72,
-    coursesSold: { current: 124, target: 200 },
-    newLeads: { current: 85, target: 100 },
-    weeklySales: [12000, 15000, 18000, 14000, 25000, 16000, 19000],
-  })
+  useEffect(() => {
+    loadOverview()
+  }, [timeframe])
+
+  const loadOverview = async () => {
+    setLoading(true)
+    setError('')
+    try {
+      const [analyticsData, ordersData] = await Promise.all([
+        adminService.getAnalytics(timeframe),
+        adminService.getOrders({ limit: 5 }),
+      ])
+      setAnalytics(analyticsData)
+      setRecentOrders(ordersData)
+    } catch (err) {
+      setError(err.message || 'Impossible de charger le tableau de bord.')
+    } finally {
+      setLoading(false)
+    }
+  }
 
   const handleLogout = () => {
     logout()
@@ -74,35 +86,9 @@ const AdminDashboard = () => {
   const managementItems = menuItems.filter((item) => item.section === 'management')
   const systemItems = menuItems.filter((item) => item.section === 'system')
 
-  const recentOrders = [
-    {
-      id: 'ORD-9452',
-      customer: { name: 'Marc Kasem', initials: 'MK' },
-      product: 'Advanced Cattle Breeding',
-      price: 120000,
-      status: 'PAYÉ',
-    },
-    {
-      id: 'ORD-9451',
-      customer: { name: 'Sarah Johnson', initials: 'SJ' },
-      product: 'Poultry Management Guide',
-      price: 85000,
-      status: 'PAYÉ',
-    },
-    {
-      id: 'ORD-9450',
-      customer: { name: 'Ahmed Hassan', initials: 'AH' },
-      product: 'Veterinary Basics',
-      price: 95000,
-      status: 'EN ATTENTE',
-    },
-  ]
-
   const formatCurrency = (amount) => {
     return new Intl.NumberFormat('fr-FR').format(amount) + ' FCFA'
   }
-
-  const maxSales = Math.max(...dashboardData.weeklySales)
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -289,15 +275,25 @@ const AdminDashboard = () => {
               <Route
                 index
                 element={
-                  <DashboardOverview
-                    dashboardData={dashboardData}
-                    timeframe={timeframe}
-                    setTimeframe={setTimeframe}
-                    recentOrders={recentOrders}
-                    formatCurrency={formatCurrency}
-                    maxSales={maxSales}
-                    user={user}
-                  />
+                  loading ? (
+                    <div className="flex justify-center items-center py-12">
+                      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
+                    </div>
+                  ) : error ? (
+                    <div className="flex items-start gap-3 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl text-sm">
+                      <FiAlertCircle className="w-4 h-4 mt-0.5 flex-shrink-0" />
+                      <span>{error}</span>
+                    </div>
+                  ) : (
+                    <DashboardOverview
+                      analytics={analytics}
+                      timeframe={timeframe}
+                      setTimeframe={setTimeframe}
+                      recentOrders={recentOrders}
+                      formatCurrency={formatCurrency}
+                      user={user}
+                    />
+                  )
                 }
               />
               <Route path="products" element={<ProductsManagement />} />
@@ -332,74 +328,73 @@ const AdminDashboard = () => {
 
 // Dashboard Overview Component
 const DashboardOverview = ({
-  dashboardData,
+  analytics,
   timeframe,
   setTimeframe,
   recentOrders,
   formatCurrency,
-  maxSales,
   user,
 }) => {
+  const newCustomers = analytics.usersData.reduce((sum, v) => sum + v, 0)
+
   const metricCards = [
     {
       label: 'Ventes totales',
-      value: formatCurrency(dashboardData.totalSales),
-      change: `+${dashboardData.salesGrowth}%`,
+      value: formatCurrency(analytics.totalRevenue),
+      change: `${analytics.revenueGrowth >= 0 ? '+' : ''}${analytics.revenueGrowth}%`,
+      isGrowth: true,
+      growthValue: analytics.revenueGrowth,
       icon: FiDollarSign,
       iconColor: 'bg-green-100 text-green-600',
     },
     {
-      label: 'Téléchargements',
-      value: dashboardData.totalDownloads.toLocaleString(),
-      change: `+${dashboardData.downloadsGrowth}%`,
+      label: 'Commandes complétées',
+      value: analytics.totalOrders.toLocaleString(),
+      change: `${analytics.ordersGrowth >= 0 ? '+' : ''}${analytics.ordersGrowth}%`,
+      isGrowth: true,
+      growthValue: analytics.ordersGrowth,
       icon: FiDownload,
       iconColor: 'bg-blue-100 text-blue-600',
     },
     {
-      label: 'Produits actifs',
-      value: dashboardData.activeProducts,
-      change: 'Stable',
+      label: 'Produits au catalogue',
+      value: analytics.totalProducts,
+      change: `${analytics.productsGrowth >= 0 ? '+' : ''}${analytics.productsGrowth}%`,
+      isGrowth: true,
+      growthValue: analytics.productsGrowth,
       icon: FiPackage,
       iconColor: 'bg-orange-100 text-orange-600',
     },
     {
       label: 'Nouveaux clients',
-      value: dashboardData.newCustomers,
-      change: `+${dashboardData.customersGrowth}%`,
+      value: newCustomers,
+      change: `${analytics.usersGrowth >= 0 ? '+' : ''}${analytics.usersGrowth}%`,
+      isGrowth: true,
+      growthValue: analytics.usersGrowth,
       icon: FiUsers,
       iconColor: 'bg-purple-100 text-purple-600',
     },
   ]
 
-  const days = ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim']
-  
-  // Get sales data based on timeframe
-  const getSalesData = () => {
-    switch (timeframe) {
-      case 'monthly':
-        // Monthly data - weeks of the month
-        return {
-          labels: ['Sem. 1', 'Sem. 2', 'Sem. 3', 'Sem. 4'],
-          data: [85000, 92000, 110000, 98000],
-        }
-      case 'yearly':
-        // Yearly data - months
-        return {
-          labels: ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin'],
-          data: [850000, 920000, 1100000, 980000, 1250000, 1180000],
-        }
-      case 'weekly':
-      default:
-        // Weekly data - days of the week
-        return {
-          labels: days,
-          data: dashboardData.weeklySales,
-        }
-    }
+  const salesData = { labels: analytics.labels, data: analytics.revenueData }
+  const currentMaxSales = Math.max(...salesData.data, 1)
+  const topProduct = analytics.topProducts[0]
+
+  const statusLabel = (status) => {
+    if (status === 'completed') return { text: 'PAYÉ', className: 'bg-green-100 text-green-700' }
+    if (status === 'failed') return { text: 'ÉCHOUÉ', className: 'bg-red-100 text-red-700' }
+    return { text: 'EN ATTENTE', className: 'bg-yellow-100 text-yellow-700' }
   }
 
-  const salesData = getSalesData()
-  const currentMaxSales = Math.max(...salesData.data, 1)
+  const getInitials = (name) => {
+    if (!name) return '?'
+    return name
+      .split(' ')
+      .map((n) => n[0])
+      .join('')
+      .toUpperCase()
+      .slice(0, 2)
+  }
 
   return (
     <div className="space-y-6">
@@ -424,7 +419,11 @@ const DashboardOverview = ({
                 </div>
                 <span
                   className={`text-sm font-medium ${
-                    card.change === 'Stable' ? 'text-gray-500' : 'text-green-600'
+                    card.growthValue > 0
+                      ? 'text-green-600'
+                      : card.growthValue < 0
+                      ? 'text-red-600'
+                      : 'text-gray-500'
                   }`}
                 >
                   {card.change}
@@ -473,9 +472,7 @@ const DashboardOverview = ({
             <div className="flex items-end justify-between h-52 space-x-2 pb-10 pl-10">
               {salesData.data.map((sales, index) => {
                 const barHeight = currentMaxSales > 0 ? (sales / currentMaxSales) * 100 : 0
-                // Highlight the highest value or Friday for weekly view
-                const isHighlighted =
-                  timeframe === 'weekly' ? index === 4 : sales === currentMaxSales
+                const isHighlighted = sales > 0 && sales === currentMaxSales
                 return (
                   <div
                     key={index}
@@ -528,86 +525,54 @@ const DashboardOverview = ({
           </div>
         </div>
 
-        {/* Target Progress Card */}
+        {/* Period Summary Card */}
         <div className="bg-white rounded-lg shadow-sm p-6">
-          <h2 className="text-lg font-semibold text-gray-900 mb-6">Progression des objectifs</h2>
-          <div className="flex flex-col items-center mb-6">
-            <div className="relative w-32 h-32">
-              <svg className="transform -rotate-90 w-32 h-32">
-                <circle
-                  cx="64"
-                  cy="64"
-                  r="56"
-                  stroke="currentColor"
-                  strokeWidth="12"
-                  fill="none"
-                  className="text-gray-200"
-                />
-                <circle
-                  cx="64"
-                  cy="64"
-                  r="56"
-                  stroke="currentColor"
-                  strokeWidth="12"
-                  fill="none"
-                  strokeDasharray={`${2 * Math.PI * 56}`}
-                  strokeDashoffset={`${2 * Math.PI * 56 * (1 - dashboardData.monthlyProgress / 100)}`}
-                  className="text-primary-600"
-                  strokeLinecap="round"
-                />
-              </svg>
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="text-center">
-                  <p className="text-2xl font-bold text-primary-600">
-                    {dashboardData.monthlyProgress}%
-                  </p>
-                  <p className="text-xs text-gray-500">MENSUEL</p>
-                </div>
-              </div>
-            </div>
-          </div>
+          <h2 className="text-lg font-semibold text-gray-900 mb-6">Résumé de la période</h2>
           <div className="space-y-4 mb-6">
-            <div>
-              <div className="flex justify-between text-sm mb-2">
-                <span className="text-gray-600">Cours vendus</span>
-                <span className="font-medium text-gray-900">
-                  {dashboardData.coursesSold.current} / {dashboardData.coursesSold.target}
-                </span>
+            <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+              <div className="flex items-center space-x-3">
+                <div className="p-2 bg-primary-100 rounded-lg">
+                  <FiDollarSign className="w-5 h-5 text-primary-600" />
+                </div>
+                <span className="text-sm text-gray-600">Valeur moyenne des commandes</span>
               </div>
-              <div className="w-full bg-gray-200 rounded-full h-2">
-                <div
-                  className="bg-primary-600 h-2 rounded-full"
-                  style={{
-                    width: `${
-                      (dashboardData.coursesSold.current / dashboardData.coursesSold.target) * 100
-                    }%`,
-                  }}
-                />
-              </div>
+              <span className="font-semibold text-gray-900">
+                {formatCurrency(analytics.averageOrderValue)}
+              </span>
             </div>
-            <div>
-              <div className="flex justify-between text-sm mb-2">
-                <span className="text-gray-600">Nouveaux prospects</span>
-                <span className="font-medium text-gray-900">
-                  {dashboardData.newLeads.current} / {dashboardData.newLeads.target}
+            <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+              <div className="flex items-center space-x-3">
+                <div className="p-2 bg-green-100 rounded-lg">
+                  <FiBarChart2 className="w-5 h-5 text-green-600" />
+                </div>
+                <span className="text-sm text-gray-600">Taux de conversion</span>
+              </div>
+              <span className="font-semibold text-gray-900">
+                {analytics.conversionRate}%
+                <span className={analytics.conversionRateDelta >= 0 ? 'text-green-600' : 'text-red-600'}>
+                  {' '}({analytics.conversionRateDelta >= 0 ? '+' : ''}{analytics.conversionRateDelta} pts)
                 </span>
+              </span>
+            </div>
+            <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+              <div className="flex items-center space-x-3">
+                <div className="p-2 bg-blue-100 rounded-lg">
+                  <FiTrendingUp className="w-5 h-5 text-blue-600" />
+                </div>
+                <span className="text-sm text-gray-600">Meilleur produit</span>
               </div>
-              <div className="w-full bg-gray-200 rounded-full h-2">
-                <div
-                  className="bg-primary-600 h-2 rounded-full"
-                  style={{
-                    width: `${
-                      (dashboardData.newLeads.current / dashboardData.newLeads.target) * 100
-                    }%`,
-                  }}
-                />
-              </div>
+              <span className="font-semibold text-gray-900 text-right">
+                {topProduct ? topProduct.name : 'Aucune vente'}
+              </span>
             </div>
           </div>
-          <button className="w-full bg-primary-600 text-white py-3 px-4 rounded-lg font-medium hover:bg-primary-700 transition-colors flex items-center justify-center space-x-2">
+          <Link
+            to="/admin/products"
+            className="w-full bg-primary-600 text-white py-3 px-4 rounded-lg font-medium hover:bg-primary-700 transition-colors flex items-center justify-center space-x-2"
+          >
             <FiPackage className="w-5 h-5" />
-            <span>Ajouter du contenu</span>
-          </button>
+            <span>Gérer les produits</span>
+          </Link>
         </div>
       </div>
 
@@ -647,41 +612,46 @@ const DashboardOverview = ({
               </tr>
             </thead>
             <tbody>
-              {recentOrders.map((order) => (
-                <tr key={order.id} className="border-b border-gray-100 hover:bg-gray-50">
-                  <td className="py-4 px-4">
-                    <span className="text-primary-600 font-medium">#{order.id}</span>
-                  </td>
-                  <td className="py-4 px-4">
-                    <div className="flex items-center space-x-3">
-                      <div className="w-8 h-8 bg-primary-100 rounded-full flex items-center justify-center">
-                        <span className="text-xs font-semibold text-primary-700">
-                          {order.customer.initials}
-                        </span>
-                      </div>
-                      <span className="text-sm text-gray-900">{order.customer.name}</span>
-                    </div>
-                  </td>
-                  <td className="py-4 px-4 text-sm text-gray-900">{order.product}</td>
-                  <td className="py-4 px-4 text-sm text-gray-900">{formatCurrency(order.price)}</td>
-                  <td className="py-4 px-4">
-                    <span
-                      className={`px-3 py-1 text-xs font-semibold rounded-full ${
-                        order.status === 'PAYÉ'
-                          ? 'bg-green-100 text-green-700'
-                          : 'bg-yellow-100 text-yellow-700'
-                      }`}
-                    >
-                      {order.status}
-                    </span>
-                  </td>
-                  <td className="py-4 px-4">
-                    <button className="text-gray-400 hover:text-gray-600">
-                      <FiMoreHorizontal className="w-5 h-5" />
-                    </button>
+              {recentOrders.length === 0 ? (
+                <tr>
+                  <td colSpan={6} className="py-8 text-center text-sm text-gray-500">
+                    Aucune commande pour le moment.
                   </td>
                 </tr>
-              ))}
+              ) : (
+                recentOrders.map((order) => {
+                  const status = statusLabel(order.status)
+                  return (
+                    <tr key={order.id} className="border-b border-gray-100 hover:bg-gray-50">
+                      <td className="py-4 px-4">
+                        <span className="text-primary-600 font-medium">#{order.orderNumber || order.id}</span>
+                      </td>
+                      <td className="py-4 px-4">
+                        <div className="flex items-center space-x-3">
+                          <div className="w-8 h-8 bg-primary-100 rounded-full flex items-center justify-center">
+                            <span className="text-xs font-semibold text-primary-700">
+                              {getInitials(order.user?.name)}
+                            </span>
+                          </div>
+                          <span className="text-sm text-gray-900">{order.user?.name || 'Utilisateur supprimé'}</span>
+                        </div>
+                      </td>
+                      <td className="py-4 px-4 text-sm text-gray-900">{order.product?.title || '—'}</td>
+                      <td className="py-4 px-4 text-sm text-gray-900">{formatCurrency(order.amount)}</td>
+                      <td className="py-4 px-4">
+                        <span className={`px-3 py-1 text-xs font-semibold rounded-full ${status.className}`}>
+                          {status.text}
+                        </span>
+                      </td>
+                      <td className="py-4 px-4">
+                        <button className="text-gray-400 hover:text-gray-600">
+                          <FiMoreHorizontal className="w-5 h-5" />
+                        </button>
+                      </td>
+                    </tr>
+                  )
+                })
+              )}
             </tbody>
           </table>
         </div>

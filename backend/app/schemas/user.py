@@ -1,5 +1,5 @@
 import re
-from pydantic import BaseModel, ConfigDict, EmailStr, computed_field, field_validator
+from pydantic import BaseModel, ConfigDict, EmailStr, Field, computed_field, field_validator
 from typing import Optional
 from datetime import datetime
 
@@ -72,4 +72,34 @@ class UserResponse(UserBase):
     @property
     def preferredLanguage(self) -> str:
         return self.preferred_language
+
+
+class AdminUserResponse(UserResponse):
+    """UserResponse plus admin-only aggregate (order count)."""
+
+    orders_count: int = 0
+
+    @computed_field
+    @property
+    def ordersCount(self) -> int:
+        return self.orders_count
+
+
+class UserStatusUpdate(BaseModel):
+    model_config = ConfigDict(populate_by_name=True)
+
+    is_active: bool = Field(..., alias="isActive")
+
+
+class UserRoleUpdate(BaseModel):
+    model_config = ConfigDict(populate_by_name=True)
+
+    role: str
+
+    @field_validator("role")
+    @classmethod
+    def role_must_be_valid(cls, value: str) -> str:
+        if value not in ("user", "admin"):
+            raise ValueError("role must be 'user' or 'admin'")
+        return value
 

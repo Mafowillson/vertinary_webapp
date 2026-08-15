@@ -17,6 +17,7 @@ import LoginPage from './pages/Auth/LoginPage'
 import RegisterPage from './pages/Auth/RegisterPage'
 import ForgotPasswordPage from './pages/Auth/ForgotPasswordPage'
 import ResetPasswordPage from './pages/Auth/ResetPasswordPage'
+import VerifyEmailPage from './pages/Auth/VerifyEmailPage'
 import CheckoutPage from './pages/CheckoutPage'
 import CartPage from './pages/CartPage'
 import PurchaseConfirmationPage from './pages/PurchaseConfirmationPage'
@@ -47,6 +48,7 @@ function App() {
                     <Route path="register" element={<RegisterPage />} />
                     <Route path="forgot-password" element={<ForgotPasswordPage />} />
                     <Route path="reset-password" element={<ResetPasswordPage />} />
+                    <Route path="verify-email" element={<VerifyEmailPage />} />
                     <Route path="cart" element={<CartPage />} />
                     <Route path="checkout" element={
                       <ProtectedRoute>

@@ -1,3 +1,5 @@
+
+
 # Frontend domain schema (canonical)
 
 This document defines **one naming convention** for domain objects used in the React app: **camelCase** in JavaScript/JSX.  

@@ -14,13 +14,18 @@ import {
   FiXCircle,
   FiMoreVertical,
   FiFilter,
+  FiAlertCircle,
 } from 'react-icons/fi'
 import { formatDate } from '../../utils/formatters'
+import { adminService } from '../../services/adminService'
+import { useAuth } from '../../contexts/AuthContext'
 
 const UserManagement = () => {
+  const { user: currentUser } = useAuth()
   const [users, setUsers] = useState([])
   const [filteredUsers, setFilteredUsers] = useState([])
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState('')
   const [searchQuery, setSearchQuery] = useState('')
   const [roleFilter, setRoleFilter] = useState('all') // 'all', 'admin', 'user'
   const [statusFilter, setStatusFilter] = useState('all') // 'all', 'active', 'inactive'
@@ -36,68 +41,13 @@ const UserManagement = () => {
   }, [users, searchQuery, roleFilter, statusFilter, sortBy])
 
   const loadUsers = async () => {
+    setLoading(true)
+    setError('')
     try {
-      // This would fetch from admin endpoint
-      // For now, using mock data
-      const mockUsers = [
-        {
-          id: 1,
-          name: 'TCHOUALA FODEM BODRIC',
-          email: 'bodric@academie.com',
-          role: 'admin',
-          is_active: true,
-          created_at: new Date(Date.now() - 90 * 24 * 60 * 60 * 1000).toISOString(),
-          orders_count: 12,
-        },
-        {
-          id: 2,
-          name: 'Marc Kasem',
-          email: 'marc@example.com',
-          role: 'user',
-          is_active: true,
-          created_at: new Date(Date.now() - 45 * 24 * 60 * 60 * 1000).toISOString(),
-          orders_count: 5,
-        },
-        {
-          id: 3,
-          name: 'Sarah Johnson',
-          email: 'sarah@example.com',
-          role: 'user',
-          is_active: true,
-          created_at: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(),
-          orders_count: 8,
-        },
-        {
-          id: 4,
-          name: 'Ahmed Hassan',
-          email: 'ahmed@example.com',
-          role: 'user',
-          is_active: true,
-          created_at: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000).toISOString(),
-          orders_count: 3,
-        },
-        {
-          id: 5,
-          name: 'Jean Dupont',
-          email: 'jean@example.com',
-          role: 'user',
-          is_active: false,
-          created_at: new Date(Date.now() - 60 * 24 * 60 * 60 * 1000).toISOString(),
-          orders_count: 0,
-        },
-        {
-          id: 6,
-          name: 'Marie Leclerc',
-          email: 'marie@example.com',
-          role: 'user',
-          is_active: true,
-          created_at: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
-          orders_count: 2,
-        },
-      ]
-      setUsers(mockUsers)
-    } catch (error) {
-      console.error('Failed to load users:', error)
+      const data = await adminService.getUsers()
+      setUsers(data)
+    } catch (err) {
+      setError(err.message || 'Impossible de charger les utilisateurs.')
     } finally {
       setLoading(false)
     }
@@ -114,7 +64,7 @@ const UserManagement = () => {
     // Status filter
     if (statusFilter !== 'all') {
       filtered = filtered.filter((u) =>
-        statusFilter === 'active' ? u.is_active : !u.is_active
+        statusFilter === 'active' ? u.isActive : !u.isActive
       )
     }
 
@@ -137,7 +87,7 @@ const UserManagement = () => {
           return (a.email || '').localeCompare(b.email || '')
         case 'recent':
         default:
-          return new Date(b.created_at) - new Date(a.created_at)
+          return new Date(b.createdAt) - new Date(a.createdAt)
       }
     })
 
@@ -145,25 +95,38 @@ const UserManagement = () => {
   }
 
   const handleToggleStatus = async (userId) => {
+    setError('')
+    const target = users.find((u) => u.id === userId)
+    if (!target) return
     try {
-      // This would call API to toggle user status
-      setUsers((prev) =>
-        prev.map((u) =>
-          u.id === userId ? { ...u, is_active: !u.is_active } : u
-        )
-      )
-    } catch (error) {
-      console.error('Failed to update user status:', error)
+      const updated = await adminService.updateUserStatus(userId, !target.isActive)
+      setUsers((prev) => prev.map((u) => (u.id === userId ? { ...u, ...updated } : u)))
+      setSelectedUser((prev) => (prev && prev.id === userId ? { ...prev, ...updated } : prev))
+    } catch (err) {
+      setError(err.message || "Impossible de modifier le statut de l'utilisateur.")
+    }
+  }
+
+  const handleRoleChange = async (userId, newRole) => {
+    setError('')
+    try {
+      const updated = await adminService.updateUserRole(userId, newRole)
+      setUsers((prev) => prev.map((u) => (u.id === userId ? { ...u, ...updated } : u)))
+      setSelectedUser((prev) => (prev && prev.id === userId ? { ...prev, ...updated } : prev))
+    } catch (err) {
+      setError(err.message || "Impossible de modifier le rôle de l'utilisateur.")
     }
   }
 
   const handleDelete = async (userId) => {
     if (window.confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?')) {
+      setError('')
       try {
-        // This would call API to delete user
+        await adminService.deleteUser(userId)
         setUsers((prev) => prev.filter((u) => u.id !== userId))
-      } catch (error) {
-        console.error('Failed to delete user:', error)
+        setSelectedUser((prev) => (prev && prev.id === userId ? null : prev))
+      } catch (err) {
+        setError(err.message || "Impossible de supprimer l'utilisateur.")
       }
     }
   }
@@ -182,9 +145,9 @@ const UserManagement = () => {
   const stats = {
     total: users.length,
     admins: users.filter((u) => u.role === 'admin').length,
-    active: users.filter((u) => u.is_active).length,
+    active: users.filter((u) => u.isActive).length,
     newThisMonth: users.filter(
-      (u) => new Date(u.created_at) > new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)
+      (u) => new Date(u.createdAt) > new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)
     ).length,
   }
 
@@ -237,6 +200,14 @@ const UserManagement = () => {
           color="bg-orange-100 text-orange-600"
         />
       </div>
+
+      {/* Error banner */}
+      {error && (
+        <div className="flex items-start gap-3 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl text-sm">
+          <FiAlertCircle className="w-4 h-4 mt-0.5 flex-shrink-0" />
+          <span>{error}</span>
+        </div>
+      )}
 
       {/* Search and Filter Bar */}
       <div className="bg-white rounded-lg shadow-sm p-4">
@@ -316,9 +287,11 @@ const UserManagement = () => {
               <UserListItem
                 key={user.id}
                 user={user}
+                isSelf={currentUser?.id === user.id}
                 getUserInitials={getUserInitials}
                 formatDate={formatDate}
                 onToggleStatus={handleToggleStatus}
+                onRoleChange={handleRoleChange}
                 onDelete={handleDelete}
                 onView={() => setSelectedUser(user)}
               />
@@ -341,10 +314,12 @@ const UserManagement = () => {
       {selectedUser && (
         <UserDetailModal
           user={selectedUser}
+          isSelf={currentUser?.id === selectedUser.id}
           getUserInitials={getUserInitials}
           formatDate={formatDate}
           onClose={() => setSelectedUser(null)}
           onToggleStatus={handleToggleStatus}
+          onRoleChange={handleRoleChange}
         />
       )}
     </div>
@@ -369,9 +344,11 @@ const StatCard = ({ label, value, icon: Icon, color }) => {
 // User List Item Component
 const UserListItem = ({
   user,
+  isSelf,
   getUserInitials,
   formatDate,
   onToggleStatus,
+  onRoleChange,
   onDelete,
   onView,
 }) => {
@@ -416,17 +393,17 @@ const UserListItem = ({
               {/* Status Badge */}
               <span
                 className={`px-3 py-1 rounded-full text-xs font-semibold flex items-center space-x-1 ${
-                  user.is_active
+                  user.isActive
                     ? 'bg-green-100 text-green-700'
                     : 'bg-gray-100 text-gray-700'
                 }`}
               >
-                {user.is_active ? (
+                {user.isActive ? (
                   <FiCheckCircle className="w-3 h-3" />
                 ) : (
                   <FiXCircle className="w-3 h-3" />
                 )}
-                <span>{user.is_active ? 'Actif' : 'Inactif'}</span>
+                <span>{user.isActive ? 'Actif' : 'Inactif'}</span>
               </span>
             </div>
           </div>
@@ -434,13 +411,13 @@ const UserListItem = ({
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
             <div>
               <p className="text-gray-500 mb-1">Commandes</p>
-              <p className="font-medium text-gray-900">{user.orders_count || 0} commandes</p>
+              <p className="font-medium text-gray-900">{user.ordersCount || 0} commandes</p>
             </div>
             <div>
               <p className="text-gray-500 mb-1">Membre depuis</p>
               <p className="font-medium text-gray-900 flex items-center space-x-1">
                 <FiCalendar className="w-4 h-4" />
-                <span>{formatDate(user.created_at)}</span>
+                <span>{formatDate(user.createdAt)}</span>
               </p>
             </div>
             <div>
@@ -453,15 +430,24 @@ const UserListItem = ({
         {/* Actions */}
         <div className="flex items-center space-x-2 opacity-0 group-hover:opacity-100 transition-opacity">
           <button
+            onClick={() => onRoleChange(user.id, user.role === 'admin' ? 'user' : 'admin')}
+            disabled={isSelf}
+            className="p-2 rounded-lg transition-colors text-purple-600 hover:bg-purple-50 disabled:opacity-30 disabled:cursor-not-allowed"
+            title={isSelf ? 'Vous ne pouvez pas modifier votre propre rôle' : user.role === 'admin' ? 'Rétrograder en utilisateur' : 'Promouvoir en administrateur'}
+          >
+            <FiShield className="w-5 h-5" />
+          </button>
+          <button
             onClick={() => onToggleStatus(user.id)}
-            className={`p-2 rounded-lg transition-colors ${
-              user.is_active
+            disabled={isSelf}
+            className={`p-2 rounded-lg transition-colors disabled:opacity-30 disabled:cursor-not-allowed ${
+              user.isActive
                 ? 'text-orange-600 hover:bg-orange-50'
                 : 'text-green-600 hover:bg-green-50'
             }`}
-            title={user.is_active ? 'Désactiver' : 'Activer'}
+            title={isSelf ? 'Vous ne pouvez pas modifier votre propre statut' : user.isActive ? 'Désactiver' : 'Activer'}
           >
-            {user.is_active ? <FiXCircle className="w-5 h-5" /> : <FiCheckCircle className="w-5 h-5" />}
+            {user.isActive ? <FiXCircle className="w-5 h-5" /> : <FiCheckCircle className="w-5 h-5" />}
           </button>
           <button
             onClick={onView}
@@ -470,7 +456,7 @@ const UserListItem = ({
           >
             <FiMoreVertical className="w-5 h-5" />
           </button>
-          {user.role !== 'admin' && (
+          {!isSelf && (
             <button
               onClick={() => onDelete(user.id)}
               className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
@@ -486,7 +472,7 @@ const UserListItem = ({
 }
 
 // User Detail Modal
-const UserDetailModal = ({ user, getUserInitials, formatDate, onClose, onToggleStatus }) => {
+const UserDetailModal = ({ user, isSelf, getUserInitials, formatDate, onClose, onToggleStatus, onRoleChange }) => {
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
       <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
@@ -537,17 +523,17 @@ const UserDetailModal = ({ user, getUserInitials, formatDate, onClose, onToggleS
               <p className="text-sm text-gray-500 mb-1">Statut</p>
               <span
                 className={`inline-flex items-center space-x-2 px-3 py-1.5 rounded-full text-sm font-semibold ${
-                  user.is_active
+                  user.isActive
                     ? 'bg-green-100 text-green-700'
                     : 'bg-gray-100 text-gray-700'
                 }`}
               >
-                {user.is_active ? (
+                {user.isActive ? (
                   <FiCheckCircle className="w-4 h-4" />
                 ) : (
                   <FiXCircle className="w-4 h-4" />
                 )}
-                <span>{user.is_active ? 'Actif' : 'Inactif'}</span>
+                <span>{user.isActive ? 'Actif' : 'Inactif'}</span>
               </span>
             </div>
             <div>
@@ -558,17 +544,23 @@ const UserDetailModal = ({ user, getUserInitials, formatDate, onClose, onToggleS
               <p className="text-sm text-gray-500 mb-1">Membre depuis</p>
               <p className="font-medium text-gray-900 flex items-center space-x-2">
                 <FiCalendar className="w-4 h-4" />
-                <span>{formatDate(user.created_at)}</span>
+                <span>{formatDate(user.createdAt)}</span>
               </p>
             </div>
             <div>
               <p className="text-sm text-gray-500 mb-1">Total commandes</p>
-              <p className="font-medium text-gray-900">{user.orders_count || 0} commandes</p>
+              <p className="font-medium text-gray-900">{user.ordersCount || 0} commandes</p>
             </div>
           </div>
 
+          {isSelf && (
+            <p className="text-xs text-gray-400 italic">
+              Vous ne pouvez pas modifier votre propre rôle ou statut.
+            </p>
+          )}
+
           {/* Actions */}
-          <div className="flex justify-end space-x-3 pt-4 border-t">
+          <div className="flex flex-wrap justify-end gap-3 pt-4 border-t">
             <button
               onClick={onClose}
               className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
@@ -576,17 +568,22 @@ const UserDetailModal = ({ user, getUserInitials, formatDate, onClose, onToggleS
               Fermer
             </button>
             <button
-              onClick={() => {
-                onToggleStatus(user.id)
-                onClose()
-              }}
-              className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-                user.is_active
+              onClick={() => onRoleChange(user.id, user.role === 'admin' ? 'user' : 'admin')}
+              disabled={isSelf}
+              className="px-4 py-2 rounded-lg font-medium transition-colors bg-purple-600 text-white hover:bg-purple-700 disabled:opacity-40 disabled:cursor-not-allowed"
+            >
+              {user.role === 'admin' ? 'Rétrograder en utilisateur' : 'Promouvoir en administrateur'}
+            </button>
+            <button
+              onClick={() => onToggleStatus(user.id)}
+              disabled={isSelf}
+              className={`px-4 py-2 rounded-lg font-medium transition-colors disabled:opacity-40 disabled:cursor-not-allowed ${
+                user.isActive
                   ? 'bg-orange-600 text-white hover:bg-orange-700'
                   : 'bg-green-600 text-white hover:bg-green-700'
               }`}
             >
-              {user.is_active ? 'Désactiver l\'utilisateur' : 'Activer l\'utilisateur'}
+              {user.isActive ? 'Désactiver l\'utilisateur' : 'Activer l\'utilisateur'}
             </button>
           </div>
         </div>
