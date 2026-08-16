@@ -7,63 +7,76 @@ import {
   FiTrendingUp, FiGlobe, FiZap
 } from 'react-icons/fi'
 import { founderData } from '../data/mockHomePage'
+import { useLanguage } from '../contexts/LanguageContext'
 
 const AboutPage = () => {
   const [activeTab, setActiveTab] = useState(0)
+  const { t } = useLanguage()
 
   const pillars = [
     {
       icon: FiBook,
-      title: 'Éducation',
-      description: 'Rendre les connaissances vétérinaires accessibles à chaque éleveur, partout.',
+      title: t('pillars.education.title', { ns: 'about' }),
+      description: t('pillars.education.description', { ns: 'about' }),
       color: 'from-emerald-500 to-teal-600',
       bg: 'bg-emerald-50',
     },
     {
       icon: FiGlobe,
-      title: 'Portée Mondiale',
-      description: 'Connecter les éleveurs camerounais et internationaux autour du savoir partagé.',
+      title: t('pillars.globalReach.title', { ns: 'about' }),
+      description: t('pillars.globalReach.description', { ns: 'about' }),
       color: 'from-teal-500 to-cyan-600',
       bg: 'bg-teal-50',
     },
     {
       icon: FiZap,
-      title: 'Innovation',
-      description: "Créer des produits et outils innovants pour accélérer la croissance en élevage.",
+      title: t('pillars.innovation.title', { ns: 'about' }),
+      description: t('pillars.innovation.description', { ns: 'about' }),
       color: 'from-cyan-500 to-blue-600',
       bg: 'bg-cyan-50',
     },
     {
       icon: FiHeart,
-      title: 'Passion',
-      description: "Chaque contenu naît d'une passion authentique pour le bien-être animal.",
+      title: t('pillars.passion.title', { ns: 'about' }),
+      description: t('pillars.passion.description', { ns: 'about' }),
       color: 'from-green-500 to-emerald-600',
       bg: 'bg-green-50',
     },
   ]
 
   const milestones = [
-    { year: '2020', emoji: '🎓', title: 'Début du parcours', description: 'Commencement des études en médecine vétérinaire' },
-    { year: '2021', emoji: '📹', title: 'Création de contenu', description: 'Lancement de la chaîne YouTube et page Facebook' },
-    { year: '2022', emoji: '📚', title: 'Premier livre', description: 'Publication du premier livre "TOUT SUR L\'ÉLEVAGE"' },
-    { year: '2023', emoji: '🏛️', title: "L'Académie", description: "Création de l'Académie des Éleveurs" },
-    { year: '2024', emoji: '🚀', title: 'Plateforme digitale', description: 'Lancement de la plateforme web éducative' },
+    { year: '2020', emoji: '🎓', title: t('timeline.milestones.2020.title', { ns: 'about' }), description: t('timeline.milestones.2020.description', { ns: 'about' }) },
+    { year: '2021', emoji: '📹', title: t('timeline.milestones.2021.title', { ns: 'about' }), description: t('timeline.milestones.2021.description', { ns: 'about' }) },
+    { year: '2022', emoji: '📚', title: t('timeline.milestones.2022.title', { ns: 'about' }), description: t('timeline.milestones.2022.description', { ns: 'about' }) },
+    { year: '2023', emoji: '🏛️', title: t('timeline.milestones.2023.title', { ns: 'about' }), description: t('timeline.milestones.2023.description', { ns: 'about' }) },
+    { year: '2024', emoji: '🚀', title: t('timeline.milestones.2024.title', { ns: 'about' }), description: t('timeline.milestones.2024.description', { ns: 'about' }) },
   ]
 
   const stats = [
-    { icon: FiUsers, value: '5 000+', label: 'Éleveurs formés', color: 'text-emerald-600', bg: 'bg-emerald-100' },
-    { icon: FiBook, value: '50+', label: 'Guides créés', color: 'text-teal-600', bg: 'bg-teal-100' },
-    { icon: FiStar, value: '4+', label: "Années d'expertise", color: 'text-cyan-600', bg: 'bg-cyan-100' },
-    { icon: FiPlay, value: '100+', label: 'Vidéos éducatives', color: 'text-green-600', bg: 'bg-green-100' },
+    { icon: FiUsers, value: '5 000+', label: t('stats.breedersTrained', { ns: 'about' }), color: 'text-emerald-600', bg: 'bg-emerald-100' },
+    { icon: FiBook, value: '50+', label: t('stats.guidesCreated', { ns: 'about' }), color: 'text-teal-600', bg: 'bg-teal-100' },
+    { icon: FiStar, value: '4+', label: t('stats.yearsExpertise', { ns: 'about' }), color: 'text-cyan-600', bg: 'bg-cyan-100' },
+    { icon: FiPlay, value: '100+', label: t('stats.videos', { ns: 'about' }), color: 'text-green-600', bg: 'bg-green-100' },
   ]
 
   const credentials = [
-    { icon: FiAward, label: 'Étudiant Docteur en Médecine Vétérinaire', sub: 'Formation continue' },
-    { icon: FiTrendingUp, label: 'Ingénieur en Production Animale', sub: 'Expertise en gestion animale' },
-    { icon: FiBook, label: 'Auteur — série "TOUT SUR L\'ÉLEVAGE"', sub: 'Plusieurs livres publiés' },
-    { icon: FiTarget, label: "Fondateur de l'Académie des Éleveurs", sub: 'Plateforme éducative' },
-    { icon: FiZap, label: "Fabricant de l'Accélérateur de Croissance Bio", sub: 'Produit innovant' },
-    { icon: FiUsers, label: 'Créateur de contenu éducatif', sub: 'YouTube & Facebook' },
+    { icon: FiAward, label: t('credentials.items.vetStudent.label', { ns: 'about' }), sub: t('credentials.items.vetStudent.sub', { ns: 'about' }) },
+    { icon: FiTrendingUp, label: t('credentials.items.animalProdEngineer.label', { ns: 'about' }), sub: t('credentials.items.animalProdEngineer.sub', { ns: 'about' }) },
+    { icon: FiBook, label: t('credentials.items.author.label', { ns: 'about' }), sub: t('credentials.items.author.sub', { ns: 'about' }) },
+    { icon: FiTarget, label: t('credentials.items.founder.label', { ns: 'about' }), sub: t('credentials.items.founder.sub', { ns: 'about' }) },
+    { icon: FiZap, label: t('credentials.items.manufacturer.label', { ns: 'about' }), sub: t('credentials.items.manufacturer.sub', { ns: 'about' }) },
+    { icon: FiUsers, label: t('credentials.items.contentCreator.label', { ns: 'about' }), sub: t('credentials.items.contentCreator.sub', { ns: 'about' }) },
+  ]
+
+  const credentialTabs = [
+    t('credentials.tabs.formation', { ns: 'about' }),
+    t('credentials.tabs.innovation', { ns: 'about' }),
+  ]
+
+  const visionCards = [
+    { title: t('quote.cards.accessibility.title', { ns: 'about' }), body: t('quote.cards.accessibility.body', { ns: 'about' }) },
+    { title: t('quote.cards.community.title', { ns: 'about' }), body: t('quote.cards.community.body', { ns: 'about' }) },
+    { title: t('quote.cards.sustainability.title', { ns: 'about' }), body: t('quote.cards.sustainability.body', { ns: 'about' }) },
   ]
 
   return (
@@ -87,13 +100,13 @@ const AboutPage = () => {
             <div className="lg:col-span-3 space-y-8">
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-[#1A7A6E]/40 bg-[#1A7A6E]/10 text-sm font-semibold text-emerald-400">
                 <FiCheckCircle className="w-4 h-4" />
-                Fondateur & Expert Vérifié
+                {t('hero.badge', { ns: 'about' })}
               </div>
 
               <h1 className="text-5xl sm:text-6xl lg:text-7xl font-black text-white leading-[1.05] tracking-tight">
-                La vision<br />
+                {t('hero.titleLine1', { ns: 'about' })}<br />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#1A7A6E] via-emerald-400 to-teal-300">
-                  derrière<br />l'Académie
+                  {t('hero.titleHighlightLine1', { ns: 'about' })}<br />{t('hero.titleHighlightLine2', { ns: 'about' })}
                 </span>
               </h1>
 
@@ -108,21 +121,21 @@ const AboutPage = () => {
                   target="_blank" rel="noopener noreferrer"
                   className="group flex items-center gap-2 px-5 py-2.5 bg-red-600 hover:bg-red-500 text-white rounded-xl font-semibold text-sm transition-all shadow-lg hover:shadow-red-600/30 hover:-translate-y-0.5"
                 >
-                  <FiYoutube className="w-4 h-4" /> YouTube
+                  <FiYoutube className="w-4 h-4" /> {t('hero.social.youtube', { ns: 'about' })}
                 </a>
                 <a
                   href={founderData.socialLinks.facebook}
                   target="_blank" rel="noopener noreferrer"
                   className="flex items-center gap-2 px-5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white rounded-xl font-semibold text-sm transition-all shadow-lg hover:shadow-blue-600/30 hover:-translate-y-0.5"
                 >
-                  <FiFacebook className="w-4 h-4" /> Facebook
+                  <FiFacebook className="w-4 h-4" /> {t('hero.social.facebook', { ns: 'about' })}
                 </a>
                 <a
                   href={founderData.socialLinks.whatsapp}
                   target="_blank" rel="noopener noreferrer"
                   className="flex items-center gap-2 px-5 py-2.5 bg-[#1A7A6E] hover:bg-emerald-500 text-white rounded-xl font-semibold text-sm transition-all shadow-lg hover:shadow-emerald-600/30 hover:-translate-y-0.5"
                 >
-                  <FiPhone className="w-4 h-4" /> WhatsApp
+                  <FiPhone className="w-4 h-4" /> {t('hero.social.whatsapp', { ns: 'about' })}
                 </a>
               </div>
 
@@ -152,11 +165,11 @@ const AboutPage = () => {
               {/* Floating stat badge */}
               <div className="absolute -right-4 top-8 bg-white rounded-2xl shadow-2xl px-4 py-3 text-center min-w-[90px]">
                 <p className="text-2xl font-black text-[#1A7A6E]">50+</p>
-                <p className="text-[10px] text-gray-500 font-semibold uppercase tracking-wide">Guides</p>
+                <p className="text-[10px] text-gray-500 font-semibold uppercase tracking-wide">{t('hero.floatingGuides', { ns: 'about' })}</p>
               </div>
               <div className="absolute -left-4 bottom-20 bg-white rounded-2xl shadow-2xl px-4 py-3 text-center min-w-[90px]">
                 <p className="text-2xl font-black text-[#1A7A6E]">5K+</p>
-                <p className="text-[10px] text-gray-500 font-semibold uppercase tracking-wide">Éleveurs</p>
+                <p className="text-[10px] text-gray-500 font-semibold uppercase tracking-wide">{t('hero.floatingBreeders', { ns: 'about' })}</p>
               </div>
             </div>
           </div>
@@ -196,8 +209,8 @@ const AboutPage = () => {
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-14">
-            <p className="text-[#1A7A6E] font-bold text-sm uppercase tracking-[0.2em] mb-3">Ce qui nous guide</p>
-            <h2 className="text-4xl md:text-5xl font-black text-white">Nos quatre piliers</h2>
+            <p className="text-[#1A7A6E] font-bold text-sm uppercase tracking-[0.2em] mb-3">{t('pillars.eyebrow', { ns: 'about' })}</p>
+            <h2 className="text-4xl md:text-5xl font-black text-white">{t('pillars.heading', { ns: 'about' })}</h2>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
@@ -227,8 +240,8 @@ const AboutPage = () => {
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-14">
-            <p className="text-[#1A7A6E] font-bold text-sm uppercase tracking-[0.2em] mb-3">Évolution</p>
-            <h2 className="text-4xl md:text-5xl font-black text-gray-900">Notre parcours</h2>
+            <p className="text-[#1A7A6E] font-bold text-sm uppercase tracking-[0.2em] mb-3">{t('timeline.eyebrow', { ns: 'about' })}</p>
+            <h2 className="text-4xl md:text-5xl font-black text-gray-900">{t('timeline.heading', { ns: 'about' })}</h2>
           </div>
 
           {/* Horizontal scroll on mobile, flex on desktop */}
@@ -270,13 +283,13 @@ const AboutPage = () => {
       <section className="py-20 bg-gray-50">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <p className="text-[#1A7A6E] font-bold text-sm uppercase tracking-[0.2em] mb-3">Expertise</p>
-            <h2 className="text-4xl md:text-5xl font-black text-gray-900">Réalisations & Reconnaissances</h2>
+            <p className="text-[#1A7A6E] font-bold text-sm uppercase tracking-[0.2em] mb-3">{t('credentials.eyebrow', { ns: 'about' })}</p>
+            <h2 className="text-4xl md:text-5xl font-black text-gray-900">{t('credentials.heading', { ns: 'about' })}</h2>
           </div>
 
           {/* Tab switcher */}
           <div className="flex gap-2 justify-center mb-10 flex-wrap">
-            {['Formation', 'Innovation'].map((tab, i) => (
+            {credentialTabs.map((tab, i) => (
               <button
                 key={i}
                 onClick={() => setActiveTab(i)}
@@ -312,21 +325,17 @@ const AboutPage = () => {
       {/* ── VISION QUOTE ─────────────────────────────────────────────── */}
       <section className="py-20 bg-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <p className="text-[#1A7A6E] font-bold text-sm uppercase tracking-[0.2em] mb-6">Notre vision</p>
+          <p className="text-[#1A7A6E] font-bold text-sm uppercase tracking-[0.2em] mb-6">{t('quote.eyebrow', { ns: 'about' })}</p>
           <blockquote className="relative">
             <span className="absolute -top-8 left-0 text-[120px] leading-none text-[#1A7A6E]/10 font-black select-none">"</span>
             <p className="relative text-2xl md:text-3xl font-bold text-gray-900 leading-relaxed">
-              Créer une communauté mondiale d'éleveurs éduqués et prospères, où les connaissances vétérinaires sont accessibles à{' '}
-              <span className="text-[#1A7A6E]">tous, partout.</span>
+              {t('quote.text', { ns: 'about' })}{' '}
+              <span className="text-[#1A7A6E]">{t('quote.highlight', { ns: 'about' })}</span>
             </p>
           </blockquote>
 
           <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6 text-left">
-            {[
-              { title: 'Accessibilité', body: "L'information ne devrait pas être un privilège. Nous la démocratisons." },
-              { title: 'Communauté', body: "Ensemble, nous construisons un réseau d'éleveurs solidaires et informés." },
-              { title: 'Durabilité', body: "Un élevage éduqué, c'est une agriculture plus durable pour demain." },
-            ].map((card, i) => (
+            {visionCards.map((card, i) => (
               <div key={i} className="border-l-4 border-[#1A7A6E] pl-5 py-1">
                 <h4 className="font-bold text-gray-900 mb-1">{card.title}</h4>
                 <p className="text-gray-500 text-sm leading-relaxed">{card.body}</p>
@@ -345,12 +354,12 @@ const AboutPage = () => {
         />
 
         <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-24 text-center">
-          <p className="text-emerald-400 font-bold text-sm uppercase tracking-[0.2em] mb-4">Rejoignez-nous</p>
+          <p className="text-emerald-400 font-bold text-sm uppercase tracking-[0.2em] mb-4">{t('cta.eyebrow', { ns: 'about' })}</p>
           <h2 className="text-4xl md:text-6xl font-black text-white mb-6 leading-tight">
-            Prêt à transformer<br />votre élevage ?
+            {t('cta.headingLine1', { ns: 'about' })}<br />{t('cta.headingLine2', { ns: 'about' })}
           </h2>
           <p className="text-gray-400 text-lg mb-10 max-w-xl mx-auto">
-            Explorez nos ressources, formations et livres pour maîtriser votre métier d'éleveur.
+            {t('cta.text', { ns: 'about' })}
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -358,7 +367,7 @@ const AboutPage = () => {
               to="/products"
               className="group inline-flex items-center justify-center gap-2 px-8 py-4 bg-[#1A7A6E] hover:bg-emerald-500 text-white rounded-xl font-bold text-base transition-all shadow-xl hover:shadow-emerald-600/40 hover:-translate-y-0.5"
             >
-              Voir les ressources
+              {t('cta.resourcesButton', { ns: 'about' })}
               <FiArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </Link>
             <a
@@ -367,7 +376,7 @@ const AboutPage = () => {
               className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white/10 hover:bg-white/20 border border-white/20 text-white rounded-xl font-bold text-base transition-all hover:-translate-y-0.5"
             >
               <FiPhone className="w-5 h-5" />
-              Nous contacter
+              {t('cta.contactButton', { ns: 'about' })}
             </a>
           </div>
         </div>

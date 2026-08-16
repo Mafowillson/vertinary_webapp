@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useCart } from '../contexts/CartContext'
 import { useLanguage } from '../contexts/LanguageContext'
 import { useAuth } from '../contexts/AuthContext'
-import { formatCurrency } from '../utils/formatters'
+import { useCurrency } from '../contexts/CurrencyContext'
 import {
   FiShoppingCart,
   FiTrash2,
@@ -15,6 +15,7 @@ import {
 const CartPage = () => {
   const { cartItems, removeFromCart, getCartTotal, clearCart } = useCart()
   const { t } = useLanguage()
+  const { format } = useCurrency()
   const { isAuthenticated } = useAuth()
   const navigate = useNavigate()
 
@@ -137,11 +138,11 @@ const CartPage = () => {
                             </p>
                             <div className="flex items-center gap-4">
                               <span className="text-lg font-bold text-green-600">
-                                {formatCurrency(lineTotal)}
+                                {format(lineTotal)}
                               </span>
                               {originalUnit && originalUnit > price && (
                                 <span className="text-sm text-gray-400 line-through">
-                                  {formatCurrency(originalUnit * qty)}
+                                  {format(originalUnit * qty)}
                                 </span>
                               )}
                             </div>
@@ -173,15 +174,15 @@ const CartPage = () => {
               <div className="space-y-3 mb-6">
                 <div className="flex justify-between text-gray-700">
                   <span>{t('cart.subtotal', { ns: 'checkout' })}</span>
-                  <span>{formatCurrency(subtotal)}</span>
+                  <span>{format(subtotal)}</span>
                 </div>
                 <div className="flex justify-between text-gray-600">
                   <span>{t('cart.taxes', { ns: 'checkout' })}</span>
-                  <span>{formatCurrency(taxes)}</span>
+                  <span>{format(taxes)}</span>
                 </div>
                 <div className="border-t pt-3 flex justify-between font-bold text-lg">
                   <span>{t('cart.total', { ns: 'checkout' })}</span>
-                  <span className="text-green-600">{formatCurrency(total)}</span>
+                  <span className="text-green-600">{format(total)}</span>
                 </div>
               </div>
 

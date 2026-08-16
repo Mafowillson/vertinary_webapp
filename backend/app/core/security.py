@@ -86,3 +86,27 @@ def decode_refresh_token(token: str) -> Optional[dict]:
     except JWTError:
         return None
 
+
+def create_media_token(user_id: int, lesson_id: int) -> str:
+    """
+    Short-lived token scoped to a single lesson, for use as a query param on
+    <video>/<audio>/<iframe> src URLs, which cannot carry an Authorization header.
+    """
+    to_encode = {
+        "kind": "media",
+        "sub": str(user_id),
+        "lesson_id": lesson_id,
+        "exp": datetime.utcnow() + timedelta(minutes=settings.MEDIA_TOKEN_EXPIRE_MINUTES),
+    }
+    return jwt.encode(to_encode, settings.SECRET_KEY, algorithm=settings.ALGORITHM)
+
+
+def decode_media_token(token: str) -> Optional[dict]:
+    try:
+        payload = jwt.decode(token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM])
+        if payload.get("kind") != "media":
+            return None
+        return payload
+    except JWTError:
+        return None
+

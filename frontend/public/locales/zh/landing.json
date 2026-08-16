@@ -1,0 +1,55 @@
+{
+  "hero": {
+    "badge": "认证内容专家 · 喀麦隆 🇨🇲",
+    "titlePrefix": "兽医资源，助力您的养殖事业",
+    "titleHighlight": "取得成功",
+    "titleSuffix": "",
+    "description": "获取兽医专家撰写的专业书籍、培训课程与认证资源——由专业人士打造，服务喀麦隆及全球养殖户。",
+    "browseButton": "浏览资源",
+    "howItWorksButton": "了解运作方式",
+    "socialProofPrefix": "已有",
+    "socialProofSuffix": "位满意的养殖户加入我们",
+    "experienceValue": "4+ 年",
+    "experienceLabel": "从业经验",
+    "guidesValue": "50+",
+    "guidesLabel": "认证指南"
+  },
+  "stats": {
+    "farmersValue": "5,000+",
+    "farmersLabel": "养殖户与专业人士",
+    "guidesValue": "50+",
+    "guidesLabel": "认证指南",
+    "experienceValue": "4+ 年",
+    "experienceLabel": "专业经验",
+    "countriesValue": "10+",
+    "countriesLabel": "服务国家"
+  },
+  "categories": {
+    "eyebrow": "精选系列",
+    "heading": "按分类浏览",
+    "seeAll": "查看全部",
+    "explore": "探索"
+  },
+  "resources": {
+    "eyebrow": "专家精选",
+    "heading": "精选资源",
+    "description": "由兽医专家挑选并认证的最佳数字资源。",
+    "discountBadge": "-{{percent}}% 折扣",
+    "expiresIn": "剩余时间",
+    "discover": "查看详情"
+  },
+  "services": {
+    "eyebrow": "专业能力与陪伴支持"
+  },
+  "founder": {
+    "eyebrow": "关于创始人",
+    "quote": "与喀麦隆及全世界分享我的养殖知识。",
+    "learnMore": "了解更多"
+  },
+  "cta": {
+    "heading": "准备好提升您的知识了吗？",
+    "description": "加入我们遍布喀麦隆及世界各地的养殖户社区，每周获取专属兽医建议、培训课程与优惠折扣。",
+    "emailPlaceholder": "您的电子邮箱地址",
+    "subscribeButton": "立即订阅"
+  }
+}

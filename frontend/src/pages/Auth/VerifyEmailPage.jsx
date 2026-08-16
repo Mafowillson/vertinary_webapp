@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { FiAlertCircle, FiArrowLeft, FiArrowRight, FiMail, FiCheckCircle } from 'react-icons/fi'
 import { authService } from '../../services/authService'
+import { useLanguage } from '../../contexts/LanguageContext'
 import AuthLayout from '../../components/Layout/AuthLayout'
 
 const Spinner = () => (
@@ -19,6 +20,7 @@ const VerifyEmailPage = () => {
 
   const [status, setStatus] = useState('verifying') // 'verifying' | 'success' | 'error'
   const [error, setError] = useState('')
+  const { t } = useLanguage()
 
   useEffect(() => {
     if (hasRun.current) return
@@ -26,7 +28,7 @@ const VerifyEmailPage = () => {
 
     if (!token.trim()) {
       setStatus('error')
-      setError('Lien invalide ou expiré. Demandez un nouveau lien.')
+      setError(t('passwordReset.invalidLink', { ns: 'auth' }))
       return
     }
 
@@ -38,20 +40,20 @@ const VerifyEmailPage = () => {
       })
       .catch((err) => {
         setStatus('error')
-        setError(err.message || 'Impossible de vérifier cet e-mail. Le lien a peut-être expiré.')
+        setError(err.message || t('verifyEmail.verifyFailed', { ns: 'auth' }))
       })
-  }, [token, navigate])
+  }, [token, navigate, t])
 
   if (status === 'verifying') {
     return (
-      <AuthLayout quote="Encore une étape avant de rejoindre la communauté.">
+      <AuthLayout quote={t('verifyEmail.quote', { ns: 'auth' })}>
         <div className="space-y-6 text-center">
           <div className="w-14 h-14 bg-green-50 border border-green-100 rounded-2xl flex items-center justify-center mx-auto">
             <Spinner />
           </div>
           <div>
-            <h1 className="text-2xl font-extrabold text-gray-900">Vérification en cours…</h1>
-            <p className="mt-2 text-sm text-gray-500">Veuillez patienter pendant que nous vérifions votre e-mail.</p>
+            <h1 className="text-2xl font-extrabold text-gray-900">{t('verifyEmail.verifying', { ns: 'auth' })}</h1>
+            <p className="mt-2 text-sm text-gray-500">{t('verifyEmail.verifyingSubtitle', { ns: 'auth' })}</p>
           </div>
         </div>
       </AuthLayout>
@@ -60,20 +62,20 @@ const VerifyEmailPage = () => {
 
   if (status === 'success') {
     return (
-      <AuthLayout quote="Encore une étape avant de rejoindre la communauté.">
+      <AuthLayout quote={t('verifyEmail.quote', { ns: 'auth' })}>
         <div className="space-y-6">
           <div className="bg-green-50 border border-green-200 rounded-2xl p-5 text-center space-y-3">
             <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto">
               <FiCheckCircle className="w-6 h-6 text-green-600" />
             </div>
-            <p className="text-sm font-semibold text-green-800">E-mail vérifié !</p>
-            <p className="text-sm text-green-700">Vous allez être redirigé vers la page de connexion…</p>
+            <p className="text-sm font-semibold text-green-800">{t('verifyEmail.successTitle', { ns: 'auth' })}</p>
+            <p className="text-sm text-green-700">{t('common.redirectingToLogin', { ns: 'auth' })}</p>
           </div>
           <Link
             to="/login"
             className="flex items-center justify-center gap-2 text-sm font-semibold text-gray-500 hover:text-gray-800 transition-colors pt-2 border-t border-gray-100"
           >
-            <FiArrowLeft className="w-4 h-4" /> Retour à la connexion
+            <FiArrowLeft className="w-4 h-4" /> {t('passwordReset.backToLogin', { ns: 'auth' })}
           </Link>
         </div>
       </AuthLayout>
@@ -82,26 +84,26 @@ const VerifyEmailPage = () => {
 
   /* status === 'error' */
   return (
-    <AuthLayout quote="Encore une étape avant de rejoindre la communauté.">
+    <AuthLayout quote={t('verifyEmail.quote', { ns: 'auth' })}>
       <div className="space-y-6">
         <div className="w-14 h-14 bg-red-50 border border-red-100 rounded-2xl flex items-center justify-center">
           <FiAlertCircle className="w-6 h-6 text-red-500" />
         </div>
         <div>
-          <h1 className="text-2xl font-extrabold text-gray-900">Échec de la vérification</h1>
+          <h1 className="text-2xl font-extrabold text-gray-900">{t('verifyEmail.errorTitle', { ns: 'auth' })}</h1>
           <p className="mt-2 text-sm text-gray-500">{error}</p>
         </div>
         <Link
           to="/login"
           className="flex items-center justify-center gap-2 w-full bg-[#1A7A6E] hover:bg-[#155f55] text-white font-bold py-3 rounded-xl transition-all shadow-sm"
         >
-          <FiMail className="w-4 h-4" /> Aller à la connexion pour renvoyer un lien <FiArrowRight className="w-4 h-4" />
+          <FiMail className="w-4 h-4" /> {t('verifyEmail.goToLoginToResend', { ns: 'auth' })} <FiArrowRight className="w-4 h-4" />
         </Link>
         <Link
           to="/login"
           className="flex items-center justify-center gap-2 text-sm font-semibold text-gray-500 hover:text-gray-800 transition-colors pt-2 border-t border-gray-100"
         >
-          <FiArrowLeft className="w-4 h-4" /> Retour à la connexion
+          <FiArrowLeft className="w-4 h-4" /> {t('passwordReset.backToLogin', { ns: 'auth' })}
         </Link>
       </div>
     </AuthLayout>

@@ -1,4 +1,7 @@
-from fastapi import APIRouter, Depends, HTTPException, status, Query
+import uuid
+from pathlib import Path
+
+from fastapi import APIRouter, Depends, File, HTTPException, UploadFile, status, Query
 from sqlalchemy.orm import Session
 from sqlalchemy import func
 from typing import List, Optional
@@ -14,11 +17,15 @@ from app.schemas.product import (
     product_payload_to_orm_dict,
 )
 from app.api.dependencies import get_current_admin_user, get_optional_current_user
+from app.core.storage import StorageError, get_storage
 from app.models.user import User
 from app.dependencies.locale import get_locale
 from app.i18n import get_translation
 
 router = APIRouter()
+
+ALLOWED_IMAGE_EXTENSIONS = {".jpg", ".jpeg", ".png", ".webp", ".gif"}
+MAX_IMAGE_SIZE_MB = 10
 
 @router.get("", response_model=List[ProductResponse])
 async def get_products(
@@ -93,6 +100,30 @@ async def get_product(
         review_count=review_count,
         liked_by_me=liked_by_me,
     )
+
+@router.post("/images", status_code=status.HTTP_201_CREATED)
+async def upload_product_image(
+    file: UploadFile = File(...),
+    current_user: User = Depends(get_current_admin_user),
+):
+    """
+    Upload a product cover image (admin only). Returns a public URL to use as
+    `image_url` on product create/update — images are public, unlike lesson
+    content which always stays behind the token-gated stream endpoint.
+    """
+    ext = Path(file.filename or "").suffix.lower()
+    if ext not in ALLOWED_IMAGE_EXTENSIONS:
+        allowed = ", ".join(sorted(ALLOWED_IMAGE_EXTENSIONS))
+        raise HTTPException(status_code=422, detail=f"Invalid image type. Allowed: {allowed}")
+
+    storage = get_storage()
+    key = f"covers/{uuid.uuid4().hex}{ext}"
+    try:
+        storage.save(key, file, max_bytes=MAX_IMAGE_SIZE_MB * 1024 * 1024)
+    except StorageError as e:
+        raise HTTPException(status_code=413, detail=str(e))
+
+    return {"url": storage.public_url(key)}
 
 @router.post("", response_model=ProductResponse, status_code=status.HTTP_201_CREATED)
 async def create_product(

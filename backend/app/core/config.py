@@ -15,7 +15,10 @@ class Settings(BaseSettings):
     REFRESH_TOKEN_EXPIRE_DAYS: int = 7
     CORS_ORIGINS: Union[str, List[str]] = "http://localhost:5173,http://localhost:3000"
     UPLOAD_DIR: str = "uploads"
-    MAX_FILE_SIZE: int = 10485760  # 10MB
+    # "local" today (VPS disk); swap to an S3-compatible backend later via app/core/storage.py.
+    STORAGE_BACKEND: str = "local"
+    MAX_LESSON_FILE_SIZE_MB: int = 1024  # 1GB — course videos are the largest files we store
+    MEDIA_TOKEN_EXPIRE_MINUTES: int = 360  # 6h — long enough to watch/read without re-requesting
     SMTP_HOST: str = "smtp.gmail.com"
     SMTP_PORT: int = 587
     SMTP_USERNAME: str = ""

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
-import { orderService } from '../../services/orderService'
+import { adminService } from '../../services/adminService'
 import { formatCurrency, formatDate } from '../../utils/formatters'
+import { useLanguage } from '../../contexts/LanguageContext'
 import {
   FiEye,
   FiSearch,
@@ -14,14 +15,15 @@ import {
   FiUser,
   FiCalendar,
   FiCreditCard,
-  FiDownload,
   FiMoreVertical,
 } from 'react-icons/fi'
 
 const OrdersManagement = () => {
+  const { t } = useLanguage()
   const [orders, setOrders] = useState([])
   const [filteredOrders, setFilteredOrders] = useState([])
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState('')
   const [searchQuery, setSearchQuery] = useState('')
   const [statusFilter, setStatusFilter] = useState('all') // 'all', 'pending', 'completed', 'failed'
   const [sortBy, setSortBy] = useState('recent') // 'recent', 'amount', 'date'
@@ -37,104 +39,13 @@ const OrdersManagement = () => {
   }, [orders, searchQuery, statusFilter, sortBy])
 
   const loadOrders = async () => {
+    setLoading(true)
+    setError('')
     try {
-      // This would fetch from admin endpoint
-      // For now, using mock data similar to AdminDashboard
-      const mockOrders = [
-        {
-          id: 1,
-          order_number: 'ORD-9452',
-          amount: 120000,
-          status: 'completed',
-          payment_method: 'mobile_money',
-          created_at: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
-          product: {
-            id: 1,
-            title: 'Advanced Cattle Breeding',
-            imageUrl: null,
-          },
-          user: {
-            id: 1,
-            name: 'Marc Kasem',
-            email: 'marc@example.com',
-          },
-        },
-        {
-          id: 2,
-          order_number: 'ORD-9451',
-          amount: 85000,
-          status: 'completed',
-          payment_method: 'bank_transfer',
-          created_at: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
-          product: {
-            id: 2,
-            title: 'Poultry Management Guide',
-            imageUrl: null,
-          },
-          user: {
-            id: 2,
-            name: 'Sarah Johnson',
-            email: 'sarah@example.com',
-          },
-        },
-        {
-          id: 3,
-          order_number: 'ORD-9450',
-          amount: 95000,
-          status: 'pending',
-          payment_method: null,
-          created_at: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
-          product: {
-            id: 3,
-            title: 'Veterinary Basics',
-            imageUrl: null,
-          },
-          user: {
-            id: 3,
-            name: 'Ahmed Hassan',
-            email: 'ahmed@example.com',
-          },
-        },
-        {
-          id: 4,
-          order_number: 'ORD-9449',
-          amount: 150000,
-          status: 'completed',
-          payment_method: 'mobile_money',
-          created_at: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
-          product: {
-            id: 4,
-            title: 'Livestock Health Management',
-            imageUrl: null,
-          },
-          user: {
-            id: 4,
-            name: 'Jean Dupont',
-            email: 'jean@example.com',
-          },
-        },
-        {
-          id: 5,
-          order_number: 'ORD-9448',
-          amount: 75000,
-          status: 'failed',
-          payment_method: null,
-          created_at: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
-          product: {
-            id: 5,
-            title: 'Animal Nutrition Guide',
-            imageUrl: null,
-          },
-          user: {
-            id: 5,
-            name: 'Marie Leclerc',
-            email: 'marie@example.com',
-          },
-        },
-      ]
-      setOrders(mockOrders)
-    } catch (error) {
-      console.error('Failed to load orders:', error)
+      const data = await adminService.getOrders({ limit: 200 })
+      setOrders(data)
+    } catch (err) {
+      setError(err.message || t('loadError', { ns: 'adminOrders' }))
     } finally {
       setLoading(false)
     }
@@ -190,21 +101,21 @@ const OrdersManagement = () => {
     switch (status) {
       case 'completed':
         return {
-          label: 'Complétée',
+          label: t('statusLabels.completed', { ns: 'adminOrders' }),
           color: 'bg-green-100 text-green-700',
           icon: FiCheckCircle,
           iconColor: 'text-green-600',
         }
       case 'pending':
         return {
-          label: 'En attente',
+          label: t('statusLabels.pending', { ns: 'adminOrders' }),
           color: 'bg-yellow-100 text-yellow-700',
           icon: FiClock,
           iconColor: 'text-yellow-600',
         }
       case 'failed':
         return {
-          label: 'Échouée',
+          label: t('statusLabels.failed', { ns: 'adminOrders' }),
           color: 'bg-red-100 text-red-700',
           icon: FiAlertCircle,
           iconColor: 'text-red-600',
@@ -222,11 +133,15 @@ const OrdersManagement = () => {
   const getPaymentMethodLabel = (method) => {
     switch (method) {
       case 'mobile_money':
-        return 'Mobile Money'
+        return t('paymentLabels.mobileMoney', { ns: 'adminOrders' })
+      case 'orange_money':
+        return t('paymentLabels.orangeMoney', { ns: 'adminOrders' })
       case 'bank_transfer':
-        return 'Virement bancaire'
+        return t('paymentLabels.bankTransfer', { ns: 'adminOrders' })
+      case 'online':
+        return t('paymentLabels.online', { ns: 'adminOrders' })
       default:
-        return 'Non payé'
+        return t('paymentLabels.unpaid', { ns: 'adminOrders' })
     }
   }
 
@@ -252,38 +167,45 @@ const OrdersManagement = () => {
     <div className="space-y-6">
       {/* Header Section */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 mb-1">Commandes & Paiements</h1>
-        <p className="text-gray-600">Gérer les commandes clients et suivre les paiements</p>
+        <h1 className="text-2xl font-bold text-gray-900 mb-1">{t('header.title', { ns: 'adminOrders' })}</h1>
+        <p className="text-gray-600">{t('header.subtitle', { ns: 'adminOrders' })}</p>
       </div>
 
       {/* Statistics Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <StatCard
-          label="Total commandes"
+          label={t('stats.total', { ns: 'adminOrders' })}
           value={stats.total}
           icon={FiPackage}
           color="bg-blue-100 text-blue-600"
         />
         <StatCard
-          label="Complétées"
+          label={t('stats.completed', { ns: 'adminOrders' })}
           value={stats.completed}
           icon={FiCheckCircle}
           color="bg-green-100 text-green-600"
-          change={`${((stats.completed / stats.total) * 100).toFixed(1)}%`}
+          change={stats.total > 0 ? `${((stats.completed / stats.total) * 100).toFixed(1)}%` : undefined}
         />
         <StatCard
-          label="En attente"
+          label={t('stats.pending', { ns: 'adminOrders' })}
           value={stats.pending}
           icon={FiClock}
           color="bg-yellow-100 text-yellow-600"
         />
         <StatCard
-          label="Revenu total"
+          label={t('stats.totalRevenue', { ns: 'adminOrders' })}
           value={formatCurrency(stats.totalRevenue)}
           icon={FiDollarSign}
           color="bg-purple-100 text-purple-600"
         />
       </div>
+
+      {error && (
+        <div className="flex items-start gap-3 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl text-sm">
+          <FiAlertCircle className="w-4 h-4 mt-0.5 flex-shrink-0" />
+          <span>{error}</span>
+        </div>
+      )}
 
       {/* Search and Filter Bar */}
       <div className="bg-white rounded-lg shadow-sm p-4">
@@ -293,7 +215,7 @@ const OrdersManagement = () => {
             <FiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
             <input
               type="text"
-              placeholder="Rechercher par n° de commande, client ou produit..."
+              placeholder={t('filters.searchPlaceholder', { ns: 'adminOrders' })}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
@@ -324,7 +246,7 @@ const OrdersManagement = () => {
                   }`}
                 >
                   <Icon className="w-4 h-4" />
-                  <span className="capitalize">{status === 'all' ? 'Toutes' : config.label}</span>
+                  <span className="capitalize">{status === 'all' ? t('statusLabels.all', { ns: 'adminOrders' }) : config.label}</span>
                 </button>
               )
             })}
@@ -336,9 +258,9 @@ const OrdersManagement = () => {
             onChange={(e) => setSortBy(e.target.value)}
             className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white"
           >
-            <option value="recent">Plus récent</option>
-            <option value="date">Date (récent)</option>
-            <option value="amount">Montant (décroissant)</option>
+            <option value="recent">{t('filters.sortRecent', { ns: 'adminOrders' })}</option>
+            <option value="date">{t('filters.sortDate', { ns: 'adminOrders' })}</option>
+            <option value="amount">{t('filters.sortAmount', { ns: 'adminOrders' })}</option>
           </select>
         </div>
       </div>
@@ -391,11 +313,11 @@ const OrdersManagement = () => {
       ) : (
         <div className="bg-white rounded-lg shadow-sm p-12 text-center">
           <FiPackage className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-          <h3 className="text-lg font-semibold text-gray-900 mb-2">Aucune commande trouvée</h3>
+          <h3 className="text-lg font-semibold text-gray-900 mb-2">{t('empty.title', { ns: 'adminOrders' })}</h3>
           <p className="text-gray-600">
             {searchQuery || statusFilter !== 'all'
-              ? 'Essayez d\'ajuster vos filtres'
-              : 'Les commandes apparaîtront ici une fois que les clients effectueront des achats'}
+              ? t('empty.withFilters', { ns: 'adminOrders' })
+              : t('empty.noFilters', { ns: 'adminOrders' })}
           </p>
         </div>
       )}
@@ -443,6 +365,7 @@ const OrderCard = ({
   formatDate,
   onView,
 }) => {
+  const { t } = useLanguage()
   return (
     <div className="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-lg transition-all duration-200 group">
       <div className="p-6">
@@ -486,18 +409,18 @@ const OrderCard = ({
 
         {/* Product Info */}
         <div className="mb-4">
-          <p className="text-sm text-gray-600 mb-1">Produit</p>
+          <p className="text-sm text-gray-600 mb-1">{t('card.product', { ns: 'adminOrders' })}</p>
           <p className="text-sm font-semibold text-gray-900">{order.product?.title}</p>
         </div>
 
         {/* Payment Info */}
         <div className="flex items-center justify-between pt-4 border-t border-gray-100">
           <div>
-            <p className="text-xs text-gray-500 mb-1">Montant</p>
+            <p className="text-xs text-gray-500 mb-1">{t('card.amount', { ns: 'adminOrders' })}</p>
             <p className="text-lg font-bold text-primary-600">{formatCurrency(order.amount)}</p>
           </div>
           <div className="text-right">
-            <p className="text-xs text-gray-500 mb-1">Paiement</p>
+            <p className="text-xs text-gray-500 mb-1">{t('card.payment', { ns: 'adminOrders' })}</p>
             <p className="text-sm font-medium text-gray-900 flex items-center justify-end space-x-1">
               <FiCreditCard className="w-4 h-4" />
               <span>{getPaymentMethodLabel(order.payment_method)}</span>
@@ -511,7 +434,7 @@ const OrderCard = ({
           className="w-full mt-4 bg-primary-50 text-primary-600 py-2 px-4 rounded-lg font-medium hover:bg-primary-100 transition-colors flex items-center justify-center space-x-2"
         >
           <FiEye className="w-4 h-4" />
-          <span>Voir les détails</span>
+          <span>{t('card.viewDetails', { ns: 'adminOrders' })}</span>
         </button>
       </div>
     </div>
@@ -529,6 +452,7 @@ const OrderListItem = ({
   formatDate,
   onView,
 }) => {
+  const { t } = useLanguage()
   return (
     <div className="p-6 hover:bg-gray-50 transition-colors group">
       <div className="flex items-center space-x-4">
@@ -556,16 +480,16 @@ const OrderListItem = ({
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
             <div>
-              <p className="text-gray-500 mb-1">Client</p>
+              <p className="text-gray-500 mb-1">{t('list.customer', { ns: 'adminOrders' })}</p>
               <p className="font-medium text-gray-900">{order.user?.name}</p>
               <p className="text-xs text-gray-500">{order.user?.email}</p>
             </div>
             <div>
-              <p className="text-gray-500 mb-1">Produit</p>
+              <p className="text-gray-500 mb-1">{t('list.product', { ns: 'adminOrders' })}</p>
               <p className="font-medium text-gray-900">{order.product?.title}</p>
             </div>
             <div>
-              <p className="text-gray-500 mb-1">Paiement & Date</p>
+              <p className="text-gray-500 mb-1">{t('list.paymentAndDate', { ns: 'adminOrders' })}</p>
               <p className="font-medium text-gray-900 flex items-center space-x-1">
                 <FiCreditCard className="w-4 h-4" />
                 <span>{getPaymentMethodLabel(order.payment_method)}</span>
@@ -582,7 +506,7 @@ const OrderListItem = ({
         <button
           onClick={onView}
           className="p-2 text-primary-600 hover:bg-primary-50 rounded-lg transition-colors opacity-0 group-hover:opacity-100"
-          title="Voir les détails"
+          title={t('card.viewDetails', { ns: 'adminOrders' })}
         >
           <FiEye className="w-5 h-5" />
         </button>
@@ -601,13 +525,14 @@ const OrderDetailModal = ({
   formatDate,
   onClose,
 }) => {
+  const { t } = useLanguage()
   const StatusIcon = statusConfig.icon
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
       <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
         <div className="sticky top-0 bg-white border-b px-6 py-4 flex justify-between items-center">
-          <h2 className="text-xl font-bold text-gray-900">Détails de la commande</h2>
+          <h2 className="text-xl font-bold text-gray-900">{t('modal.title', { ns: 'adminOrders' })}</h2>
           <button
             onClick={onClose}
             className="text-gray-400 hover:text-gray-600 transition-colors"
@@ -620,7 +545,7 @@ const OrderDetailModal = ({
           {/* Order Header */}
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-500 mb-1">Numéro de commande</p>
+              <p className="text-sm text-gray-500 mb-1">{t('modal.orderNumber', { ns: 'adminOrders' })}</p>
               <p className="text-lg font-bold text-primary-600">#{order.order_number}</p>
             </div>
             <span
@@ -633,7 +558,7 @@ const OrderDetailModal = ({
 
           {/* Customer Info */}
           <div className="bg-gray-50 rounded-lg p-4">
-            <p className="text-sm font-semibold text-gray-900 mb-3">Informations client</p>
+            <p className="text-sm font-semibold text-gray-900 mb-3">{t('modal.customerInfo', { ns: 'adminOrders' })}</p>
             <div className="flex items-center space-x-3">
               <div className="w-12 h-12 bg-primary-100 rounded-full flex items-center justify-center">
                 <span className="text-sm font-semibold text-primary-700">
@@ -649,7 +574,7 @@ const OrderDetailModal = ({
 
           {/* Product Info */}
           <div>
-            <p className="text-sm font-semibold text-gray-900 mb-3">Produit</p>
+            <p className="text-sm font-semibold text-gray-900 mb-3">{t('modal.product', { ns: 'adminOrders' })}</p>
             <div className="border border-gray-200 rounded-lg p-4">
               <p className="font-medium text-gray-900">{order.product?.title}</p>
             </div>
@@ -658,25 +583,25 @@ const OrderDetailModal = ({
           {/* Payment Details */}
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <p className="text-sm text-gray-500 mb-1">Montant</p>
+              <p className="text-sm text-gray-500 mb-1">{t('modal.amount', { ns: 'adminOrders' })}</p>
               <p className="text-xl font-bold text-primary-600">{formatCurrency(order.amount)}</p>
             </div>
             <div>
-              <p className="text-sm text-gray-500 mb-1">Mode de paiement</p>
+              <p className="text-sm text-gray-500 mb-1">{t('modal.paymentMethod', { ns: 'adminOrders' })}</p>
               <p className="font-medium text-gray-900 flex items-center space-x-2">
                 <FiCreditCard className="w-4 h-4" />
                 <span>{getPaymentMethodLabel(order.payment_method)}</span>
               </p>
             </div>
             <div>
-              <p className="text-sm text-gray-500 mb-1">Date de commande</p>
+              <p className="text-sm text-gray-500 mb-1">{t('modal.orderDate', { ns: 'adminOrders' })}</p>
               <p className="font-medium text-gray-900 flex items-center space-x-2">
                 <FiCalendar className="w-4 h-4" />
                 <span>{formatDate(order.created_at)}</span>
               </p>
             </div>
             <div>
-              <p className="text-sm text-gray-500 mb-1">Statut</p>
+              <p className="text-sm text-gray-500 mb-1">{t('modal.status', { ns: 'adminOrders' })}</p>
               <span
                 className={`inline-flex items-center space-x-2 px-3 py-1.5 rounded-full text-sm font-semibold ${statusConfig.color}`}
               >
@@ -692,14 +617,8 @@ const OrderDetailModal = ({
               onClick={onClose}
               className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
             >
-              Fermer
+              {t('modal.close', { ns: 'adminOrders' })}
             </button>
-            {order.status === 'completed' && (
-              <button className="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors flex items-center space-x-2">
-                <FiDownload className="w-4 h-4" />
-                <span>Télécharger la facture</span>
-              </button>
-            )}
           </div>
         </div>
       </div>

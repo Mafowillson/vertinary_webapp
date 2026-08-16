@@ -1,0 +1,316 @@
+{
+  "privacy": {
+    "pageTitle": "Politique de Confidentialité",
+    "backToHome": "Retour à l'accueil",
+    "updated": "Mise à jour : {{date}}",
+    "readTime": "~8 min de lecture",
+    "sectionsCount": "{{count}} sections",
+    "toc": {
+      "heading": "Table des matières",
+      "mobileLabel": "Table des matières · {{count}} sections"
+    },
+    "sections": {
+      "introduction": {
+        "title": "Introduction",
+        "paragraph1": "Bienvenue chez Académie des Éleveurs (« nous », « notre » ou « nos »). Nous nous engageons à protéger votre vie privée et à assurer la sécurité de vos informations personnelles. Cette Politique de Confidentialité explique comment nous collectons, utilisons, divulguons et protégeons vos informations lorsque vous visitez notre site web et utilisez nos services.",
+        "paragraph2": "En utilisant nos services, vous acceptez la collecte et l'utilisation des informations conformément à cette politique. Si vous n'êtes pas d'accord avec nos politiques et pratiques, veuillez ne pas utiliser nos services."
+      },
+      "informationCollection": {
+        "title": "Informations que nous collectons",
+        "personalInfo": {
+          "heading": "Informations personnelles",
+          "intro": "Nous pouvons collecter les types d'informations personnelles suivants :",
+          "items": [
+            "Nom et coordonnées (adresse email, numéro de téléphone)",
+            "Identifiants de compte (nom d'utilisateur, mot de passe)",
+            "Informations de paiement (détails de carte de crédit, adresse de facturation)",
+            "Informations professionnelles (numéro de licence vétérinaire, informations sur la clinique)",
+            "Historique des achats et enregistrements de transactions"
+          ]
+        },
+        "autoInfo": {
+          "heading": "Informations collectées automatiquement",
+          "intro": "Lorsque vous visitez notre site web, nous collectons automatiquement certaines informations :",
+          "items": [
+            "Adresse IP et informations sur l'appareil",
+            "Type et version du navigateur",
+            "Pages visitées et temps passé sur les pages",
+            "Adresses des sites web de référence",
+            "Cookies et technologies de suivi similaires"
+          ]
+        }
+      },
+      "howWeUse": {
+        "title": "Comment nous utilisons vos informations",
+        "intro": "Nous utilisons les informations collectées aux fins suivantes :",
+        "items": [
+          "Fournir, maintenir et améliorer nos services",
+          "Traiter les transactions et envoyer les informations associées",
+          "Envoyer des informations administratives et des mises à jour",
+          "Répondre à vos demandes et fournir un support client",
+          "Envoyer des communications marketing (avec votre consentement)",
+          "Détecter, prévenir et résoudre les problèmes techniques",
+          "Se conformer aux obligations légales et faire respecter nos conditions",
+          "Protéger les droits, la propriété et la sécurité de nos utilisateurs"
+        ]
+      },
+      "informationSharing": {
+        "title": "Partage et divulgation des informations",
+        "intro": "Nous ne vendons, n'échangeons ni ne louons vos informations personnelles à des tiers. Nous ne pouvons partager vos informations que dans les circonstances suivantes :",
+        "serviceProviders": {
+          "heading": "Prestataires de services",
+          "body": "Nous pouvons partager des informations avec des prestataires de services tiers qui effectuent des services en notre nom, tels que le traitement des paiements, l'analyse de données et la livraison d'emails."
+        },
+        "legalRequirements": {
+          "heading": "Exigences légales",
+          "body": "Nous pouvons divulguer des informations si la loi l'exige ou en réponse à des demandes valides des autorités publiques."
+        },
+        "businessTransfers": {
+          "heading": "Transferts d'entreprise",
+          "body": "En cas de fusion, d'acquisition ou de vente d'actifs, vos informations peuvent être transférées à l'entité acquéreuse."
+        }
+      },
+      "dataSecurity": {
+        "title": "Sécurité des données",
+        "intro": "Nous mettons en œuvre des mesures de sécurité techniques et organisationnelles appropriées pour protéger vos informations personnelles contre l'accès, la modification, la divulgation ou la destruction non autorisés. Ces mesures comprennent :",
+        "items": [
+          "Cryptage SSL 256 bits pour la transmission des données",
+          "Infrastructure de serveurs sécurisée avec des audits de sécurité réguliers",
+          "Contrôles d'accès et mécanismes d'authentification",
+          "Sauvegardes régulières et procédures de reprise après sinistre",
+          "Pratiques de traitement des données conformes aux normes HIPAA"
+        ],
+        "disclaimer": "Aucune méthode de transmission sur Internet n'est sûre à 100 %. Bien que nous nous efforcions d'utiliser des moyens commercialement acceptables pour protéger vos informations, nous ne pouvons garantir une sécurité absolue."
+      },
+      "cookies": {
+        "title": "Cookies et technologies de suivi",
+        "intro": "Nous utilisons des cookies et des technologies de suivi similaires pour suivre l'activité sur notre site web et stocker certaines informations.",
+        "types": {
+          "heading": "Types de cookies que nous utilisons",
+          "items": [
+            { "label": "Cookies essentiels :", "text": "Nécessaires au bon fonctionnement du site web" },
+            { "label": "Cookies analytiques :", "text": "Nous aident à comprendre comment les visiteurs interagissent avec notre site" },
+            { "label": "Cookies de préférences :", "text": "Mémorisent vos préférences et paramètres" },
+            { "label": "Cookies marketing :", "text": "Utilisés pour diffuser des publicités pertinentes" }
+          ]
+        },
+        "outro": "Vous pouvez configurer votre navigateur pour refuser tous les cookies. Cependant, certaines fonctionnalités du site pourraient ne plus fonctionner correctement."
+      },
+      "yourRights": {
+        "title": "Vos droits et choix",
+        "intro": "Vous disposez des droits suivants concernant vos informations personnelles :",
+        "items": [
+          { "label": "Accès :", "text": "Demander l'accès à vos informations personnelles" },
+          { "label": "Correction :", "text": "Demander la correction d'informations inexactes" },
+          { "label": "Suppression :", "text": "Demander la suppression de vos informations personnelles" },
+          { "label": "Opposition :", "text": "Vous opposer au traitement de vos informations personnelles" },
+          { "label": "Portabilité :", "text": "Demander le transfert de vos données vers un autre service" },
+          { "label": "Retrait :", "text": "Retirer votre consentement au traitement des données" }
+        ],
+        "outro": "Pour exercer ces droits, veuillez nous contacter via les coordonnées ci-dessous."
+      },
+      "dataRetention": {
+        "title": "Conservation des données",
+        "paragraph1": "Nous ne conserverons vos informations personnelles que pendant la durée nécessaire pour atteindre les objectifs décrits dans cette Politique de Confidentialité, sauf si une période de conservation plus longue est requise ou autorisée par la loi.",
+        "paragraph2": "Lorsque nous n'avons plus besoin de vos informations personnelles, nous les supprimerons ou les anonymiserons de manière sécurisée conformément à nos politiques de conservation des données."
+      },
+      "childrenPrivacy": {
+        "title": "Confidentialité des mineurs",
+        "paragraph1": "Nos services ne sont pas destinés aux personnes de moins de 18 ans. Nous ne collectons pas sciemment d'informations personnelles auprès de mineurs. Si vous êtes un parent ou un tuteur et pensez que votre enfant nous a fourni des informations personnelles, veuillez nous contacter immédiatement."
+      },
+      "internationalTransfers": {
+        "title": "Transferts internationaux de données",
+        "paragraph1": "Vos informations peuvent être transférées vers et conservées sur des ordinateurs situés en dehors de votre pays où les lois sur la protection des données peuvent différer de celles de votre juridiction.",
+        "paragraph2": "En utilisant nos services, vous consentez au transfert de vos informations. Nous prendrons toutes les mesures raisonnablement nécessaires pour garantir que vos données sont traitées de manière sécurisée conformément à cette Politique de Confidentialité."
+      },
+      "changes": {
+        "title": "Modifications de cette politique",
+        "paragraph1": "Nous pouvons mettre à jour notre Politique de Confidentialité de temps à autre. Nous vous informerons de tout changement en publiant la nouvelle Politique sur cette page et en mettant à jour la date de « Dernière mise à jour ».",
+        "paragraph2": "Il vous est conseillé de consulter périodiquement cette Politique pour tout changement. Les modifications prennent effet dès leur publication sur cette page."
+      },
+      "contact": {
+        "title": "Nous contacter",
+        "paragraph1": "Si vous avez des questions concernant cette Politique de Confidentialité ou nos pratiques en matière de données, veuillez nous contacter via les coordonnées affichées ci-dessous."
+      }
+    },
+    "contactCard": {
+      "heading": "Des questions sur cette politique ?",
+      "subtext": "Notre équipe est disponible pour répondre à toutes vos questions.",
+      "whatsappLabel": "WhatsApp",
+      "emailLabel": "Email",
+      "addressLabel": "Adresse",
+      "addressValue": "Cameroun"
+    },
+    "closingNote": "En utilisant nos services, vous reconnaissez avoir lu et compris cette Politique de Confidentialité."
+  },
+  "terms": {
+    "pageTitle": "Conditions d'Utilisation",
+    "backToHome": "Retour à l'accueil",
+    "updated": "Mise à jour : {{date}}",
+    "readTime": "~10 min de lecture",
+    "sectionsCount": "{{count}} sections",
+    "banner": {
+      "label": "Avis important :",
+      "text": "En utilisant le Service, vous acceptez d'être lié par ces Conditions. Si vous n'acceptez pas ces Conditions, veuillez ne pas utiliser le Service."
+    },
+    "toc": {
+      "heading": "Table des matières",
+      "mobileLabel": "Table des matières · {{count}} sections"
+    },
+    "sections": {
+      "acceptance": {
+        "title": "Acceptation des conditions",
+        "paragraph1": "En accédant et en utilisant le site web et les services de l'Académie des Éleveurs, vous acceptez et convenez d'être lié par les termes et dispositions de cet accord. Si vous n'acceptez pas de respecter ce qui précède, veuillez ne pas utiliser ce service.",
+        "paragraph2": "Ces Conditions d'Utilisation (« Conditions ») régissent votre accès et votre utilisation de notre site web, de nos produits et de nos services (collectivement, le « Service »). Veuillez lire attentivement ces Conditions avant d'utiliser notre Service."
+      },
+      "definitions": {
+        "title": "Définitions",
+        "items": [
+          { "label": "« Service »", "text": "le site web de l'Académie des Éleveurs, les produits, les cours et tous les services associés." },
+          { "label": "« Utilisateur »", "text": "la personne accédant ou utilisant le Service." },
+          { "label": "« Société »", "text": "l'Académie des Éleveurs." },
+          { "label": "« Contenu »", "text": "toutes les informations, textes, graphiques, images, vidéos et autres matériels disponibles via le Service." },
+          { "label": "« Compte »", "text": "le compte que vous créez pour accéder à certaines fonctionnalités du Service." }
+        ]
+      },
+      "accountRegistration": {
+        "title": "Inscription au compte et sécurité",
+        "intro": "Pour accéder à certaines fonctionnalités du Service, vous pouvez être amené à créer un compte. Lors de la création d'un compte, vous acceptez de :",
+        "items": [
+          "Fournir des informations exactes, actuelles et complètes",
+          "Maintenir et mettre à jour rapidement les informations de votre compte",
+          "Maintenir la sécurité de votre mot de passe et de votre identification",
+          "Accepter toute responsabilité pour les activités sous votre compte",
+          "Nous informer immédiatement de toute utilisation non autorisée de votre compte"
+        ],
+        "outro": "Vous êtes responsable du maintien de la confidentialité de vos identifiants de compte."
+      },
+      "useOfService": {
+        "title": "Utilisation du Service",
+        "authorized": {
+          "heading": "Utilisation autorisée",
+          "intro": "Vous ne pouvez utiliser le Service qu'à des fins licites et conformément à ces Conditions :",
+          "items": [
+            "À des fins éducatives et professionnelles",
+            "En conformité avec toutes les lois et réglementations applicables",
+            "Sans violer les droits d'autrui"
+          ]
+        },
+        "prohibited": {
+          "heading": "Activités interdites",
+          "intro": "Vous acceptez de ne pas :",
+          "items": [
+            "Violer toute loi ou réglementation applicable",
+            "Porter atteinte aux droits d'autrui",
+            "Transmettre tout contenu nuisible, offensant ou illégal",
+            "Tenter d'obtenir un accès non autorisé au Service",
+            "Interférer avec ou perturber le Service ou les serveurs",
+            "Copier, modifier ou distribuer le contenu sans autorisation",
+            "Utiliser des systèmes automatisés pour accéder au Service",
+            "Usurper l'identité de toute personne ou entité"
+          ]
+        }
+      },
+      "intellectualProperty": {
+        "title": "Droits de propriété intellectuelle",
+        "intro": "Le Service et son contenu original sont la propriété de l'Académie des Éleveurs et sont protégés par les lois internationales sur le droit d'auteur, les marques de commerce et autres lois sur la propriété intellectuelle.",
+        "ourContent": {
+          "heading": "Notre contenu",
+          "body": "Tout le contenu fourni par le Service — textes, graphiques, logos, images, vidéos, cours et logiciels — est la propriété de l'Académie des Éleveurs ou de ses fournisseurs de contenu et est protégé par les lois sur le droit d'auteur."
+        },
+        "limitedLicense": {
+          "heading": "Licence limitée",
+          "body": "Nous vous accordons une licence limitée, non exclusive, non transférable et révocable pour accéder et utiliser le Service à des fins personnelles et non commerciales."
+        },
+        "restrictions": {
+          "heading": "Restrictions",
+          "items": [
+            "Reproduire, distribuer ou créer des œuvres dérivées à partir de notre contenu",
+            "Utiliser notre contenu à des fins commerciales sans autorisation",
+            "Supprimer tout avis de droit d'auteur ou de propriété",
+            "Partager vos identifiants de compte avec d'autres personnes"
+          ]
+        }
+      },
+      "purchases": {
+        "title": "Achats et paiements",
+        "pricing": {
+          "heading": "Tarification",
+          "body": "Tous les prix des produits et services sont affichés dans la devise applicable et sont susceptibles d'être modifiés sans préavis. Nous nous réservons le droit de modifier les prix à tout moment."
+        },
+        "paymentTerms": {
+          "heading": "Conditions de paiement",
+          "items": [
+            "Fournir des informations de paiement valides",
+            "Payer tous les frais encourus par votre compte",
+            "Nous autoriser à débiter votre moyen de paiement"
+          ]
+        },
+        "refunds": {
+          "heading": "Remboursements",
+          "body": "Les politiques de remboursement varient selon le type de produit. Les produits numériques peuvent être éligibles à un remboursement dans un délai spécifié après l'achat. Veuillez nous contacter pour connaître les conditions spécifiques."
+        }
+      },
+      "userContent": {
+        "title": "Contenu généré par les utilisateurs",
+        "paragraph1": "Si vous soumettez, publiez ou affichez du contenu sur ou via le Service, vous nous accordez une licence mondiale, non exclusive, libre de redevances pour utiliser, reproduire, modifier et distribuer ce contenu aux fins d'exploitation et de promotion du Service.",
+        "paragraph2": "Vous déclarez et garantissez que vous possédez ou disposez des droits nécessaires pour accorder la licence décrite ci-dessus, et que votre contenu ne viole aucun droit de tiers ni aucune loi applicable."
+      },
+      "disclaimers": {
+        "title": "Avertissements",
+        "statement": "LE SERVICE EST FOURNI « EN L'ÉTAT » ET « TEL QUE DISPONIBLE » SANS GARANTIE D'AUCUNE SORTE, EXPRESSE OU IMPLICITE.",
+        "intro": "Nous ne garantissons pas que :",
+        "items": [
+          "Le Service sera ininterrompu ou exempt d'erreurs",
+          "Les défauts seront corrigés",
+          "Le Service est exempt de virus ou d'autres composants nuisibles",
+          "Les informations fournies sont exactes, complètes ou à jour"
+        ],
+        "disclaimer": "Le contenu éducatif fourni est uniquement à titre informatif et ne doit pas remplacer les conseils vétérinaires professionnels. Consultez toujours un vétérinaire agréé pour les problèmes de santé spécifiques des animaux."
+      },
+      "limitationLiability": {
+        "title": "Limitation de responsabilité",
+        "paragraph1": "DANS LA MESURE MAXIMALE PERMISE PAR LA LOI, L'ACADÉMIE DES ÉLEVEURS NE SERA PAS RESPONSABLE DE TOUT DOMMAGE INDIRECT, ACCESSOIRE, SPÉCIAL OU CONSÉCUTIF, NI DE TOUTE PERTE DE BÉNÉFICES OU DE REVENUS.",
+        "paragraph2": "Notre responsabilité totale envers vous pour toutes les réclamations découlant de ou liées à l'utilisation du Service ne dépassera pas le montant que vous nous avez payé au cours des douze (12) mois précédant la réclamation."
+      },
+      "indemnification": {
+        "title": "Indemnisation",
+        "intro": "Vous acceptez d'indemniser et de dégager de toute responsabilité l'Académie des Éleveurs, ses dirigeants, administrateurs, employés et agents contre toute réclamation, responsabilité, dommage et dépense découlant de ou liés à :",
+        "items": [
+          "Votre accès ou utilisation du Service",
+          "Votre violation de ces Conditions",
+          "Votre violation des droits d'autrui",
+          "Votre contenu généré par l'utilisateur"
+        ]
+      },
+      "termination": {
+        "title": "Résiliation",
+        "paragraph1": "Nous pouvons résilier ou suspendre votre compte et votre accès au Service immédiatement, sans préavis ni responsabilité, pour quelque raison que ce soit, y compris si vous enfreignez ces Conditions.",
+        "paragraph2": "Lors de la résiliation, votre droit d'utiliser le Service cessera immédiatement. Toutes les dispositions de ces Conditions qui, par leur nature, devraient survivre à la résiliation survivront, y compris les dispositions relatives à la propriété, aux exclusions de garantie et aux limitations de responsabilité."
+      },
+      "governingLaw": {
+        "title": "Droit applicable",
+        "paragraph1": "Ces Conditions sont régies et interprétées conformément aux lois du Cameroun, sans égard aux dispositions relatives aux conflits de lois.",
+        "paragraph2": "Tout litige découlant de ou lié à ces Conditions ou au Service sera soumis à la juridiction exclusive des tribunaux situés au Cameroun."
+      },
+      "changes": {
+        "title": "Modifications des conditions",
+        "paragraph1": "Nous nous réservons le droit, à notre seule discrétion, de modifier ou de remplacer ces Conditions à tout moment. Si une révision est importante, nous fournirons un préavis d'au moins 30 jours avant l'entrée en vigueur des nouvelles conditions.",
+        "paragraph2": "En continuant à accéder ou à utiliser notre Service après l'entrée en vigueur de toute révision, vous acceptez d'être lié par les conditions révisées."
+      },
+      "contact": {
+        "title": "Informations de contact",
+        "paragraph1": "Si vous avez des questions concernant ces Conditions d'Utilisation, veuillez nous contacter via les coordonnées affichées ci-dessous."
+      }
+    },
+    "contactCard": {
+      "heading": "Des questions sur ces conditions ?",
+      "subtext": "Contactez-nous pour toute question concernant ces Conditions d'Utilisation.",
+      "whatsappLabel": "WhatsApp",
+      "emailLabel": "Email",
+      "addressLabel": "Adresse",
+      "addressValue": "Cameroun"
+    },
+    "closingNote": "En utilisant nos services, vous reconnaissez avoir lu, compris et accepté d'être lié par ces Conditions d'Utilisation."
+  }
+}

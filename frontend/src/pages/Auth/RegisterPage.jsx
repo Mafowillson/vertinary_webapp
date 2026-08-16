@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../contexts/AuthContext'
+import { useLanguage } from '../../contexts/LanguageContext'
 import { FiAlertCircle, FiEye, FiEyeOff, FiArrowRight } from 'react-icons/fi'
 import AuthLayout from '../../components/Layout/AuthLayout'
 
@@ -20,16 +21,16 @@ const getStrength = (pwd) => {
   return score
 }
 
-const STRENGTH_META = [
-  { label: 'Très faible', color: 'bg-red-500' },
-  { label: 'Faible',      color: 'bg-orange-400' },
-  { label: 'Moyen',       color: 'bg-yellow-400' },
-  { label: 'Fort',        color: 'bg-green-400' },
-  { label: 'Très fort',   color: 'bg-[#1A7A6E]' },
-]
-
 const PasswordStrength = ({ password }) => {
+  const { t } = useLanguage()
   if (!password) return null
+  const STRENGTH_META = [
+    { label: t('register.strengthVeryWeak', { ns: 'auth' }), color: 'bg-red-500' },
+    { label: t('register.strengthWeak', { ns: 'auth' }),      color: 'bg-orange-400' },
+    { label: t('register.strengthMedium', { ns: 'auth' }),    color: 'bg-yellow-400' },
+    { label: t('register.strengthStrong', { ns: 'auth' }),    color: 'bg-green-400' },
+    { label: t('register.strengthVeryStrong', { ns: 'auth' }), color: 'bg-[#1A7A6E]' },
+  ]
   const score = getStrength(password)
   const meta = STRENGTH_META[score] || STRENGTH_META[0]
   return (
@@ -59,6 +60,7 @@ const RegisterPage = () => {
   const [loading, setLoading] = useState(false)
 
   const { register } = useAuth()
+  const { t } = useLanguage()
   const navigate = useNavigate()
 
   const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value })
@@ -68,11 +70,11 @@ const RegisterPage = () => {
     setError('')
 
     if (formData.password !== formData.confirmPassword) {
-      setError('Les mots de passe ne correspondent pas.')
+      setError(t('passwordsDoNotMatch', { ns: 'errors' }))
       return
     }
     if (formData.password.length < 8) {
-      setError('Le mot de passe doit contenir au moins 8 caractères.')
+      setError(t('common.passwordTooShort', { ns: 'auth' }))
       return
     }
 
@@ -81,7 +83,7 @@ const RegisterPage = () => {
       await register({ name: formData.name, email: formData.email, password: formData.password })
       navigate('/login', { replace: true, state: { registrationSuccess: true, email: formData.email } })
     } catch (err) {
-      setError(err.message || err.response?.data?.message || "Erreur lors de l'inscription. Veuillez réessayer.")
+      setError(err.message || err.response?.data?.message || t('register.error', { ns: 'auth' }))
     } finally {
       setLoading(false)
     }
@@ -90,14 +92,14 @@ const RegisterPage = () => {
   const passwordsMatch = formData.confirmPassword && formData.password === formData.confirmPassword
 
   return (
-    <AuthLayout quote="Rejoignez des milliers d'éleveurs qui apprennent chaque jour.">
+    <AuthLayout quote={t('register.quote', { ns: 'auth' })}>
       <div className="space-y-6">
 
         {/* Heading */}
         <div>
-          <h1 className="text-2xl font-extrabold text-gray-900">Créer votre compte</h1>
+          <h1 className="text-2xl font-extrabold text-gray-900">{t('register.title', { ns: 'auth' })}</h1>
           <p className="mt-1 text-sm text-gray-500">
-            Démarrez votre parcours vétérinaire dès aujourd'hui.
+            {t('register.subtitle', { ns: 'auth' })}
           </p>
         </div>
 
@@ -115,7 +117,7 @@ const RegisterPage = () => {
           {/* Full name */}
           <div className="space-y-1.5">
             <label htmlFor="name" className="block text-sm font-semibold text-gray-700">
-              Nom complet
+              {t('register.nameLabel', { ns: 'auth' })}
             </label>
             <input
               id="name"
@@ -125,7 +127,7 @@ const RegisterPage = () => {
               required
               value={formData.name}
               onChange={handleChange}
-              placeholder="Jean Dupont"
+              placeholder={t('register.namePlaceholder', { ns: 'auth' })}
               className="w-full px-4 py-3 text-sm border border-gray-200 rounded-xl bg-gray-50 focus:bg-white focus:border-[#1A7A6E] focus:ring-2 focus:ring-[#1A7A6E]/20 outline-none transition-all placeholder-gray-400"
             />
           </div>
@@ -133,7 +135,7 @@ const RegisterPage = () => {
           {/* Email */}
           <div className="space-y-1.5">
             <label htmlFor="email" className="block text-sm font-semibold text-gray-700">
-              Adresse email
+              {t('register.emailLabel', { ns: 'auth' })}
             </label>
             <input
               id="email"
@@ -143,7 +145,7 @@ const RegisterPage = () => {
               required
               value={formData.email}
               onChange={handleChange}
-              placeholder="jean@exemple.com"
+              placeholder={t('register.emailPlaceholder', { ns: 'auth' })}
               className="w-full px-4 py-3 text-sm border border-gray-200 rounded-xl bg-gray-50 focus:bg-white focus:border-[#1A7A6E] focus:ring-2 focus:ring-[#1A7A6E]/20 outline-none transition-all placeholder-gray-400"
             />
           </div>
@@ -151,7 +153,7 @@ const RegisterPage = () => {
           {/* Password */}
           <div className="space-y-1.5">
             <label htmlFor="password" className="block text-sm font-semibold text-gray-700">
-              Mot de passe
+              {t('register.passwordLabel', { ns: 'auth' })}
             </label>
             <div className="relative">
               <input
@@ -169,7 +171,7 @@ const RegisterPage = () => {
                 type="button"
                 onClick={() => setShowPassword(showPassword)}
                 className="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
-                aria-label={showPassword ? 'Masquer' : 'Afficher'}
+                aria-label={showPassword ? t('login.hidePassword', { ns: 'auth' }) : t('login.showPassword', { ns: 'auth' })}
               >
                 {showPassword ? <FiEyeOff className="w-4 h-4" /> : <FiEye className="w-4 h-4" />}
               </button>
@@ -180,7 +182,7 @@ const RegisterPage = () => {
           {/* Confirm password */}
           <div className="space-y-1.5">
             <label htmlFor="confirmPassword" className="block text-sm font-semibold text-gray-700">
-              Confirmer le mot de passe
+              {t('register.confirmPasswordLabel', { ns: 'auth' })}
             </label>
             <div className="relative">
               <input
@@ -204,13 +206,13 @@ const RegisterPage = () => {
                 type="button"
                 onClick={() => setShowConfirm(!showConfirm)}
                 className="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
-                aria-label={showConfirm ? 'Masquer' : 'Afficher'}
+                aria-label={showConfirm ? t('login.hidePassword', { ns: 'auth' }) : t('login.showPassword', { ns: 'auth' })}
               >
                 {showConfirm ? <FiEyeOff className="w-4 h-4" /> : <FiEye className="w-4 h-4" />}
               </button>
             </div>
             {formData.confirmPassword && !passwordsMatch && (
-              <p className="text-xs text-red-500 font-medium">Les mots de passe ne correspondent pas.</p>
+              <p className="text-xs text-red-500 font-medium">{t('passwordsDoNotMatch', { ns: 'errors' })}</p>
             )}
           </div>
 
@@ -221,26 +223,26 @@ const RegisterPage = () => {
             className="w-full flex items-center justify-center gap-2 bg-[#1A7A6E] hover:bg-[#155f55] text-white font-bold py-3 rounded-xl transition-all duration-200 shadow-sm hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed mt-2"
           >
             {loading ? (
-              <><Spinner /> Inscription en cours...</>
+              <><Spinner /> {t('register.loading', { ns: 'auth' })}</>
             ) : (
-              <>Créer mon compte <FiArrowRight className="w-4 h-4" /></>
+              <>{t('register.submitButton', { ns: 'auth' })} <FiArrowRight className="w-4 h-4" /></>
             )}
           </button>
         </form>
 
         {/* Login link */}
         <p className="text-center text-sm text-gray-500">
-          Vous avez déjà un compte ?{' '}
+          {t('register.hasAccount', { ns: 'auth' })}{' '}
           <Link to="/login" className="font-bold text-[#1A7A6E] hover:text-[#155f55] transition-colors">
-            Se connecter
+            {t('register.loginLink', { ns: 'auth' })}
           </Link>
         </p>
 
         {/* Legal */}
         <div className="flex items-center justify-center gap-4 pt-2 border-t border-gray-100 text-xs text-gray-400">
-          <Link to="/privacy" className="hover:text-gray-600 transition-colors">Confidentialité</Link>
+          <Link to="/privacy" className="hover:text-gray-600 transition-colors">{t('footer.privacyShort', { ns: 'common' })}</Link>
           <span>·</span>
-          <Link to="/terms" className="hover:text-gray-600 transition-colors">Conditions</Link>
+          <Link to="/terms" className="hover:text-gray-600 transition-colors">{t('footer.termsShort', { ns: 'common' })}</Link>
         </div>
 
       </div>

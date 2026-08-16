@@ -1,0 +1,159 @@
+{
+  "list": {
+    "header": {
+      "title": "Content management",
+      "subtitle": "Manage your products and digital content",
+      "addButton": "Add a product"
+    },
+    "stats": {
+      "total": { "label": "Total products", "change": "+2 this month" },
+      "featured": { "label": "Featured products" },
+      "sales": { "label": "Total sales", "change": "+12.5%" },
+      "revenue": { "label": "Total revenue" }
+    },
+    "search": {
+      "placeholder": "Search products by name or description..."
+    },
+    "sort": {
+      "recent": "Most recent",
+      "name": "Name (A-Z)",
+      "price": "Price (highest first)",
+      "sales": "Best sellers"
+    },
+    "empty": {
+      "title": "No products found",
+      "searchHint": "Try adjusting your search terms",
+      "noProductsHint": "Start by adding your first product",
+      "addFirstButton": "Add your first product"
+    },
+    "card": {
+      "featuredBadge": "Featured",
+      "salesCount": "{{count}} sales"
+    },
+    "listItem": {
+      "priceLabel": "Price: "
+    },
+    "actions": {
+      "edit": "Edit",
+      "delete": "Delete"
+    },
+    "confirm": {
+      "delete": "Are you sure you want to delete this product?"
+    },
+    "errors": {
+      "loadFailed": "Unable to load products.",
+      "deleteFailed": "Error while deleting"
+    }
+  },
+  "form": {
+    "header": {
+      "editTitle": "Edit product",
+      "createTitle": "Create a new product",
+      "editSubtitle": "Update the product information",
+      "createSubtitle": "Add a new product to your catalogue"
+    },
+    "success": {
+      "updated": "Product updated successfully!",
+      "created": "Product created successfully! Now add its content (videos, audio, or PDFs) below."
+    },
+    "errors": {
+      "titleRequired": "Title is required",
+      "descriptionRequired": "Description is required",
+      "priceRequired": "A valid price is required",
+      "originalPriceInvalid": "The original price must be higher than the current price",
+      "saveFailed": "Failed to save the product. Please try again."
+    },
+    "sections": {
+      "basicInfo": "Basic information",
+      "pricing": "Pricing",
+      "media": "Product image",
+      "inventory": "Inventory & Settings"
+    },
+    "fields": {
+      "title": {
+        "label": "Product title",
+        "placeholder": "e.g. Advanced guide to cattle farming"
+      },
+      "description": {
+        "label": "Description",
+        "placeholder": "Provide a detailed description of the product..."
+      },
+      "price": {
+        "label": "Current price (FCFA)"
+      },
+      "originalPrice": {
+        "label": "Original price (FCFA)",
+        "hint": "(for discounts)",
+        "discountLabel": "Discount:",
+        "discountValue": "{{percent}}%"
+      },
+      "image": {
+        "label": "Product image",
+        "uploadButton": "Upload an image",
+        "uploading": "Uploading...",
+        "hint": "JPG, PNG, WEBP or GIF — 10MB max.",
+        "previewAlt": "Preview",
+        "changeButton": "Change image",
+        "uploadError": "Failed to upload the image."
+      },
+      "stock": {
+        "label": "Stock quantity",
+        "placeholder": "0",
+        "hint": "Leave blank or 0 for unlimited stock"
+      },
+      "offerEndDate": {
+        "label": "Offer end date",
+        "hint": "Set when the special offer expires"
+      },
+      "featured": {
+        "label": "Featured product",
+        "hint": "Featured products are highlighted and prominently displayed on the site"
+      }
+    },
+    "buttons": {
+      "done": "Done",
+      "cancel": "Cancel",
+      "saving": "Saving...",
+      "saved": "Saved!",
+      "update": "Update product",
+      "create": "Create product"
+    }
+  },
+  "lessons": {
+    "header": {
+      "title": "Course content (lessons)",
+      "subtitle": "Buyers watch/listen/read this content directly in the app — no download is offered."
+    },
+    "types": {
+      "video": "Video",
+      "audio": "Audio",
+      "pdf": "PDF (ebook)"
+    },
+    "empty": {
+      "title": "No lessons yet."
+    },
+    "actions": {
+      "moveUp": "Move up",
+      "moveDown": "Move down",
+      "delete": "Delete"
+    },
+    "confirm": {
+      "delete": "Delete this lesson? This action cannot be undone."
+    },
+    "errors": {
+      "loadFailed": "Unable to load lessons.",
+      "titleRequired": "Lesson title is required",
+      "fileRequired": "Select a file to upload",
+      "uploadFailed": "Failed to upload the lesson.",
+      "deleteFailed": "Failed to delete the lesson.",
+      "reorderFailed": "Failed to reorder."
+    },
+    "form": {
+      "title": "Add a lesson",
+      "titlePlaceholder": "Lesson title",
+      "descriptionPlaceholder": "Description (optional)",
+      "uploading": "Uploading... {{progress}}%",
+      "submit": "Upload lesson"
+    }
+  }
+}

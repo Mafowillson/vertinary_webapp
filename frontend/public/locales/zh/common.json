@@ -15,14 +15,27 @@
     "toggleMenu": "切换菜单"
   },
   "footer": {
-    "rights": "版权所有",
     "contact": "联系我们",
     "privacy": "隐私政策",
     "terms": "服务条款",
-    "quickLinks": "快速链接",
-    "description": "您在农场动物饲养、健康与福利方面的专业伙伴：兽医级指南、课程与教材。",
-    "developedBy": "开发方",
-    "store": "商店"
+    "findResources": "查找资源",
+    "ourBooks": "图书与电子书",
+    "onlineTraining": "在线培训",
+    "proServices": "专业服务",
+    "support": "支持",
+    "helpCenter": "帮助中心",
+    "contactUs": "联系我们",
+    "brandDescription": "致力于分享兽医知识的平台——为喀麦隆及全球各地的养殖者提供图书、培训与资源。",
+    "brandName": "Academie des Eleveurs",
+    "country": "喀麦隆 🇨🇲",
+    "stayInformed": "获取最新资讯",
+    "emailPlaceholder": "您的邮箱",
+    "copyright": "© {{year}} Academie des Eleveurs.",
+    "foundedWith": "创立于",
+    "byAuthor": "由 {{name}}",
+    "privacyShort": "隐私",
+    "termsShort": "条款",
+    "language": "法语（CM）"
   },
   "buttons": {
     "payNow": "立即支付",
@@ -38,7 +51,8 @@
     "viewDetails": "查看详情",
     "download": "下载",
     "watchNow": "立即观看",
-    "readNow": "立即阅读"
+    "readNow": "立即阅读",
+    "addToCart": "添加"
   },
   "status": {
     "loading": "加载中…",
@@ -182,5 +196,24 @@
     "article": "件",
     "articles": "件",
     "productsLabel": "产品"
+  },
+  "productCard": {
+    "formatPdf": "PDF",
+    "formatVideo": "视频",
+    "formatEbook": "电子书",
+    "formatAudio": "音频",
+    "defaultCategory": "动物健康",
+    "topBadge": "热门",
+    "limitedOffer": "限时优惠",
+    "dayAbbr": "天",
+    "hourAbbr": "时",
+    "minuteAbbr": "分"
+  },
+  "chat": {
+    "openLabel": "打开聊天",
+    "closeLabel": "关闭聊天",
+    "title": "客服聊天",
+    "comingSoon": "客服聊天即将上线！",
+    "contactSocial": "欢迎通过我们的社交媒体与我们联系。"
   }
 }

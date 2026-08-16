@@ -2,10 +2,10 @@ import { useState, useEffect } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import { productService } from '../services/productService'
 import { orderService } from '../services/orderService'
-import { formatCurrency } from '../utils/formatters'
 import { useLanguage } from '../contexts/LanguageContext'
 import { useAuth } from '../contexts/AuthContext'
 import { useCart } from '../contexts/CartContext'
+import { useCurrency } from '../contexts/CurrencyContext'
 import StripePaymentForm from '../components/PaymentForms/StripePaymentForm'
 import FlutterwavePaymentForm from '../components/PaymentForms/FlutterwavePaymentForm'
 import { 
@@ -29,6 +29,7 @@ const CheckoutPage = () => {
   const tlib = (k, o) => t(k, { ns: 'library', ...o })
   const { user, isAuthenticated } = useAuth()
   const { cartItems, getCartTotal, clearCart } = useCart()
+  const { format } = useCurrency()
   const [products, setProducts] = useState([])
   const [loading, setLoading] = useState(true)
   const [processing, setProcessing] = useState(false)
@@ -104,7 +105,7 @@ const CheckoutPage = () => {
         })
 
         if (!order || !order.id) {
-          throw new Error('Failed to create order')
+          throw new Error(tp('payment.orderCreationFailed'))
         }
 
         // Process payment for each order
@@ -195,7 +196,7 @@ const CheckoutPage = () => {
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="you@example.com"
+                  placeholder={tp('payment.emailPlaceholder')}
                   className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
                   disabled={isAuthenticated}
                 />
@@ -303,7 +304,7 @@ const CheckoutPage = () => {
                           {quantity > 1 && ` × ${quantity}`}
                         </p>
                         <p className="text-sm font-semibold text-gray-900 mt-1">
-                          {formatCurrency(price * quantity)}
+                          {format(price * quantity)}
                         </p>
                       </div>
                     </div>
@@ -326,21 +327,21 @@ const CheckoutPage = () => {
                     {tp('cart.subtotal')} ({products.length}{' '}
                     {products.length === 1 ? tc('misc.article') : tc('misc.articles')})
                   </span>
-                  <span>{formatCurrency(subtotal)}</span>
+                  <span>{format(subtotal)}</span>
                 </div>
                 <div className="flex justify-between text-gray-600">
                   <span>{tp('cart.taxes')}</span>
-                  <span>{formatCurrency(taxes)}</span>
+                  <span>{format(taxes)}</span>
                 </div>
                 {products.length === 1 && products[0].originalPrice && products[0].originalPrice > products[0].price && (
                   <div className="flex justify-between text-gray-500 text-sm">
                     <span>{tp('payment.reduction')}</span>
-                    <span className="text-green-600">-{formatCurrency(products[0].originalPrice - products[0].price)}</span>
+                    <span className="text-green-600">-{format(products[0].originalPrice - products[0].price)}</span>
                   </div>
                 )}
                 <div className="border-t pt-3 flex justify-between font-bold text-lg">
                   <span>{tp('cart.total')}</span>
-                  <span className="text-green-600">{formatCurrency(total)}</span>
+                  <span className="text-green-600">{format(total)}</span>
                 </div>
               </div>
 

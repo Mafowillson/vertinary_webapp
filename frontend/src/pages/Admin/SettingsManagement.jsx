@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useApp } from '../../contexts/AppContext'
+import { useLanguage } from '../../contexts/LanguageContext'
 import {
   FiSave,
   FiMessageCircle,
@@ -14,10 +15,13 @@ import {
   FiExternalLink,
   FiInfo,
   FiDollarSign,
+  FiRefreshCw,
 } from 'react-icons/fi'
 
 const SettingsManagement = () => {
-  const { socialLinks, updateSocialLinks, siteConfig } = useApp()
+  const { socialLinks, updateSocialLinks, siteConfig, updateExchangeRates } = useApp()
+  const { t } = useLanguage()
+  const ts = (key, options) => t(key, { ns: 'adminSettings', ...options })
   const [activeTab, setActiveTab] = useState('social')
   const [formData, setFormData] = useState({
     whatsapp: '',
@@ -27,6 +31,71 @@ const SettingsManagement = () => {
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState({ type: '', text: '' })
   const [hasChanges, setHasChanges] = useState(false)
+
+  // Exchange rates are stored as "target units per 1 FCFA" (small decimals, e.g.
+  // 0.00164), which isn't how anyone thinks about a rate. The form works in the
+  // inverse, more natural direction ("how many FCFA is 1 USD worth") and converts
+  // back to the stored shape on save.
+  const ratesToFcfaPerUnit = (rates) => ({
+    USD: rates?.USD ? (1 / rates.USD).toFixed(2) : '',
+    EUR: rates?.EUR ? (1 / rates.EUR).toFixed(2) : '',
+    NGN: rates?.NGN ? (1 / rates.NGN).toFixed(2) : '',
+  })
+  const [rateFormData, setRateFormData] = useState(() => ratesToFcfaPerUnit(siteConfig.exchangeRates))
+  const [rateLoading, setRateLoading] = useState(false)
+  const [rateMessage, setRateMessage] = useState({ type: '', text: '' })
+  const [rateHasChanges, setRateHasChanges] = useState(false)
+
+  useEffect(() => {
+    setRateFormData(ratesToFcfaPerUnit(siteConfig.exchangeRates))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [siteConfig.exchangeRates])
+
+  useEffect(() => {
+    const original = ratesToFcfaPerUnit(siteConfig.exchangeRates)
+    setRateHasChanges(
+      rateFormData.USD !== original.USD ||
+      rateFormData.EUR !== original.EUR ||
+      rateFormData.NGN !== original.NGN
+    )
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [rateFormData, siteConfig.exchangeRates])
+
+  const handleRateChange = (e) => {
+    const { name, value } = e.target
+    setRateFormData((prev) => ({ ...prev, [name]: value }))
+    if (rateMessage.text) setRateMessage({ type: '', text: '' })
+  }
+
+  const isRateValid = (value) => value === '' || (Number(value) > 0 && !Number.isNaN(Number(value)))
+
+  const handleRateSubmit = async (e) => {
+    e.preventDefault()
+    if (!isRateValid(rateFormData.USD) || !isRateValid(rateFormData.EUR) || !isRateValid(rateFormData.NGN)) {
+      setRateMessage({ type: 'error', text: ts('exchangeRates.invalidRate') })
+      return
+    }
+    setRateLoading(true)
+    setRateMessage({ type: '', text: '' })
+    try {
+      const payload = {}
+      if (rateFormData.USD) payload.USD = 1 / Number(rateFormData.USD)
+      if (rateFormData.EUR) payload.EUR = 1 / Number(rateFormData.EUR)
+      if (rateFormData.NGN) payload.NGN = 1 / Number(rateFormData.NGN)
+      await updateExchangeRates(payload)
+      setRateMessage({ type: 'success', text: ts('messages.updateSuccess') })
+      setTimeout(() => setRateMessage({ type: '', text: '' }), 5000)
+    } catch (error) {
+      setRateMessage({ type: 'error', text: ts('messages.updateError') })
+    } finally {
+      setRateLoading(false)
+    }
+  }
+
+  const handleRateReset = () => {
+    setRateFormData(ratesToFcfaPerUnit(siteConfig.exchangeRates))
+    setRateMessage({ type: '', text: '' })
+  }
 
   useEffect(() => {
     setFormData({
@@ -64,13 +133,13 @@ const SettingsManagement = () => {
       await updateSocialLinks(formData)
       setMessage({
         type: 'success',
-        text: 'Paramètres mis à jour avec succès !',
+        text: ts('messages.updateSuccess'),
       })
       setTimeout(() => setMessage({ type: '', text: '' }), 5000)
     } catch (error) {
       setMessage({
         type: 'error',
-        text: 'Échec de la mise à jour des paramètres. Veuillez réessayer.',
+        text: ts('messages.updateError'),
       })
     } finally {
       setLoading(false)
@@ -97,16 +166,17 @@ const SettingsManagement = () => {
   }
 
   const tabs = [
-    { id: 'social', label: 'Réseaux sociaux', icon: FiLink },
-    { id: 'general', label: 'Général', icon: FiSettings },
+    { id: 'social', label: ts('tabs.social'), icon: FiLink },
+    { id: 'exchangeRates', label: ts('tabs.exchangeRates'), icon: FiDollarSign },
+    { id: 'general', label: ts('tabs.general'), icon: FiSettings },
   ]
 
   return (
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 mb-1">Paramètres</h1>
-        <p className="text-gray-600">Gérer la configuration du site et les liens des réseaux sociaux</p>
+        <h1 className="text-2xl font-bold text-gray-900 mb-1">{ts('header.title')}</h1>
+        <p className="text-gray-600">{ts('header.subtitle')}</p>
       </div>
 
       {/* Success/Error Message */}
@@ -168,10 +238,10 @@ const SettingsManagement = () => {
               <div className="bg-gradient-to-r from-primary-50 to-primary-100 px-6 py-4 border-b border-gray-200">
                 <h2 className="text-lg font-semibold text-gray-900 flex items-center space-x-2">
                   <FiLink className="w-5 h-5 text-primary-600" />
-                  <span>Liens des réseaux sociaux</span>
+                  <span>{ts('socialLinks.sectionTitle')}</span>
                 </h2>
                 <p className="text-sm text-gray-600 mt-1">
-                  Mettez à jour vos liens de réseaux sociaux qui apparaissent sur tout le site
+                  {ts('socialLinks.sectionSubtitle')}
                 </p>
               </div>
 
@@ -185,7 +255,7 @@ const SettingsManagement = () => {
                     <div className="p-2 bg-green-100 rounded-lg">
                       <FiMessageCircle className="w-5 h-5 text-green-600" />
                     </div>
-                    <span>WhatsApp</span>
+                    <span>{ts('socialLinks.whatsapp.label')}</span>
                   </label>
                   <div className="relative">
                     <input
@@ -194,7 +264,7 @@ const SettingsManagement = () => {
                       name="whatsapp"
                       value={formData.whatsapp}
                       onChange={handleChange}
-                      placeholder="https://wa.me/237699933135"
+                      placeholder={ts('socialLinks.whatsapp.placeholder')}
                       className={`w-full pl-4 pr-10 py-3 border rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors ${
                         formData.whatsapp && !validateUrl(formData.whatsapp)
                           ? 'border-red-300 bg-red-50'
@@ -207,7 +277,7 @@ const SettingsManagement = () => {
                         target="_blank"
                         rel="noopener noreferrer"
                         className="absolute right-3 top-1/2 transform -translate-y-1/2 text-primary-600 hover:text-primary-700"
-                        title="Test link"
+                        title={ts('socialLinks.testLinkTitle')}
                       >
                         <FiExternalLink className="w-5 h-5" />
                       </a>
@@ -215,12 +285,12 @@ const SettingsManagement = () => {
                   </div>
                   <div className="flex items-start space-x-2 text-xs text-gray-500">
                     <FiInfo className="w-4 h-4 mt-0.5 flex-shrink-0" />
-                    <span>Format : https://wa.me/[indicatif pays][numéro de téléphone]</span>
+                    <span>{ts('socialLinks.whatsapp.hint')}</span>
                   </div>
                   {formData.whatsapp && !validateUrl(formData.whatsapp) && (
                     <p className="text-xs text-red-600 flex items-center space-x-1">
                       <FiAlertCircle className="w-4 h-4" />
-                      <span>Veuillez entrer une URL valide</span>
+                      <span>{ts('messages.invalidUrl')}</span>
                     </p>
                   )}
                 </div>
@@ -234,7 +304,7 @@ const SettingsManagement = () => {
                     <div className="p-2 bg-blue-100 rounded-lg">
                       <FiFacebook className="w-5 h-5 text-blue-600" />
                     </div>
-                    <span>Facebook</span>
+                    <span>{ts('socialLinks.facebook.label')}</span>
                   </label>
                   <div className="relative">
                     <input
@@ -243,7 +313,7 @@ const SettingsManagement = () => {
                       name="facebook"
                       value={formData.facebook}
                       onChange={handleChange}
-                      placeholder="https://web.facebook.com/your-page"
+                      placeholder={ts('socialLinks.facebook.placeholder')}
                       className={`w-full pl-4 pr-10 py-3 border rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors ${
                         formData.facebook && !validateUrl(formData.facebook)
                           ? 'border-red-300 bg-red-50'
@@ -256,7 +326,7 @@ const SettingsManagement = () => {
                         target="_blank"
                         rel="noopener noreferrer"
                         className="absolute right-3 top-1/2 transform -translate-y-1/2 text-primary-600 hover:text-primary-700"
-                        title="Test link"
+                        title={ts('socialLinks.testLinkTitle')}
                       >
                         <FiExternalLink className="w-5 h-5" />
                       </a>
@@ -264,12 +334,12 @@ const SettingsManagement = () => {
                   </div>
                   <div className="flex items-start space-x-2 text-xs text-gray-500">
                     <FiInfo className="w-4 h-4 mt-0.5 flex-shrink-0" />
-                    <span>Lien vers votre page ou groupe Facebook</span>
+                    <span>{ts('socialLinks.facebook.hint')}</span>
                   </div>
                   {formData.facebook && !validateUrl(formData.facebook) && (
                     <p className="text-xs text-red-600 flex items-center space-x-1">
                       <FiAlertCircle className="w-4 h-4" />
-                      <span>Veuillez entrer une URL valide</span>
+                      <span>{ts('messages.invalidUrl')}</span>
                     </p>
                   )}
                 </div>
@@ -283,7 +353,7 @@ const SettingsManagement = () => {
                     <div className="p-2 bg-red-100 rounded-lg">
                       <FiYoutube className="w-5 h-5 text-red-600" />
                     </div>
-                    <span>YouTube</span>
+                    <span>{ts('socialLinks.youtube.label')}</span>
                   </label>
                   <div className="relative">
                     <input
@@ -292,7 +362,7 @@ const SettingsManagement = () => {
                       name="youtube"
                       value={formData.youtube}
                       onChange={handleChange}
-                      placeholder="https://www.youtube.com/@your-channel"
+                      placeholder={ts('socialLinks.youtube.placeholder')}
                       className={`w-full pl-4 pr-10 py-3 border rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors ${
                         formData.youtube && !validateUrl(formData.youtube)
                           ? 'border-red-300 bg-red-50'
@@ -305,7 +375,7 @@ const SettingsManagement = () => {
                         target="_blank"
                         rel="noopener noreferrer"
                         className="absolute right-3 top-1/2 transform -translate-y-1/2 text-primary-600 hover:text-primary-700"
-                        title="Test link"
+                        title={ts('socialLinks.testLinkTitle')}
                       >
                         <FiExternalLink className="w-5 h-5" />
                       </a>
@@ -313,12 +383,12 @@ const SettingsManagement = () => {
                   </div>
                   <div className="flex items-start space-x-2 text-xs text-gray-500">
                     <FiInfo className="w-4 h-4 mt-0.5 flex-shrink-0" />
-                    <span>Lien vers votre chaîne YouTube</span>
+                    <span>{ts('socialLinks.youtube.hint')}</span>
                   </div>
                   {formData.youtube && !validateUrl(formData.youtube) && (
                     <p className="text-xs text-red-600 flex items-center space-x-1">
                       <FiAlertCircle className="w-4 h-4" />
-                      <span>Veuillez entrer une URL valide</span>
+                      <span>{ts('messages.invalidUrl')}</span>
                     </p>
                   )}
                 </div>
@@ -333,7 +403,7 @@ const SettingsManagement = () => {
                   onClick={handleReset}
                   className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors font-medium"
                 >
-                  Réinitialiser
+                  {ts('socialLinks.reset')}
                 </button>
               )}
               <button
@@ -342,7 +412,124 @@ const SettingsManagement = () => {
                 className="px-6 py-2 bg-primary-600 text-white rounded-lg font-medium hover:bg-primary-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2"
               >
                 <FiSave className="w-5 h-5" />
-                <span>{loading ? 'Enregistrement...' : 'Enregistrer les modifications'}</span>
+                <span>{loading ? ts('socialLinks.saving') : ts('socialLinks.save')}</span>
+              </button>
+            </div>
+          </form>
+        )}
+
+        {activeTab === 'exchangeRates' && (
+          <form onSubmit={handleRateSubmit} className="space-y-6">
+            <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+              <div className="bg-gradient-to-r from-primary-50 to-primary-100 px-6 py-4 border-b border-gray-200">
+                <h2 className="text-lg font-semibold text-gray-900 flex items-center space-x-2">
+                  <FiDollarSign className="w-5 h-5 text-primary-600" />
+                  <span>{ts('exchangeRates.sectionTitle')}</span>
+                </h2>
+                <p className="text-sm text-gray-600 mt-1">{ts('exchangeRates.sectionSubtitle')}</p>
+              </div>
+
+              <div className="p-6 space-y-6">
+                {/* Base currency (fixed) */}
+                <div className="flex items-center justify-between bg-gray-50 border border-gray-200 rounded-lg px-4 py-3">
+                  <span className="text-sm font-semibold text-gray-700">{ts('exchangeRates.baseCurrencyNote')}</span>
+                  <span className="text-gray-900 font-bold">1 FCFA</span>
+                </div>
+
+                {/* USD / EUR / NGN */}
+                {[
+                  { name: 'USD', labelKey: 'exchangeRates.usd' },
+                  { name: 'EUR', labelKey: 'exchangeRates.eur' },
+                  { name: 'NGN', labelKey: 'exchangeRates.ngn' },
+                ].map(({ name, labelKey }) => (
+                  <div key={name} className="space-y-2">
+                    <label htmlFor={name} className="block text-sm font-semibold text-gray-900">
+                      {ts(`${labelKey}.label`)}
+                    </label>
+                    <div className="flex items-center gap-3">
+                      <span className="text-sm text-gray-500 whitespace-nowrap">1 {name} =</span>
+                      <input
+                        type="number"
+                        id={name}
+                        name={name}
+                        min="0"
+                        step="0.01"
+                        value={rateFormData[name]}
+                        onChange={handleRateChange}
+                        className={`w-40 px-4 py-2.5 border rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors ${
+                          !isRateValid(rateFormData[name]) ? 'border-red-300 bg-red-50' : 'border-gray-300'
+                        }`}
+                      />
+                      <span className="text-sm text-gray-500 whitespace-nowrap">{ts('exchangeRates.unitSuffix')} {name}</span>
+                    </div>
+                    <p className="text-xs text-gray-500">{ts(`${labelKey}.hint`)}</p>
+                    {!isRateValid(rateFormData[name]) && (
+                      <p className="text-xs text-red-600 flex items-center space-x-1">
+                        <FiAlertCircle className="w-4 h-4" />
+                        <span>{ts('exchangeRates.invalidRate')}</span>
+                      </p>
+                    )}
+                  </div>
+                ))}
+
+                {/* Live preview */}
+                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                  <p className="text-sm font-semibold text-blue-900 mb-2 flex items-center gap-2">
+                    <FiRefreshCw className="w-4 h-4" />
+                    {ts('exchangeRates.previewTitle')}
+                  </p>
+                  <div className="grid grid-cols-3 gap-3 text-sm">
+                    {['USD', 'EUR', 'NGN'].map((code) => {
+                      const fcfaPerUnit = Number(rateFormData[code])
+                      const converted = fcfaPerUnit > 0 ? 50000 / fcfaPerUnit : null
+                      return (
+                        <div key={code} className="text-blue-800">
+                          <span className="text-blue-500">{ts('exchangeRates.previewLine')}</span>{' '}
+                          <span className="font-bold">
+                            {converted !== null ? `${converted.toLocaleString(undefined, { maximumFractionDigits: 2 })} ${code}` : '—'}
+                          </span>
+                        </div>
+                      )
+                    })}
+                  </div>
+                </div>
+
+                {rateMessage.text && (
+                  <div
+                    className={`p-3 rounded-lg flex items-center space-x-2 text-sm ${
+                      rateMessage.type === 'success'
+                        ? 'bg-green-50 border border-green-200 text-green-800'
+                        : 'bg-red-50 border border-red-200 text-red-800'
+                    }`}
+                  >
+                    {rateMessage.type === 'success' ? (
+                      <FiCheckCircle className="w-4 h-4 flex-shrink-0" />
+                    ) : (
+                      <FiAlertCircle className="w-4 h-4 flex-shrink-0" />
+                    )}
+                    <span>{rateMessage.text}</span>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            <div className="flex items-center justify-end space-x-3">
+              {rateHasChanges && (
+                <button
+                  type="button"
+                  onClick={handleRateReset}
+                  className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors font-medium"
+                >
+                  {ts('exchangeRates.reset')}
+                </button>
+              )}
+              <button
+                type="submit"
+                disabled={rateLoading || !rateHasChanges}
+                className="px-6 py-2 bg-primary-600 text-white rounded-lg font-medium hover:bg-primary-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2"
+              >
+                <FiSave className="w-5 h-5" />
+                <span>{rateLoading ? ts('exchangeRates.saving') : ts('exchangeRates.save')}</span>
               </button>
             </div>
           </form>
@@ -353,9 +540,9 @@ const SettingsManagement = () => {
             <div className="bg-gradient-to-r from-primary-50 to-primary-100 px-6 py-4 border-b border-gray-200">
               <h2 className="text-lg font-semibold text-gray-900 flex items-center space-x-2">
                 <FiSettings className="w-5 h-5 text-primary-600" />
-                <span>Paramètres généraux</span>
+                <span>{ts('general.sectionTitle')}</span>
               </h2>
-              <p className="text-sm text-gray-600 mt-1">Paramètres de configuration du site</p>
+              <p className="text-sm text-gray-600 mt-1">{ts('general.sectionSubtitle')}</p>
             </div>
 
             <div className="p-6 space-y-6">
@@ -363,11 +550,11 @@ const SettingsManagement = () => {
               <div className="space-y-2">
                 <label className="flex items-center space-x-2 text-sm font-semibold text-gray-900">
                   <FiGlobe className="w-5 h-5 text-primary-600" />
-                  <span>Nom du site</span>
+                  <span>{ts('general.siteName.label')}</span>
                 </label>
                 <div className="bg-gray-50 border border-gray-200 rounded-lg px-4 py-3">
                   <p className="text-gray-900 font-medium">{siteConfig.siteName}</p>
-                  <p className="text-xs text-gray-500 mt-1">Ce paramètre ne peut pas être modifié</p>
+                  <p className="text-xs text-gray-500 mt-1">{ts('general.siteName.readOnlyNote')}</p>
                 </div>
               </div>
 
@@ -375,11 +562,11 @@ const SettingsManagement = () => {
               <div className="space-y-2">
                 <label className="flex items-center space-x-2 text-sm font-semibold text-gray-900">
                   <FiDollarSign className="w-5 h-5 text-primary-600" />
-                  <span>Devise</span>
+                  <span>{ts('general.currency.label')}</span>
                 </label>
                 <div className="bg-gray-50 border border-gray-200 rounded-lg px-4 py-3">
                   <p className="text-gray-900 font-medium">{siteConfig.currency || 'FCFA'}</p>
-                  <p className="text-xs text-gray-500 mt-1">Devise par défaut pour toutes les transactions</p>
+                  <p className="text-xs text-gray-500 mt-1">{ts('general.currency.readOnlyNote')}</p>
                 </div>
               </div>
 
@@ -387,10 +574,9 @@ const SettingsManagement = () => {
                 <div className="flex items-start space-x-3">
                   <FiInfo className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
                   <div>
-                    <p className="text-sm font-medium text-blue-900 mb-1">Information</p>
+                    <p className="text-sm font-medium text-blue-900 mb-1">{ts('general.info.title')}</p>
                     <p className="text-sm text-blue-700">
-                      Les paramètres généraux sont gérés par le système. Contactez votre administrateur pour
-                      modifier le nom du site ou la devise.
+                      {ts('general.info.text')}
                     </p>
                   </div>
                 </div>

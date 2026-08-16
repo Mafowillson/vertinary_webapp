@@ -1,0 +1,75 @@
+{
+  "badge": "Administration",
+  "sidebar": {
+    "dashboard": "Tableau de bord",
+    "products": "Gestion du contenu",
+    "orders": "Commandes & Paiements",
+    "users": "Gestion des utilisateurs",
+    "analytics": "Analytique",
+    "settings": "Paramètres",
+    "sections": {
+      "management": "GESTION",
+      "system": "SYSTÈME"
+    },
+    "backToSite": "Retour au site"
+  },
+  "header": {
+    "breadcrumbRoot": "Administration"
+  },
+  "notFound": {
+    "title": "Page non trouvée",
+    "description": "La page que vous recherchez n'existe pas.",
+    "backToDashboard": "Retour au tableau de bord"
+  },
+  "errors": {
+    "loadOverview": "Impossible de charger le tableau de bord."
+  },
+  "overview": {
+    "title": "Tableau de bord",
+    "welcome": "Bienvenue, {{name}}. Voici ce qui se passe aujourd'hui à l'académie.",
+    "defaultName": "Jean"
+  },
+  "stats": {
+    "totalSales": "Ventes totales",
+    "completedOrders": "Commandes complétées",
+    "catalogProducts": "Produits au catalogue",
+    "newCustomers": "Nouveaux clients"
+  },
+  "chart": {
+    "title": "Ventes au fil du temps",
+    "periods": {
+      "weekly": "Hebdo",
+      "monthly": "Mensuel",
+      "yearly": "Annuel"
+    }
+  },
+  "summary": {
+    "title": "Résumé de la période",
+    "averageOrderValue": "Valeur moyenne des commandes",
+    "conversionRate": "Taux de conversion",
+    "conversionRatePoints": "pts",
+    "bestProduct": "Meilleur produit",
+    "noSales": "Aucune vente",
+    "manageProducts": "Gérer les produits"
+  },
+  "recentOrders": {
+    "title": "Commandes récentes",
+    "viewAll": "Voir toutes les commandes",
+    "columns": {
+      "orderNumber": "N° COMMANDE",
+      "customer": "CLIENT",
+      "product": "PRODUIT",
+      "price": "PRIX",
+      "status": "STATUT",
+      "actions": "ACTIONS"
+    },
+    "status": {
+      "paid": "PAYÉ",
+      "failed": "ÉCHOUÉ",
+      "pending": "EN ATTENTE"
+    },
+    "deletedUser": "Utilisateur supprimé",
+    "noProduct": "—",
+    "empty": "Aucune commande pour le moment."
+  }
+}

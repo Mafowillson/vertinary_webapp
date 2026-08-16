@@ -10,7 +10,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 
 from app.core.config import settings
 from app.db.database import Base
-from app.models import User, Product, Order, OrderFile, SiteConfig
+from app.models import User, Product, ProductLesson, Order, SiteConfig
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.

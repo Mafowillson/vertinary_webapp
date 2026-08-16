@@ -1,21 +1,31 @@
 {
   "title": "我的书库",
   "empty": "您还没有购买任何内容。",
+  "digitalAccess": "数字内容",
   "watchNow": "立即观看",
-  "downloadNow": "立即下载",
   "readNow": "立即阅读",
-  "progress": "进度",
   "completed": "已完成",
-  "module": "模块",
-  "of": "/",
-  "continueWatching": "继续学习",
-  "recentlyAdded": "最近添加",
-  "files": "文件",
-  "howToDownload": "如何下载？",
-  "downloadInstruction": "点击下载保存文件。",
-  "downloading": "下载中…",
-  "download": "下载",
-  "noFilesAvailable": "暂无文件。",
-  "downloadHere": "在此下载您的文档",
-  "downloadError": "下载失败，请重试。"
+  "list": {
+    "subtitle": "您购买的所有内容都在这里。",
+    "emptyCta": "浏览产品目录",
+    "purchasedOn": "购买于 {{date}}",
+    "continueButton": "继续",
+    "loadError": "无法加载您的书库。"
+  },
+  "player": {
+    "backToProducts": "返回产品列表",
+    "backToCatalog": "返回目录",
+    "contentCount": "内容（{{count}}）",
+    "contentComingSoon": "内容即将上线。",
+    "selectContent": "选择内容以开始",
+    "contentLocked": "内容已锁定",
+    "purchaseRequired": "您需要购买此产品才能访问此内容。",
+    "viewProduct": "查看产品",
+    "contentAccessError": "无法访问此内容。",
+    "lessonAccessError": "无法访问此课程。",
+    "loadError": "无法加载此内容。",
+    "accountOnlyDisclaimer": "此内容仅供您的账户使用——仅限在线观看。",
+    "pdfLoadError": "无法加载文档。",
+    "pageIndicator": "第 {{page}} 页 / 共 {{total}} 页"
+  }
 }

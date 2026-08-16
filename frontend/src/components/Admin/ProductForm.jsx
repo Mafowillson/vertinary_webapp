@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react'
 import { productService } from '../../services/productService'
+import LessonManager from './LessonManager'
+import { useLanguage } from '../../contexts/LanguageContext'
 import {
   FiX,
   FiPackage,
@@ -13,6 +15,10 @@ import {
 } from 'react-icons/fi'
 
 const ProductForm = ({ product, onClose }) => {
+  const { t } = useLanguage()
+  // Once a product exists (editing, or just created below), we can manage its lessons.
+  const [activeProductId, setActiveProductId] = useState(product?.id || null)
+  const justCreated = !product && !!activeProductId
   const [formData, setFormData] = useState({
     title: '',
     description: '',
@@ -26,6 +32,9 @@ const ProductForm = ({ product, onClose }) => {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [success, setSuccess] = useState(false)
+  const [imageUploading, setImageUploading] = useState(false)
+  const [imageUploadProgress, setImageUploadProgress] = useState(0)
+  const [imageUploadError, setImageUploadError] = useState('')
 
   useEffect(() => {
     if (product) {
@@ -57,21 +66,41 @@ const ProductForm = ({ product, onClose }) => {
     if (success) setSuccess(false)
   }
 
+  const handleImageFileChange = async (e) => {
+    const file = e.target.files?.[0]
+    e.target.value = '' // allow re-selecting the same file later
+    if (!file) return
+
+    setImageUploadError('')
+    setImageUploading(true)
+    setImageUploadProgress(0)
+    try {
+      const url = await productService.uploadProductImage(file, (evt) => {
+        if (evt.total) setImageUploadProgress(Math.round((evt.loaded / evt.total) * 100))
+      })
+      setFormData((prev) => ({ ...prev, image_url: url }))
+    } catch (err) {
+      setImageUploadError(err.message || t('form.fields.image.uploadError', { ns: 'adminProducts' }))
+    } finally {
+      setImageUploading(false)
+    }
+  }
+
   const validateForm = () => {
     if (!formData.title.trim()) {
-      setError('Le titre est requis')
+      setError(t('form.errors.titleRequired', { ns: 'adminProducts' }))
       return false
     }
     if (!formData.description?.trim()) {
-      setError('La description est requise')
+      setError(t('form.errors.descriptionRequired', { ns: 'adminProducts' }))
       return false
     }
     if (!formData.price || parseFloat(formData.price) <= 0) {
-      setError('Un prix valide est requis')
+      setError(t('form.errors.priceRequired', { ns: 'adminProducts' }))
       return false
     }
     if (formData.original_price && parseFloat(formData.original_price) <= parseFloat(formData.price)) {
-      setError('Le prix original doit être supérieur au prix actuel')
+      setError(t('form.errors.originalPriceInvalid', { ns: 'adminProducts' }))
       return false
     }
     return true
@@ -107,14 +136,13 @@ const ProductForm = ({ product, onClose }) => {
           onClose()
         }, 1000)
       } else {
-        await productService.createProduct(submitData)
+        const created = await productService.createProduct(submitData)
         setSuccess(true)
-        setTimeout(() => {
-          onClose()
-        }, 1000)
+        // Keep the modal open so lessons can be added right away instead of closing immediately.
+        setActiveProductId(created.id)
       }
     } catch (err) {
-      setError(err.response?.data?.message || err.message || 'Échec de l\'enregistrement du produit. Veuillez réessayer.')
+      setError(err.response?.data?.message || err.message || t('form.errors.saveFailed', { ns: 'adminProducts' }))
     } finally {
       setLoading(false)
     }
@@ -131,10 +159,14 @@ const ProductForm = ({ product, onClose }) => {
             </div>
             <div>
               <h2 className="text-xl font-bold text-gray-900">
-                {product ? 'Modifier le produit' : 'Créer un nouveau produit'}
+                {product
+                  ? t('form.header.editTitle', { ns: 'adminProducts' })
+                  : t('form.header.createTitle', { ns: 'adminProducts' })}
               </h2>
               <p className="text-sm text-gray-600">
-                {product ? 'Mettre à jour les informations du produit' : 'Ajouter un nouveau produit à votre catalogue'}
+                {product
+                  ? t('form.header.editSubtitle', { ns: 'adminProducts' })
+                  : t('form.header.createSubtitle', { ns: 'adminProducts' })}
               </p>
             </div>
           </div>
@@ -152,7 +184,9 @@ const ProductForm = ({ product, onClose }) => {
             <div className="bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded-lg flex items-center space-x-3">
               <FiCheckCircle className="w-5 h-5 text-green-600 flex-shrink-0" />
               <span className="font-medium">
-                {product ? 'Produit mis à jour avec succès !' : 'Produit créé avec succès !'}
+                {product
+                  ? t('form.success.updated', { ns: 'adminProducts' })
+                  : t('form.success.created', { ns: 'adminProducts' })}
               </span>
             </div>
           )}
@@ -169,12 +203,12 @@ const ProductForm = ({ product, onClose }) => {
           <div className="space-y-4">
             <h3 className="text-lg font-semibold text-gray-900 flex items-center space-x-2">
               <FiInfo className="w-5 h-5 text-primary-600" />
-              <span>Informations de base</span>
+              <span>{t('form.sections.basicInfo', { ns: 'adminProducts' })}</span>
             </h3>
 
             <div>
               <label className="block text-sm font-semibold text-gray-900 mb-2">
-                Titre du produit <span className="text-red-500">*</span>
+                {t('form.fields.title.label', { ns: 'adminProducts' })} <span className="text-red-500">*</span>
               </label>
               <input
                 type="text"
@@ -182,14 +216,14 @@ const ProductForm = ({ product, onClose }) => {
                 required
                 value={formData.title}
                 onChange={handleChange}
-                placeholder="ex. Guide avancé d'élevage bovin"
+                placeholder={t('form.fields.title.placeholder', { ns: 'adminProducts' })}
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors"
               />
             </div>
 
             <div>
               <label className="block text-sm font-semibold text-gray-900 mb-2">
-                Description <span className="text-red-500">*</span>
+                {t('form.fields.description.label', { ns: 'adminProducts' })} <span className="text-red-500">*</span>
               </label>
               <textarea
                 name="description"
@@ -197,7 +231,7 @@ const ProductForm = ({ product, onClose }) => {
                 rows="4"
                 value={formData.description}
                 onChange={handleChange}
-                placeholder="Fournissez une description détaillée du produit..."
+                placeholder={t('form.fields.description.placeholder', { ns: 'adminProducts' })}
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors resize-none"
               />
             </div>
@@ -207,13 +241,13 @@ const ProductForm = ({ product, onClose }) => {
           <div className="space-y-4">
             <h3 className="text-lg font-semibold text-gray-900 flex items-center space-x-2">
               <FiDollarSign className="w-5 h-5 text-primary-600" />
-              <span>Tarification</span>
+              <span>{t('form.sections.pricing', { ns: 'adminProducts' })}</span>
             </h3>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-semibold text-gray-900 mb-2">
-                  Prix actuel (FCFA) <span className="text-red-500">*</span>
+                  {t('form.fields.price.label', { ns: 'adminProducts' })} <span className="text-red-500">*</span>
                 </label>
                 <div className="relative">
                   <input
@@ -234,8 +268,8 @@ const ProductForm = ({ product, onClose }) => {
               </div>
               <div>
                 <label className="block text-sm font-semibold text-gray-900 mb-2">
-                  Prix original (FCFA)
-                  <span className="text-xs text-gray-500 ml-2">(pour les réductions)</span>
+                  {t('form.fields.originalPrice.label', { ns: 'adminProducts' })}
+                  <span className="text-xs text-gray-500 ml-2">{t('form.fields.originalPrice.hint', { ns: 'adminProducts' })}</span>
                 </label>
                 <div className="relative">
                   <input
@@ -254,7 +288,7 @@ const ProductForm = ({ product, onClose }) => {
                 </div>
                 {formData.original_price && parseFloat(formData.original_price) > 0 && (
                   <p className="text-xs text-gray-500 mt-1">
-                    Réduction :{' '}
+                    {t('form.fields.originalPrice.discountLabel', { ns: 'adminProducts' })}{' '}
                     {formData.price
                       ? `${(
                           ((parseFloat(formData.original_price) - parseFloat(formData.price)) /
@@ -272,37 +306,71 @@ const ProductForm = ({ product, onClose }) => {
           <div className="space-y-4">
             <h3 className="text-lg font-semibold text-gray-900 flex items-center space-x-2">
               <FiImage className="w-5 h-5 text-primary-600" />
-              <span>Image du produit</span>
+              <span>{t('form.sections.media', { ns: 'adminProducts' })}</span>
             </h3>
 
             <div>
               <label className="block text-sm font-semibold text-gray-900 mb-2">
-                URL de l'image
+                {t('form.fields.image.label', { ns: 'adminProducts' })}
               </label>
-              <input
-                type="url"
-                name="image_url"
-                value={formData.image_url}
-                onChange={handleChange}
-                placeholder="https://exemple.com/image-produit.jpg"
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors"
-              />
-              <p className="text-xs text-gray-500 mt-1 flex items-center space-x-1">
-                <FiInfo className="w-3 h-3" />
-                <span>Entrez une URL d'image valide. L'image sera affichée sur les cartes produit.</span>
-              </p>
-              {formData.image_url && (
-                <div className="mt-3">
+
+              <div className="flex items-start gap-4">
+                {formData.image_url && (
                   <img
                     src={formData.image_url}
-                    alt="Aperçu"
-                    className="w-32 h-32 object-cover rounded-lg border border-gray-200"
+                    alt={t('form.fields.image.previewAlt', { ns: 'adminProducts' })}
+                    className="w-32 h-32 object-cover rounded-lg border border-gray-200 flex-shrink-0"
                     onError={(e) => {
                       e.target.style.display = 'none'
                     }}
                   />
+                )}
+
+                <div className="flex-1 space-y-2">
+                  <label
+                    htmlFor="product-image-upload"
+                    className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-lg font-medium text-sm cursor-pointer transition-colors ${
+                      imageUploading
+                        ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                        : 'bg-primary-50 text-primary-700 hover:bg-primary-100'
+                    }`}
+                  >
+                    {imageUploading ? (
+                      <>
+                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-primary-600"></div>
+                        <span>{t('form.fields.image.uploading', { ns: 'adminProducts' })} {imageUploadProgress}%</span>
+                      </>
+                    ) : (
+                      <>
+                        <FiImage className="w-4 h-4" />
+                        <span>
+                          {formData.image_url
+                            ? t('form.fields.image.changeButton', { ns: 'adminProducts' })
+                            : t('form.fields.image.uploadButton', { ns: 'adminProducts' })}
+                        </span>
+                      </>
+                    )}
+                  </label>
+                  <input
+                    id="product-image-upload"
+                    type="file"
+                    accept="image/jpeg,image/png,image/webp,image/gif"
+                    onChange={handleImageFileChange}
+                    disabled={imageUploading}
+                    className="hidden"
+                  />
+                  <p className="text-xs text-gray-500 flex items-center space-x-1">
+                    <FiInfo className="w-3 h-3" />
+                    <span>{t('form.fields.image.hint', { ns: 'adminProducts' })}</span>
+                  </p>
+                  {imageUploadError && (
+                    <p className="text-xs text-red-600 flex items-center space-x-1">
+                      <FiAlertCircle className="w-3 h-3" />
+                      <span>{imageUploadError}</span>
+                    </p>
+                  )}
                 </div>
-              )}
+              </div>
             </div>
           </div>
 
@@ -310,13 +378,13 @@ const ProductForm = ({ product, onClose }) => {
           <div className="space-y-4">
             <h3 className="text-lg font-semibold text-gray-900 flex items-center space-x-2">
               <FiPackage className="w-5 h-5 text-primary-600" />
-              <span>Inventaire & Paramètres</span>
+              <span>{t('form.sections.inventory', { ns: 'adminProducts' })}</span>
             </h3>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-semibold text-gray-900 mb-2">
-                  Quantité en stock
+                  {t('form.fields.stock.label', { ns: 'adminProducts' })}
                 </label>
                 <input
                   type="number"
@@ -324,15 +392,15 @@ const ProductForm = ({ product, onClose }) => {
                   min="0"
                   value={formData.stock}
                   onChange={handleChange}
-                  placeholder="0"
+                  placeholder={t('form.fields.stock.placeholder', { ns: 'adminProducts' })}
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors"
                 />
-                <p className="text-xs text-gray-500 mt-1">Laissez vide ou 0 pour un stock illimité</p>
+                <p className="text-xs text-gray-500 mt-1">{t('form.fields.stock.hint', { ns: 'adminProducts' })}</p>
               </div>
               <div>
                 <label className="block text-sm font-semibold text-gray-900 mb-2 flex items-center space-x-2">
                   <FiCalendar className="w-4 h-4" />
-                  <span>Date de fin d'offre</span>
+                  <span>{t('form.fields.offerEndDate.label', { ns: 'adminProducts' })}</span>
                 </label>
                 <input
                   type="datetime-local"
@@ -341,7 +409,7 @@ const ProductForm = ({ product, onClose }) => {
                   onChange={handleChange}
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors"
                 />
-                <p className="text-xs text-gray-500 mt-1">Définir quand l'offre spéciale expire</p>
+                <p className="text-xs text-gray-500 mt-1">{t('form.fields.offerEndDate.hint', { ns: 'adminProducts' })}</p>
               </div>
             </div>
 
@@ -357,43 +425,67 @@ const ProductForm = ({ product, onClose }) => {
               <label htmlFor="featured" className="flex-1 cursor-pointer">
                 <div className="flex items-center space-x-2">
                   <FiTrendingUp className="w-4 h-4 text-primary-600" />
-                  <span className="text-sm font-semibold text-gray-900">Produit en vedette</span>
+                  <span className="text-sm font-semibold text-gray-900">{t('form.fields.featured.label', { ns: 'adminProducts' })}</span>
                 </div>
                 <p className="text-xs text-gray-500 mt-1">
-                  Les produits en vedette sont mis en avant et affichés de manière visible sur le site
+                  {t('form.fields.featured.hint', { ns: 'adminProducts' })}
                 </p>
               </label>
             </div>
           </div>
 
+          {/* Lesson content — only once the product exists (editing, or just created below) */}
+          {activeProductId && (
+            <div className="pt-2 border-t border-gray-200">
+              <LessonManager productId={activeProductId} />
+            </div>
+          )}
+
           {/* Action Buttons */}
           <div className="flex justify-end space-x-3 pt-4 border-t border-gray-200">
-            <button
-              type="button"
-              onClick={onClose}
-              className="px-6 py-3 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors font-medium"
-            >
-              Annuler
-            </button>
-            <button
-              type="submit"
-              disabled={loading || success}
-              className="px-6 py-3 bg-primary-600 text-white rounded-lg font-medium hover:bg-primary-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2"
-            >
-              {loading ? (
-                <>
-                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
-                  <span>Enregistrement...</span>
-                </>
-              ) : success ? (
-                <>
-                  <FiCheckCircle className="w-5 h-5" />
-                  <span>Enregistré !</span>
-                </>
-              ) : (
-                <span>{product ? 'Mettre à jour le produit' : 'Créer le produit'}</span>
-              )}
-            </button>
+            {justCreated ? (
+              <button
+                type="button"
+                onClick={onClose}
+                className="px-6 py-3 bg-primary-600 text-white rounded-lg font-medium hover:bg-primary-700 transition-colors flex items-center space-x-2"
+              >
+                <FiCheckCircle className="w-5 h-5" />
+                <span>{t('form.buttons.done', { ns: 'adminProducts' })}</span>
+              </button>
+            ) : (
+              <>
+                <button
+                  type="button"
+                  onClick={onClose}
+                  className="px-6 py-3 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors font-medium"
+                >
+                  {t('form.buttons.cancel', { ns: 'adminProducts' })}
+                </button>
+                <button
+                  type="submit"
+                  disabled={loading || success || imageUploading}
+                  className="px-6 py-3 bg-primary-600 text-white rounded-lg font-medium hover:bg-primary-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2"
+                >
+                  {loading ? (
+                    <>
+                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                      <span>{t('form.buttons.saving', { ns: 'adminProducts' })}</span>
+                    </>
+                  ) : success ? (
+                    <>
+                      <FiCheckCircle className="w-5 h-5" />
+                      <span>{t('form.buttons.saved', { ns: 'adminProducts' })}</span>
+                    </>
+                  ) : (
+                    <span>
+                      {product
+                        ? t('form.buttons.update', { ns: 'adminProducts' })
+                        : t('form.buttons.create', { ns: 'adminProducts' })}
+                    </span>
+                  )}
+                </button>
+              </>
+            )}
           </div>
         </form>
       </div>

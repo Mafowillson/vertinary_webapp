@@ -1,21 +1,31 @@
 {
   "title": "My library",
   "empty": "You have no purchased materials yet.",
+  "digitalAccess": "Digital access",
   "watchNow": "Watch now",
-  "downloadNow": "Download now",
   "readNow": "Read now",
-  "progress": "Progress",
   "completed": "Completed",
-  "module": "Module",
-  "of": "of",
-  "continueWatching": "Continue learning",
-  "recentlyAdded": "Recently added",
-  "files": "Files",
-  "howToDownload": "How do I download?",
-  "downloadInstruction": "Click Download below to save your file.",
-  "downloading": "Downloading…",
-  "download": "Download",
-  "noFilesAvailable": "No files available.",
-  "downloadHere": "Download your document here",
-  "downloadError": "Download failed. Please try again."
+  "list": {
+    "subtitle": "Everything you've purchased, in one place.",
+    "emptyCta": "Browse the catalogue",
+    "purchasedOn": "Purchased on {{date}}",
+    "continueButton": "Continue",
+    "loadError": "Unable to load your library."
+  },
+  "player": {
+    "backToProducts": "Back to products",
+    "backToCatalog": "Back to catalog",
+    "contentCount": "Content ({{count}})",
+    "contentComingSoon": "Content will be available soon.",
+    "selectContent": "Select content to begin",
+    "contentLocked": "Content locked",
+    "purchaseRequired": "You must purchase this product to access this content.",
+    "viewProduct": "View product",
+    "contentAccessError": "Unable to access this content.",
+    "lessonAccessError": "Unable to access this lesson.",
+    "loadError": "Unable to load this content.",
+    "accountOnlyDisclaimer": "Content reserved for your account — streaming only.",
+    "pdfLoadError": "Unable to load the document.",
+    "pageIndicator": "Page {{page}} / {{total}}"
+  }
 }

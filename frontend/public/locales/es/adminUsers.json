@@ -1,0 +1,74 @@
+{
+  "loadError": "No se pudieron cargar los usuarios.",
+  "statusUpdateError": "No se pudo modificar el estado del usuario.",
+  "roleUpdateError": "No se pudo modificar el rol del usuario.",
+  "deleteError": "No se pudo eliminar el usuario.",
+  "deleteConfirm": "¿Está seguro de que desea eliminar este usuario?",
+  "header": {
+    "title": "Gestión de usuarios",
+    "subtitle": "Gestionar las cuentas de usuario y los permisos",
+    "addUser": "Añadir un usuario"
+  },
+  "stats": {
+    "total": "Usuarios totales",
+    "admins": "Administradores",
+    "active": "Usuarios activos",
+    "newThisMonth": "Nuevos este mes"
+  },
+  "filters": {
+    "searchPlaceholder": "Buscar por nombre o correo electrónico...",
+    "roleAll": "Todos los roles",
+    "roleAdmin": "Admin",
+    "roleUser": "Usuario",
+    "statusAll": "Todos los estados",
+    "statusActive": "Activo",
+    "statusInactive": "Inactivo",
+    "sortRecent": "Más reciente",
+    "sortName": "Nombre (A-Z)",
+    "sortEmail": "Correo electrónico (A-Z)"
+  },
+  "roleLabels": {
+    "admin": "admin",
+    "user": "usuario"
+  },
+  "statusLabels": {
+    "active": "Activo",
+    "inactive": "Inactivo"
+  },
+  "listItem": {
+    "orders": "Pedidos",
+    "ordersCount": "{{count}} pedidos",
+    "memberSince": "Miembro desde",
+    "userId": "ID de usuario"
+  },
+  "actions": {
+    "promote": "Ascender a administrador",
+    "demote": "Degradar a usuario",
+    "activate": "Activar",
+    "deactivate": "Desactivar",
+    "viewDetails": "Ver detalles",
+    "delete": "Eliminar usuario",
+    "cannotChangeOwnRole": "No puede modificar su propio rol",
+    "cannotChangeOwnStatus": "No puede modificar su propio estado"
+  },
+  "empty": {
+    "title": "No se encontraron usuarios",
+    "withFilters": "Intente ajustar sus filtros",
+    "noFilters": "Los usuarios aparecerán aquí una vez que se registren"
+  },
+  "modal": {
+    "title": "Detalles del usuario",
+    "role": "Rol",
+    "status": "Estado",
+    "userId": "ID de usuario",
+    "memberSince": "Miembro desde",
+    "totalOrders": "Total de pedidos",
+    "ordersCount": "{{count}} pedidos",
+    "selfDisclaimer": "No puede modificar su propio rol o estado.",
+    "close": "Cerrar",
+    "promote": "Ascender a administrador",
+    "demote": "Degradar a usuario",
+    "activateUser": "Activar usuario",
+    "deactivateUser": "Desactivar usuario"
+  }
+}

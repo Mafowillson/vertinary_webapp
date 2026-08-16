@@ -7,7 +7,7 @@ FastAPI backend for L'Académie DES Éleveurs e-commerce platform.
 - **Authentication**: JWT-based authentication with user roles (user/admin)
 - **Products**: CRUD operations for products with search and filtering
 - **Orders**: Order management with payment processing
-- **Downloads**: Secure file download system for purchased products
+- **Lessons**: Course content (video/audio/PDF) — uploaded per product, streamed in-app to purchasers only, never downloadable
 - **Admin Dashboard**: Analytics and management endpoints
 - **Configuration**: Site configuration and social links management
 
@@ -154,9 +154,13 @@ Once the server is running, you can access:
 - `GET /api/orders/my-orders` - Get user's orders
 - `POST /api/orders/{id}/payment` - Process payment
 
-### Downloads
-- `GET /api/downloads/{order_id}` - Get download files for order
-- `GET /api/downloads/{order_id}/files/{file_id}` - Download file
+### Lessons (course content)
+- `POST /api/products/{product_id}/lessons` - Upload a lesson file (video/audio/pdf) (admin only)
+- `GET /api/products/{product_id}/lessons` - List a product's lessons (public metadata, no file access)
+- `PUT /api/products/{product_id}/lessons/{lesson_id}` - Update a lesson's title/description/order (admin only)
+- `DELETE /api/products/{product_id}/lessons/{lesson_id}` - Delete a lesson (admin only)
+- `POST /api/products/{product_id}/lessons/{lesson_id}/access` - Verify purchase, issue a short-lived streaming token
+- `GET /api/products/{product_id}/lessons/{lesson_id}/stream` - Stream the file inline (Range-enabled, token-gated)
 
 ### Configuration
 - `GET /api/config` - Get site configuration
@@ -171,12 +175,19 @@ Once the server is running, you can access:
 - **User**: Users with roles (user/admin)
 - **Product**: Products with pricing, stock, and metadata
 - **Order**: Orders with status and payment information
-- **OrderFile**: Files associated with orders for download
+- **ProductLesson**: Video/audio/PDF content attached to a product, ordered within a course
 - **SiteConfig**: Site-wide configuration and settings
 
-## File Uploads
+## File Uploads (course content)
 
-Uploaded files are stored in the `uploads/` directory (configurable via `UPLOAD_DIR` in `.env`).
+Lesson files (video/audio/PDF) are stored via the storage abstraction in `app/core/storage.py`. Today only
+`local` (the `uploads/` directory, configurable via `UPLOAD_DIR` in `.env`) is implemented — set
+`STORAGE_BACKEND=local`. The interface is designed so a future S3-compatible backend (AWS S3, Cloudflare R2,
+Backblaze B2) can be dropped in later without changing any caller. Max upload size is controlled by
+`MAX_LESSON_FILE_SIZE_MB` (default 1024 = 1GB).
+
+Content is never downloadable: it's streamed in-app to purchasers only, gated by a short-lived signed token
+(`MEDIA_TOKEN_EXPIRE_MINUTES`, default 360) issued after verifying the user has a completed order for that product.
 
 Make sure to create the uploads directory:
 
@@ -229,27 +240,29 @@ backend/
 │   │   ├── v1/
 │   │   │   ├── auth.py
 │   │   │   ├── products.py
+│   │   │   ├── lessons.py
 │   │   │   ├── orders.py
-│   │   │   ├── downloads.py
 │   │   │   ├── config.py
 │   │   │   └── admin.py
 │   │   └── dependencies.py
 │   ├── core/
 │   │   ├── config.py
-│   │   └── security.py
+│   │   ├── security.py
+│   │   └── storage.py
 │   ├── db/
 │   │   └── database.py
 │   ├── models/
 │   │   ├── user.py
 │   │   ├── product.py
+│   │   ├── product_lesson.py
 │   │   ├── order.py
 │   │   └── config.py
 │   ├── schemas/
 │   │   ├── user.py
 │   │   ├── auth.py
 │   │   ├── product.py
+│   │   ├── lesson.py
 │   │   ├── order.py
-│   │   ├── download.py
 │   │   └── config.py
 │   └── main.py
 ├── alembic/

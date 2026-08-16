@@ -1,0 +1,40 @@
+{
+  "list": {
+    "hero": {
+      "chipServiceCount": "{{count}} services",
+      "chipRegion": "Cameroun & international",
+      "chipResponseTime": "Réponse rapide"
+    },
+    "cta": {
+      "questionLabel": "Une question ?",
+      "titleLine1": "Parlons de votre projet",
+      "titleLine2": "d'élevage",
+      "description": "Notre équipe répond sous 24h pour vous accompagner dans le choix du service adapté à vos besoins.",
+      "whatsappButton": "Contacter via WhatsApp",
+      "viewProductsButton": "Voir les produits"
+    }
+  },
+  "detail": {
+    "loading": "Chargement…",
+    "notFound": "Ce service n'existe pas ou a été retiré.",
+    "descriptionHeading": "À propos de ce service",
+    "priceLabel": "Prix",
+    "quickInfo": {
+      "heading": "Informations",
+      "category": "Catégorie",
+      "availability": "Disponibilité",
+      "availabilityValue": "Sur demande",
+      "zone": "Zone",
+      "zoneValue": "🌍 Cameroun & intl."
+    },
+    "relatedSectionLabel": "Dans la même catégorie",
+    "bottomCta": {
+      "readyLabel": "Prêt à démarrer ?",
+      "titlePrefix": "Contactez-nous pour",
+      "titleHighlight": "ce service",
+      "description": "Notre équipe répond sous 24h pour vous accompagner dans votre projet d'élevage.",
+      "whatsappButton": "Contacter via WhatsApp",
+      "viewAllButton": "Voir tous les services"
+    }
+  }
+}

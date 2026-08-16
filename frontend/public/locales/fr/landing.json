@@ -1,0 +1,55 @@
+{
+  "hero": {
+    "badge": "Expert de Contenu Vérifié · Cameroun 🇨🇲",
+    "titlePrefix": "Ressources Vétérinaires pour",
+    "titleHighlight": "Réussir",
+    "titleSuffix": "votre Élevage",
+    "description": "Accédez à des livres spécialisés, des formations et des ressources certifiées en médecine vétérinaire — créées par un expert, pour les éleveurs du Cameroun et du monde entier.",
+    "browseButton": "Parcourir les Ressources",
+    "howItWorksButton": "Comment ça marche",
+    "socialProofPrefix": "Rejoignez",
+    "socialProofSuffix": "éleveurs satisfaits",
+    "experienceValue": "4+ Ans",
+    "experienceLabel": "d'Expérience",
+    "guidesValue": "50+",
+    "guidesLabel": "Guides Vérifiés"
+  },
+  "stats": {
+    "farmersValue": "5,000+",
+    "farmersLabel": "Éleveurs & Pro.",
+    "guidesValue": "50+",
+    "guidesLabel": "Guides Vérifiés",
+    "experienceValue": "4+ Ans",
+    "experienceLabel": "d'Expertise",
+    "countriesValue": "10+",
+    "countriesLabel": "Pays Desservis"
+  },
+  "categories": {
+    "eyebrow": "Collections",
+    "heading": "Parcourir par Catégorie",
+    "seeAll": "Voir tout",
+    "explore": "Explorer"
+  },
+  "resources": {
+    "eyebrow": "Sélection Experte",
+    "heading": "Ressources en Vedette",
+    "description": "Meilleures ressources numériques sélectionnées et vérifiées par des experts vétérinaires.",
+    "discountBadge": "-{{percent}}% OFF",
+    "expiresIn": "Expire dans",
+    "discover": "Découvrir"
+  },
+  "services": {
+    "eyebrow": "Expertise & Accompagnement"
+  },
+  "founder": {
+    "eyebrow": "À Propos du Fondateur",
+    "quote": "Partager mes connaissances en élevage avec le Cameroun et le monde entier.",
+    "learnMore": "En savoir plus"
+  },
+  "cta": {
+    "heading": "Prêt à améliorer vos connaissances?",
+    "description": "Rejoignez notre communauté d'éleveurs au Cameroun et dans le monde. Recevez des conseils vétérinaires exclusifs, des formations et des réductions chaque semaine.",
+    "emailPlaceholder": "Votre adresse email",
+    "subscribeButton": "S'inscrire"
+  }
+}

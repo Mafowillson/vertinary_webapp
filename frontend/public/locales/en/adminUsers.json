@@ -1,0 +1,74 @@
+{
+  "loadError": "Unable to load users.",
+  "statusUpdateError": "Unable to update the user's status.",
+  "roleUpdateError": "Unable to update the user's role.",
+  "deleteError": "Unable to delete the user.",
+  "deleteConfirm": "Are you sure you want to delete this user?",
+  "header": {
+    "title": "User Management",
+    "subtitle": "Manage user accounts and permissions",
+    "addUser": "Add a user"
+  },
+  "stats": {
+    "total": "Total Users",
+    "admins": "Administrators",
+    "active": "Active Users",
+    "newThisMonth": "New This Month"
+  },
+  "filters": {
+    "searchPlaceholder": "Search by name or email...",
+    "roleAll": "All Roles",
+    "roleAdmin": "Admin",
+    "roleUser": "User",
+    "statusAll": "All Statuses",
+    "statusActive": "Active",
+    "statusInactive": "Inactive",
+    "sortRecent": "Most recent",
+    "sortName": "Name (A-Z)",
+    "sortEmail": "Email (A-Z)"
+  },
+  "roleLabels": {
+    "admin": "admin",
+    "user": "user"
+  },
+  "statusLabels": {
+    "active": "Active",
+    "inactive": "Inactive"
+  },
+  "listItem": {
+    "orders": "Orders",
+    "ordersCount": "{{count}} orders",
+    "memberSince": "Member since",
+    "userId": "User ID"
+  },
+  "actions": {
+    "promote": "Promote to administrator",
+    "demote": "Demote to user",
+    "activate": "Activate",
+    "deactivate": "Deactivate",
+    "viewDetails": "View details",
+    "delete": "Delete user",
+    "cannotChangeOwnRole": "You cannot change your own role",
+    "cannotChangeOwnStatus": "You cannot change your own status"
+  },
+  "empty": {
+    "title": "No users found",
+    "withFilters": "Try adjusting your filters",
+    "noFilters": "Users will appear here once they sign up"
+  },
+  "modal": {
+    "title": "User Details",
+    "role": "Role",
+    "status": "Status",
+    "userId": "User ID",
+    "memberSince": "Member since",
+    "totalOrders": "Total orders",
+    "ordersCount": "{{count}} orders",
+    "selfDisclaimer": "You cannot change your own role or status.",
+    "close": "Close",
+    "promote": "Promote to administrator",
+    "demote": "Demote to user",
+    "activateUser": "Activate user",
+    "deactivateUser": "Deactivate user"
+  }
+}

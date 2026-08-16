@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { AuthProvider } from './contexts/AuthContext'
 import { AppProvider } from './contexts/AppContext'
+import { CurrencyProvider } from './contexts/CurrencyContext'
 import { ThemeProvider } from './contexts/ThemeContext'
 import { LanguageProvider } from './contexts/LanguageContext'
 import { CartProvider } from './contexts/CartContext'
@@ -21,7 +22,8 @@ import VerifyEmailPage from './pages/Auth/VerifyEmailPage'
 import CheckoutPage from './pages/CheckoutPage'
 import CartPage from './pages/CartPage'
 import PurchaseConfirmationPage from './pages/PurchaseConfirmationPage'
-import DownloadPage from './pages/DownloadPage'
+import CoursePlayerPage from './pages/CoursePlayerPage'
+import LibraryPage from './pages/LibraryPage'
 import AdminDashboard from './pages/Admin/AdminDashboard'
 import ProtectedRoute from './components/ProtectedRoute'
 import './styles/index.css'
@@ -33,6 +35,7 @@ function App() {
         <AuthProvider>
           <CartProvider>
             <AppProvider>
+            <CurrencyProvider>
               <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
                 <Routes>
                   <Route path="/" element={<Layout />}>
@@ -65,9 +68,14 @@ function App() {
                         <PurchaseConfirmationPage />
                       </ProtectedRoute>
                     } />
-                    <Route path="download/:orderId" element={
+                    <Route path="learn/:productId" element={
                       <ProtectedRoute>
-                        <DownloadPage />
+                        <CoursePlayerPage />
+                      </ProtectedRoute>
+                    } />
+                    <Route path="library" element={
+                      <ProtectedRoute>
+                        <LibraryPage />
                       </ProtectedRoute>
                     } />
                     <Route path="admin/*" element={
@@ -78,6 +86,7 @@ function App() {
                   </Route>
                 </Routes>
               </Router>
+            </CurrencyProvider>
             </AppProvider>
           </CartProvider>
         </AuthProvider>

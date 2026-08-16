@@ -63,9 +63,9 @@ const ServicesPage = () => {
           {/* Quick-stat chips */}
           <div className="flex flex-wrap gap-3 mt-10">
             {[
-              { emoji: '📦', label: `${services.length} services` },
-              { emoji: '🌍', label: 'Cameroun & international' },
-              { emoji: '⚡', label: 'Réponse rapide' },
+              { emoji: '📦', label: t('list.hero.chipServiceCount', { ns: 'services', count: services.length }) },
+              { emoji: '🌍', label: t('list.hero.chipRegion', { ns: 'services' }) },
+              { emoji: '⚡', label: t('list.hero.chipResponseTime', { ns: 'services' }) },
             ].map((chip, i) => (
               <div key={i} className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-sm text-gray-300">
                 <span>{chip.emoji}</span>
@@ -176,13 +176,13 @@ const ServicesPage = () => {
             <div className="relative flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
               <div>
                 <p className="text-emerald-400 text-xs font-bold uppercase tracking-[0.2em] mb-2">
-                  Une question ?
+                  {t('list.cta.questionLabel', { ns: 'services' })}
                 </p>
                 <h2 className="text-2xl md:text-3xl font-black text-white leading-tight">
-                  Parlons de votre projet<br className="hidden md:block" /> d'élevage
+                  {t('list.cta.titleLine1', { ns: 'services' })}<br className="hidden md:block" /> {t('list.cta.titleLine2', { ns: 'services' })}
                 </h2>
                 <p className="text-gray-400 text-sm mt-3 max-w-md">
-                  Notre équipe répond sous 24h pour vous accompagner dans le choix du service adapté à vos besoins.
+                  {t('list.cta.description', { ns: 'services' })}
                 </p>
               </div>
 
@@ -193,14 +193,14 @@ const ServicesPage = () => {
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 px-6 py-3 bg-[#1A7A6E] hover:bg-emerald-500 text-white rounded-xl font-bold text-sm transition-all hover:-translate-y-0.5 shadow-lg shadow-[#1A7A6E]/30 whitespace-nowrap"
                 >
-                  Contacter via WhatsApp
+                  {t('list.cta.whatsappButton', { ns: 'services' })}
                   <FiArrowRight className="w-4 h-4" />
                 </a>
                 <Link
                   to="/products"
                   className="inline-flex items-center gap-2 px-6 py-3 bg-white/10 hover:bg-white/20 border border-white/20 text-white rounded-xl font-bold text-sm transition-all whitespace-nowrap"
                 >
-                  Voir les produits
+                  {t('list.cta.viewProductsButton', { ns: 'services' })}
                 </Link>
               </div>
             </div>

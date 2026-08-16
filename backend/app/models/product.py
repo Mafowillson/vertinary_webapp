@@ -37,4 +37,10 @@ class Product(Base):
     likes = relationship(
         "ProductLike", back_populates="product", cascade="all, delete-orphan"
     )
+    lessons = relationship(
+        "ProductLesson",
+        back_populates="product",
+        cascade="all, delete-orphan",
+        order_by="ProductLesson.order_index",
+    )
 

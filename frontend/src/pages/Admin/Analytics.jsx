@@ -12,8 +12,10 @@ import {
   FiAlertCircle,
 } from 'react-icons/fi'
 import { adminService } from '../../services/adminService'
+import { useLanguage } from '../../contexts/LanguageContext'
 
 const Analytics = () => {
+  const { t } = useLanguage()
   const [timeframe, setTimeframe] = useState('monthly') // 'weekly', 'monthly', 'yearly'
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
@@ -46,7 +48,7 @@ const Analytics = () => {
       const data = await adminService.getAnalytics(timeframe)
       setAnalytics(data)
     } catch (err) {
-      setError(err.message || 'Impossible de charger les statistiques.')
+      setError(err.message || t('errors.loadFailed', { ns: 'adminAnalytics' }))
     } finally {
       setLoading(false)
     }
@@ -67,7 +69,7 @@ const Analytics = () => {
 
   const statCards = [
     {
-      label: 'Revenu total',
+      label: t('stats.totalRevenue', { ns: 'adminAnalytics' }),
       value: formatCompactCurrency(analytics.totalRevenue),
       icon: FiDollarSign,
       iconColor: 'bg-green-100 text-green-600',
@@ -75,7 +77,7 @@ const Analytics = () => {
       trend: analytics.revenueGrowth >= 0 ? 'up' : 'down',
     },
     {
-      label: 'Total commandes',
+      label: t('stats.totalOrders', { ns: 'adminAnalytics' }),
       value: analytics.totalOrders.toLocaleString(),
       icon: FiPackage,
       iconColor: 'bg-blue-100 text-blue-600',
@@ -83,7 +85,7 @@ const Analytics = () => {
       trend: analytics.ordersGrowth >= 0 ? 'up' : 'down',
     },
     {
-      label: 'Total utilisateurs',
+      label: t('stats.totalUsers', { ns: 'adminAnalytics' }),
       value: analytics.totalUsers.toLocaleString(),
       icon: FiUsers,
       iconColor: 'bg-purple-100 text-purple-600',
@@ -91,13 +93,13 @@ const Analytics = () => {
       trend: analytics.usersGrowth >= 0 ? 'up' : 'down',
     },
     {
-      label: 'Taux de conversion',
+      label: t('stats.conversionRate', { ns: 'adminAnalytics' }),
       value: `${analytics.conversionRate}%`,
       icon: FiTrendingUp,
       iconColor: 'bg-orange-100 text-orange-600',
       growth: analytics.conversionRateDelta,
       trend: analytics.conversionRateDelta >= 0 ? 'up' : 'down',
-      suffix: ' pts',
+      suffix: t('stats.pointsSuffix', { ns: 'adminAnalytics' }),
     },
   ]
 
@@ -119,8 +121,8 @@ const Analytics = () => {
       {/* Header */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 mb-1">Analytique</h1>
-          <p className="text-gray-600">Suivez les performances et les informations de votre activité</p>
+          <h1 className="text-2xl font-bold text-gray-900 mb-1">{t('header.title', { ns: 'adminAnalytics' })}</h1>
+          <p className="text-gray-600">{t('header.subtitle', { ns: 'adminAnalytics' })}</p>
         </div>
 
         {/* Timeframe Selector */}
@@ -135,7 +137,7 @@ const Analytics = () => {
                   : 'text-gray-600 hover:text-gray-900'
               }`}
             >
-              {period}
+              {t(`timeframe.${period}`, { ns: 'adminAnalytics' })}
             </button>
           ))}
         </div>
@@ -181,8 +183,8 @@ const Analytics = () => {
         <div className="bg-white rounded-lg shadow-sm p-6">
           <div className="flex items-center justify-between mb-6">
             <div>
-              <h2 className="text-lg font-semibold text-gray-900">Tendance des revenus</h2>
-              <p className="text-sm text-gray-600">Revenu total au fil du temps</p>
+              <h2 className="text-lg font-semibold text-gray-900">{t('charts.revenue.title', { ns: 'adminAnalytics' })}</h2>
+              <p className="text-sm text-gray-600">{t('charts.revenue.subtitle', { ns: 'adminAnalytics' })}</p>
             </div>
             <div className="flex items-center space-x-2 text-sm text-green-600">
               <FiTrendingUp className="w-4 h-4" />
@@ -211,8 +213,8 @@ const Analytics = () => {
         <div className="bg-white rounded-lg shadow-sm p-6">
           <div className="flex items-center justify-between mb-6">
             <div>
-              <h2 className="text-lg font-semibold text-gray-900">Tendance des commandes</h2>
-              <p className="text-sm text-gray-600">Nombre de commandes au fil du temps</p>
+              <h2 className="text-lg font-semibold text-gray-900">{t('charts.orders.title', { ns: 'adminAnalytics' })}</h2>
+              <p className="text-sm text-gray-600">{t('charts.orders.subtitle', { ns: 'adminAnalytics' })}</p>
             </div>
             <div className="flex items-center space-x-2 text-sm text-blue-600">
               <FiTrendingUp className="w-4 h-4" />
@@ -228,7 +230,7 @@ const Analytics = () => {
                     style={{ height: `${(value / maxOrders) * 100}%` }}
                   />
                   <div className="absolute bottom-full mb-2 opacity-0 group-hover:opacity-100 transition-opacity bg-gray-900 text-white text-xs px-2 py-1 rounded whitespace-nowrap">
-                    {value} commandes
+                    {t('charts.orders.tooltipSales', { ns: 'adminAnalytics', count: value })}
                   </div>
                 </div>
                 <span className="text-xs text-gray-500">{getLabels()[index]}</span>
@@ -244,8 +246,8 @@ const Analytics = () => {
         <div className="bg-white rounded-lg shadow-sm p-6">
           <div className="flex items-center justify-between mb-6">
             <div>
-              <h2 className="text-lg font-semibold text-gray-900">Croissance des utilisateurs</h2>
-              <p className="text-sm text-gray-600">Nouveaux utilisateurs au fil du temps</p>
+              <h2 className="text-lg font-semibold text-gray-900">{t('charts.users.title', { ns: 'adminAnalytics' })}</h2>
+              <p className="text-sm text-gray-600">{t('charts.users.subtitle', { ns: 'adminAnalytics' })}</p>
             </div>
             <div className="flex items-center space-x-2 text-sm text-purple-600">
               <FiTrendingUp className="w-4 h-4" />
@@ -269,7 +271,7 @@ const Analytics = () => {
 
         {/* Performance Metrics */}
         <div className="bg-white rounded-lg shadow-sm p-6">
-          <h2 className="text-lg font-semibold text-gray-900 mb-6">Métriques de performance</h2>
+          <h2 className="text-lg font-semibold text-gray-900 mb-6">{t('performance.title', { ns: 'adminAnalytics' })}</h2>
           <div className="space-y-4">
             <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
               <div className="flex items-center space-x-3">
@@ -277,7 +279,7 @@ const Analytics = () => {
                   <FiActivity className="w-5 h-5 text-primary-600" />
                 </div>
                 <div>
-                  <p className="text-sm text-gray-600">Valeur moyenne des commandes</p>
+                  <p className="text-sm text-gray-600">{t('performance.averageOrderValue', { ns: 'adminAnalytics' })}</p>
                   <p className="text-lg font-bold text-gray-900">
                     {formatCompactCurrency(analytics.averageOrderValue)}
                   </p>
@@ -290,7 +292,7 @@ const Analytics = () => {
                   <FiBarChart2 className="w-5 h-5 text-green-600" />
                 </div>
                 <div>
-                  <p className="text-sm text-gray-600">Taux de conversion</p>
+                  <p className="text-sm text-gray-600">{t('performance.conversionRate', { ns: 'adminAnalytics' })}</p>
                   <p className="text-lg font-bold text-gray-900">{analytics.conversionRate}%</p>
                 </div>
               </div>
@@ -301,7 +303,7 @@ const Analytics = () => {
                   <FiPackage className="w-5 h-5 text-blue-600" />
                 </div>
                 <div>
-                  <p className="text-sm text-gray-600">Produits actifs</p>
+                  <p className="text-sm text-gray-600">{t('performance.activeProducts', { ns: 'adminAnalytics' })}</p>
                   <p className="text-lg font-bold text-gray-900">{analytics.totalProducts}</p>
                 </div>
               </div>
@@ -311,9 +313,9 @@ const Analytics = () => {
 
         {/* Top Products */}
         <div className="bg-white rounded-lg shadow-sm p-6">
-          <h2 className="text-lg font-semibold text-gray-900 mb-6">Meilleurs produits</h2>
+          <h2 className="text-lg font-semibold text-gray-900 mb-6">{t('topProducts.title', { ns: 'adminAnalytics' })}</h2>
           {analytics.topProducts.length === 0 ? (
-            <p className="text-sm text-gray-500">Aucune vente sur cette période.</p>
+            <p className="text-sm text-gray-500">{t('topProducts.empty', { ns: 'adminAnalytics' })}</p>
           ) : (
           <div className="space-y-4">
             {analytics.topProducts.map((product, index) => (
@@ -324,7 +326,7 @@ const Analytics = () => {
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-medium text-gray-900 truncate">{product.name}</p>
-                    <p className="text-xs text-gray-500">{product.sales} ventes</p>
+                    <p className="text-xs text-gray-500">{t('topProducts.salesCount', { ns: 'adminAnalytics', count: product.sales })}</p>
                   </div>
                 </div>
                 <div className="text-right">

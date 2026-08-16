@@ -15,7 +15,7 @@ i18n
   .init({
     supportedLngs: ['en', 'fr', 'zh', 'hi', 'es'],
     fallbackLng: 'en',
-    ns: ['common', 'auth', 'product', 'checkout', 'library', 'admin', 'errors'],
+    ns: ['common', 'auth', 'product', 'checkout', 'library', 'errors', 'landing', 'about', 'services', 'legal', 'adminDashboard', 'adminProducts', 'adminOrders', 'adminUsers', 'adminAnalytics', 'adminSettings'],
     defaultNS: 'common',
     debug: !import.meta.env.PROD,
     detection: {

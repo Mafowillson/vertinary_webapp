@@ -1,0 +1,55 @@
+{
+  "hero": {
+    "badge": "सत्यापित सामग्री विशेषज्ञ · कैमरून 🇨🇲",
+    "titlePrefix": "आपके पशुपालन में",
+    "titleHighlight": "सफलता",
+    "titleSuffix": "के लिए पशु चिकित्सा संसाधन",
+    "description": "पशु चिकित्सा में विशेषज्ञ पुस्तकों, प्रशिक्षणों और प्रमाणित संसाधनों तक पहुँचें — एक विशेषज्ञ द्वारा तैयार, कैमरून और पूरी दुनिया के पशुपालकों के लिए।",
+    "browseButton": "संसाधन देखें",
+    "howItWorksButton": "यह कैसे काम करता है",
+    "socialProofPrefix": "",
+    "socialProofSuffix": "संतुष्ट पशुपालकों से जुड़ें",
+    "experienceValue": "4+ वर्ष",
+    "experienceLabel": "का अनुभव",
+    "guidesValue": "50+",
+    "guidesLabel": "सत्यापित मार्गदर्शिकाएँ"
+  },
+  "stats": {
+    "farmersValue": "5,000+",
+    "farmersLabel": "पशुपालक एवं पेशेवर",
+    "guidesValue": "50+",
+    "guidesLabel": "सत्यापित मार्गदर्शिकाएँ",
+    "experienceValue": "4+ वर्ष",
+    "experienceLabel": "की विशेषज्ञता",
+    "countriesValue": "10+",
+    "countriesLabel": "सेवारत देश"
+  },
+  "categories": {
+    "eyebrow": "संग्रह",
+    "heading": "श्रेणी के अनुसार ब्राउज़ करें",
+    "seeAll": "सभी देखें",
+    "explore": "अन्वेषण करें"
+  },
+  "resources": {
+    "eyebrow": "विशेषज्ञ चयन",
+    "heading": "विशेष संसाधन",
+    "description": "पशु चिकित्सा विशेषज्ञों द्वारा चुने और सत्यापित सर्वश्रेष्ठ डिजिटल संसाधन।",
+    "discountBadge": "-{{percent}}% छूट",
+    "expiresIn": "समाप्त होने में",
+    "discover": "देखें"
+  },
+  "services": {
+    "eyebrow": "विशेषज्ञता और सहयोग"
+  },
+  "founder": {
+    "eyebrow": "संस्थापक के बारे में",
+    "quote": "कैमरून और पूरी दुनिया के साथ पशुपालन में अपना ज्ञान साझा करना।",
+    "learnMore": "अधिक जानें"
+  },
+  "cta": {
+    "heading": "अपने ज्ञान को बढ़ाने के लिए तैयार हैं?",
+    "description": "कैमरून और दुनिया भर के पशुपालकों के हमारे समुदाय से जुड़ें। हर सप्ताह विशेष पशु चिकित्सा सलाह, प्रशिक्षण और छूट पाएं।",
+    "emailPlaceholder": "आपका ईमेल पता",
+    "subscribeButton": "सदस्यता लें"
+  }
+}

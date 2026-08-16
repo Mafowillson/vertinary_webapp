@@ -7,10 +7,12 @@ const Layout = () => {
   const location = useLocation()
   const isAdminRoute = location.pathname.startsWith('/admin')
 
-  // Don't render Header and Footer for admin routes
+  // Admin keeps the site header for a consistent shell, but skips the
+  // marketing footer/chat widget — it manages its own scroll area below.
   if (isAdminRoute) {
     return (
-      <div className="min-h-screen bg-white">
+      <div className="min-h-screen flex flex-col bg-white">
+        <Header />
         <Outlet />
       </div>
     )

@@ -1,0 +1,70 @@
+{
+  "header": {
+    "title": "Paramètres",
+    "subtitle": "Gérer la configuration du site et les liens des réseaux sociaux"
+  },
+  "tabs": {
+    "social": "Réseaux sociaux",
+    "exchangeRates": "Taux de change",
+    "general": "Général"
+  },
+  "messages": {
+    "updateSuccess": "Paramètres mis à jour avec succès !",
+    "updateError": "Échec de la mise à jour des paramètres. Veuillez réessayer.",
+    "invalidUrl": "Veuillez entrer une URL valide"
+  },
+  "socialLinks": {
+    "sectionTitle": "Liens des réseaux sociaux",
+    "sectionSubtitle": "Mettez à jour vos liens de réseaux sociaux qui apparaissent sur tout le site",
+    "testLinkTitle": "Test link",
+    "whatsapp": {
+      "label": "WhatsApp",
+      "placeholder": "https://wa.me/237699933135",
+      "hint": "Format : https://wa.me/[indicatif pays][numéro de téléphone]"
+    },
+    "facebook": {
+      "label": "Facebook",
+      "placeholder": "https://web.facebook.com/your-page",
+      "hint": "Lien vers votre page ou groupe Facebook"
+    },
+    "youtube": {
+      "label": "YouTube",
+      "placeholder": "https://www.youtube.com/@your-channel",
+      "hint": "Lien vers votre chaîne YouTube"
+    },
+    "reset": "Réinitialiser",
+    "saving": "Enregistrement...",
+    "save": "Enregistrer les modifications"
+  },
+  "exchangeRates": {
+    "sectionTitle": "Taux de change",
+    "sectionSubtitle": "Le FCFA reste la devise de référence : tous les prix sont saisis et facturés en FCFA. Ces taux ne servent qu'à convertir l'affichage pour les visiteurs.",
+    "baseCurrencyNote": "FCFA — devise de base, non modifiable (toujours 1)",
+    "usd": { "label": "Dollar US (USD)", "hint": "Combien de FCFA vaut 1 USD ?" },
+    "eur": { "label": "Euro (EUR)", "hint": "Combien de FCFA vaut 1 EUR ?" },
+    "ngn": { "label": "Naira (NGN)", "hint": "Combien de FCFA vaut 1 NGN ?" },
+    "unitSuffix": "FCFA pour 1",
+    "previewTitle": "Aperçu",
+    "previewLine": "50 000 FCFA ≈",
+    "reset": "Réinitialiser",
+    "saving": "Enregistrement...",
+    "save": "Enregistrer les taux",
+    "invalidRate": "Le taux doit être un nombre positif"
+  },
+  "general": {
+    "sectionTitle": "Paramètres généraux",
+    "sectionSubtitle": "Paramètres de configuration du site",
+    "siteName": {
+      "label": "Nom du site",
+      "readOnlyNote": "Ce paramètre ne peut pas être modifié"
+    },
+    "currency": {
+      "label": "Devise",
+      "readOnlyNote": "Devise par défaut pour toutes les transactions"
+    },
+    "info": {
+      "title": "Information",
+      "text": "Les paramètres généraux sont gérés par le système. Contactez votre administrateur pour modifier le nom du site ou la devise."
+    }
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "loadError": "No se pudieron cargar los pedidos.",
+  "header": {
+    "title": "Pedidos y pagos",
+    "subtitle": "Gestione los pedidos de los clientes y siga los pagos"
+  },
+  "stats": {
+    "total": "Total de pedidos",
+    "completed": "Completados",
+    "pending": "Pendientes",
+    "totalRevenue": "Ingresos totales"
+  },
+  "statusLabels": {
+    "all": "Todos",
+    "completed": "Completado",
+    "pending": "Pendiente",
+    "failed": "Fallido"
+  },
+  "paymentLabels": {
+    "mobileMoney": "Mobile Money",
+    "orangeMoney": "Orange Money",
+    "bankTransfer": "Transferencia bancaria",
+    "online": "Tarjeta",
+    "unpaid": "No pagado"
+  },
+  "filters": {
+    "searchPlaceholder": "Buscar por n.° de pedido, cliente o producto...",
+    "sortRecent": "Más reciente",
+    "sortDate": "Fecha (reciente)",
+    "sortAmount": "Monto (descendente)"
+  },
+  "card": {
+    "product": "Producto",
+    "amount": "Monto",
+    "payment": "Pago",
+    "viewDetails": "Ver detalles"
+  },
+  "list": {
+    "customer": "Cliente",
+    "product": "Producto",
+    "paymentAndDate": "Pago y fecha"
+  },
+  "empty": {
+    "title": "No se encontraron pedidos",
+    "withFilters": "Intente ajustar sus filtros",
+    "noFilters": "Los pedidos aparecerán aquí cuando los clientes realicen compras"
+  },
+  "modal": {
+    "title": "Detalles del pedido",
+    "orderNumber": "Número de pedido",
+    "customerInfo": "Información del cliente",
+    "product": "Producto",
+    "amount": "Monto",
+    "paymentMethod": "Método de pago",
+    "orderDate": "Fecha del pedido",
+    "status": "Estado",
+    "close": "Cerrar"
+  }
+}

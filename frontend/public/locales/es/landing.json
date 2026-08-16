@@ -1,0 +1,55 @@
+{
+  "hero": {
+    "badge": "Experto en Contenido Verificado · Camerún 🇨🇲",
+    "titlePrefix": "Recursos Veterinarios para",
+    "titleHighlight": "Triunfar",
+    "titleSuffix": "en su Granja",
+    "description": "Acceda a libros especializados, formaciones y recursos certificados en medicina veterinaria, creados por un experto, para ganaderos de Camerún y de todo el mundo.",
+    "browseButton": "Explorar Recursos",
+    "howItWorksButton": "Cómo funciona",
+    "socialProofPrefix": "Únase a",
+    "socialProofSuffix": "ganaderos satisfechos",
+    "experienceValue": "4+ Años",
+    "experienceLabel": "de Experiencia",
+    "guidesValue": "50+",
+    "guidesLabel": "Guías Verificadas"
+  },
+  "stats": {
+    "farmersValue": "5,000+",
+    "farmersLabel": "Ganaderos y Prof.",
+    "guidesValue": "50+",
+    "guidesLabel": "Guías Verificadas",
+    "experienceValue": "4+ Años",
+    "experienceLabel": "de Experiencia",
+    "countriesValue": "10+",
+    "countriesLabel": "Países Atendidos"
+  },
+  "categories": {
+    "eyebrow": "Colecciones",
+    "heading": "Explorar por Categoría",
+    "seeAll": "Ver todo",
+    "explore": "Explorar"
+  },
+  "resources": {
+    "eyebrow": "Selección Experta",
+    "heading": "Recursos Destacados",
+    "description": "Los mejores recursos digitales, seleccionados y verificados por expertos veterinarios.",
+    "discountBadge": "-{{percent}}% DTO.",
+    "expiresIn": "Expira en",
+    "discover": "Descubrir"
+  },
+  "services": {
+    "eyebrow": "Experiencia y Acompañamiento"
+  },
+  "founder": {
+    "eyebrow": "Sobre el Fundador",
+    "quote": "Compartir mis conocimientos en ganadería con Camerún y el mundo entero.",
+    "learnMore": "Saber más"
+  },
+  "cta": {
+    "heading": "¿Listo para ampliar sus conocimientos?",
+    "description": "Únase a nuestra comunidad de ganaderos en Camerún y en el mundo. Reciba consejos veterinarios exclusivos, formaciones y descuentos cada semana.",
+    "emailPlaceholder": "Su dirección de correo electrónico",
+    "subscribeButton": "Suscribirse"
+  }
+}

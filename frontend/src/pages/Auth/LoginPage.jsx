@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
-import { useTranslation } from 'react-i18next'
 import { useAuth } from '../../contexts/AuthContext'
+import { useLanguage } from '../../contexts/LanguageContext'
 import { FiAlertCircle, FiCheckCircle, FiEye, FiEyeOff, FiArrowRight } from 'react-icons/fi'
 import AuthLayout from '../../components/Layout/AuthLayout'
 
@@ -21,15 +21,14 @@ const LoginPage = () => {
   const [loading, setLoading] = useState(false)
 
   const { login } = useAuth()
-  const { t } = useTranslation('auth')
-  const { t: tErrors } = useTranslation('errors')
+  const { t } = useLanguage()
   const navigate = useNavigate()
   const location = useLocation()
   const from = location.state?.returnTo || '/'
 
   useEffect(() => {
     if (location.state?.registrationSuccess) {
-      setInfo(t('register.success'))
+      setInfo(t('register.success', { ns: 'auth' }))
       navigate(location.pathname, { replace: true, state: {} })
     }
   }, [location.pathname, location.state?.registrationSuccess, navigate, t])
@@ -42,21 +41,21 @@ const LoginPage = () => {
       await login(email, password)
       navigate(from, { replace: true })
     } catch (err) {
-      setError(err.message || err.response?.data?.message || tErrors('loginFailed'))
+      setError(err.message || err.response?.data?.message || t('loginFailed', { ns: 'errors' }))
     } finally {
       setLoading(false)
     }
   }
 
   return (
-    <AuthLayout quote="Accédez à votre bibliothèque vétérinaire personnelle.">
+    <AuthLayout quote={t('login.quote', { ns: 'auth' })}>
       <div className="space-y-6">
 
         {/* Heading */}
         <div>
-          <h1 className="text-2xl font-extrabold text-gray-900">Bon retour 👋</h1>
+          <h1 className="text-2xl font-extrabold text-gray-900">{t('login.welcomeBack', { ns: 'auth' })}</h1>
           <p className="mt-1 text-sm text-gray-500">
-            Connectez-vous pour accéder à vos ressources.
+            {t('login.subtitle', { ns: 'auth' })}
           </p>
         </div>
 
@@ -80,7 +79,7 @@ const LoginPage = () => {
           {/* Email */}
           <div className="space-y-1.5">
             <label htmlFor="email" className="block text-sm font-semibold text-gray-700">
-              Adresse email
+              {t('login.emailLabel', { ns: 'auth' })}
             </label>
             <input
               id="email"
@@ -89,7 +88,7 @@ const LoginPage = () => {
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="vous@exemple.com"
+              placeholder={t('login.emailPlaceholder', { ns: 'auth' })}
               className="w-full px-4 py-3 text-sm border border-gray-200 rounded-xl bg-gray-50 focus:bg-white focus:border-[#1A7A6E] focus:ring-2 focus:ring-[#1A7A6E]/20 outline-none transition-all placeholder-gray-400"
             />
           </div>
@@ -98,13 +97,13 @@ const LoginPage = () => {
           <div className="space-y-1.5">
             <div className="flex items-center justify-between">
               <label htmlFor="password" className="block text-sm font-semibold text-gray-700">
-                Mot de passe
+                {t('login.passwordLabel', { ns: 'auth' })}
               </label>
               <Link
                 to="/forgot-password"
                 className="text-xs font-semibold text-[#1A7A6E] hover:text-[#155f55] transition-colors"
               >
-                Mot de passe oublié ?
+                {t('login.forgotPassword', { ns: 'auth' })}
               </Link>
             </div>
             <div className="relative">
@@ -122,7 +121,7 @@ const LoginPage = () => {
                 type="button"
                 onClick={() => setShowPassword(showPassword)}
                 className="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
-                aria-label={showPassword ? 'Masquer' : 'Afficher'}
+                aria-label={showPassword ? t('login.hidePassword', { ns: 'auth' }) : t('login.showPassword', { ns: 'auth' })}
               >
                 {showPassword ? <FiEyeOff className="w-4 h-4" /> : <FiEye className="w-4 h-4" />}
               </button>
@@ -136,26 +135,26 @@ const LoginPage = () => {
             className="w-full flex items-center justify-center gap-2 bg-[#1A7A6E] hover:bg-[#155f55] text-white font-bold py-3 rounded-xl transition-all duration-200 shadow-sm hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed mt-2"
           >
             {loading ? (
-              <><Spinner /> Connexion en cours...</>
+              <><Spinner /> {t('login.loading', { ns: 'auth' })}</>
             ) : (
-              <>Se connecter <FiArrowRight className="w-4 h-4" /></>
+              <>{t('login.submitButton', { ns: 'auth' })} <FiArrowRight className="w-4 h-4" /></>
             )}
           </button>
         </form>
 
         {/* Register link */}
         <p className="text-center text-sm text-gray-500">
-          Pas encore de compte ?{' '}
+          {t('login.noAccount', { ns: 'auth' })}{' '}
           <Link to="/register" className="font-bold text-[#1A7A6E] hover:text-[#155f55] transition-colors">
-            Créer un compte
+            {t('login.registerLink', { ns: 'auth' })}
           </Link>
         </p>
 
         {/* Legal */}
         <div className="flex items-center justify-center gap-4 pt-2 border-t border-gray-100 text-xs text-gray-400">
-          <Link to="/privacy" className="hover:text-gray-600 transition-colors">Confidentialité</Link>
+          <Link to="/privacy" className="hover:text-gray-600 transition-colors">{t('footer.privacyShort', { ns: 'common' })}</Link>
           <span>·</span>
-          <Link to="/terms" className="hover:text-gray-600 transition-colors">Conditions</Link>
+          <Link to="/terms" className="hover:text-gray-600 transition-colors">{t('footer.termsShort', { ns: 'common' })}</Link>
         </div>
 
       </div>

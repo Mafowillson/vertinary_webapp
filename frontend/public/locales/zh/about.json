@@ -1,0 +1,86 @@
+{
+  "hero": {
+    "badge": "创始人与认证专家",
+    "titleLine1": "愿景",
+    "titleHighlightLine1": "源于",
+    "titleHighlightLine2": "学院",
+    "social": {
+      "youtube": "YouTube",
+      "facebook": "Facebook",
+      "whatsapp": "WhatsApp"
+    },
+    "floatingGuides": "指南",
+    "floatingBreeders": "养殖户"
+  },
+  "stats": {
+    "breedersTrained": "培训养殖户",
+    "guidesCreated": "创建指南",
+    "yearsExpertise": "年专业经验",
+    "videos": "教育视频"
+  },
+  "pillars": {
+    "eyebrow": "我们的指导原则",
+    "heading": "我们的四大支柱",
+    "education": {
+      "title": "教育",
+      "description": "让每一位养殖户,无论身在何处,都能获得兽医知识。"
+    },
+    "globalReach": {
+      "title": "全球影响力",
+      "description": "通过知识共享连接喀麦隆及国际养殖户。"
+    },
+    "innovation": {
+      "title": "创新",
+      "description": "打造创新产品与工具,加速养殖业的发展。"
+    },
+    "passion": {
+      "title": "热情",
+      "description": "每一份内容都源于对动物福利的真挚热情。"
+    }
+  },
+  "timeline": {
+    "eyebrow": "发展历程",
+    "heading": "我们的历程",
+    "milestones": {
+      "2020": { "title": "起步", "description": "开始学习兽医学" },
+      "2021": { "title": "内容创作", "description": "推出YouTube频道和Facebook主页" },
+      "2022": { "title": "第一本书", "description": "出版第一本书《养殖全攻略》" },
+      "2023": { "title": "学院成立", "description": "创立养殖户学院" },
+      "2024": { "title": "数字平台", "description": "推出教育网络平台" }
+    }
+  },
+  "credentials": {
+    "eyebrow": "专业能力",
+    "heading": "成就与认可",
+    "tabs": {
+      "formation": "培训",
+      "innovation": "创新"
+    },
+    "items": {
+      "vetStudent": { "label": "兽医学博士研究生", "sub": "持续深造" },
+      "animalProdEngineer": { "label": "动物生产工程师", "sub": "动物管理专业能力" },
+      "author": { "label": "作者 ——《养殖全攻略》系列", "sub": "已出版多本书籍" },
+      "founder": { "label": "养殖户学院创始人", "sub": "教育平台" },
+      "manufacturer": { "label": "有机生长促进剂制造商", "sub": "创新产品" },
+      "contentCreator": { "label": "教育内容创作者", "sub": "YouTube 与 Facebook" }
+    }
+  },
+  "quote": {
+    "eyebrow": "我们的愿景",
+    "text": "打造一个由受过教育、繁荣发展的养殖户组成的全球社区,让兽医知识",
+    "highlight": "人人可及,无处不在。",
+    "cards": {
+      "accessibility": { "title": "普及性", "body": "信息不应是一种特权。我们正在让它人人可及。" },
+      "community": { "title": "社区", "body": "携手同行,我们正在建立一个互助互信、信息灵通的养殖户网络。" },
+      "sustainability": { "title": "可持续性", "body": "养殖户越有知识,明天的农业就越可持续。" }
+    }
+  },
+  "cta": {
+    "eyebrow": "加入我们",
+    "headingLine1": "准备好",
+    "headingLine2": "改变您的养殖场了吗?",
+    "text": "探索我们的资源、培训课程和书籍,精进您的养殖专业技能。",
+    "resourcesButton": "浏览资源",
+    "contactButton": "联系我们"
+  }
+}

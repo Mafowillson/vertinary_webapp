@@ -1,21 +1,31 @@
 {
   "title": "Ma bibliothèque",
   "empty": "Vous n'avez pas encore de contenus achetés.",
+  "digitalAccess": "Accès numérique",
   "watchNow": "Regarder maintenant",
-  "downloadNow": "Télécharger maintenant",
   "readNow": "Lire maintenant",
-  "progress": "Progression",
   "completed": "Terminé",
-  "module": "Module",
-  "of": "sur",
-  "continueWatching": "Continuer la formation",
-  "recentlyAdded": "Ajouts récents",
-  "files": "Fichiers",
-  "howToDownload": "Comment télécharger ?",
-  "downloadInstruction": "Cliquez sur Télécharger pour enregistrer le fichier.",
-  "downloading": "Téléchargement…",
-  "download": "Télécharger",
-  "noFilesAvailable": "Aucun fichier disponible.",
-  "downloadHere": "Téléchargez votre document ici",
-  "downloadError": "Échec du téléchargement. Réessayez."
+  "list": {
+    "subtitle": "Retrouvez ici tous les contenus que vous avez achetés.",
+    "emptyCta": "Parcourir le catalogue",
+    "purchasedOn": "Acheté le {{date}}",
+    "continueButton": "Continuer",
+    "loadError": "Impossible de charger votre bibliothèque."
+  },
+  "player": {
+    "backToProducts": "Retour aux produits",
+    "backToCatalog": "Retour au catalogue",
+    "contentCount": "Contenu ({{count}})",
+    "contentComingSoon": "Le contenu sera bientôt disponible.",
+    "selectContent": "Sélectionnez un contenu pour commencer",
+    "contentLocked": "Contenu verrouillé",
+    "purchaseRequired": "Vous devez acheter ce produit pour accéder à ce contenu.",
+    "viewProduct": "Voir le produit",
+    "contentAccessError": "Impossible d'accéder à ce contenu.",
+    "lessonAccessError": "Impossible d'accéder à cette leçon.",
+    "loadError": "Impossible de charger ce contenu.",
+    "accountOnlyDisclaimer": "Contenu réservé à votre compte — lecture en ligne uniquement.",
+    "pdfLoadError": "Impossible de charger le document.",
+    "pageIndicator": "Page {{page}} / {{total}}"
+  }
 }

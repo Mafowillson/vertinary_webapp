@@ -1,0 +1,19 @@
+# Auto-loaded by `docker compose` when run from this directory (Compose
+# merges docker-compose.yml + docker-compose.override.yml by convention).
+# Swaps the GHCR image pulls for local builds from the actual Dockerfiles —
+# same build CI runs, just executed on your machine. This file is NOT copied
+# to the VPS by the deploy workflow, so it has zero effect in production;
+# the VPS only ever sees docker-compose.yml and pulls the CI-built images.
+
+services:
+  backend:
+    build:
+      context: ../backend
+    image: vertinary_webapp-backend:local
+
+  nginx:
+    build:
+      context: ../frontend
+      args:
+        VITE_API_BASE_URL: /api
+    image: vertinary_webapp-frontend:local

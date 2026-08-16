@@ -15,14 +15,27 @@
     "toggleMenu": "Abrir menú"
   },
   "footer": {
-    "rights": "Todos los derechos reservados",
     "contact": "Contacto",
     "privacy": "Política de privacidad",
     "terms": "Términos del servicio",
-    "quickLinks": "Enlaces rápidos",
-    "description": "Su aliado en cría, salud y bienestar animal: guías y contenido veterinario profesional.",
-    "developedBy": "Desarrollado por",
-    "store": "Tienda"
+    "findResources": "Buscar Recursos",
+    "ourBooks": "Nuestros Libros y E-Books",
+    "onlineTraining": "Formación en Línea",
+    "proServices": "Servicios Pro",
+    "support": "Soporte",
+    "helpCenter": "Centro de Ayuda",
+    "contactUs": "Contáctenos",
+    "brandDescription": "Plataforma dedicada a compartir el conocimiento veterinario — libros, formaciones y recursos para los ganaderos de Camerún y del mundo entero.",
+    "brandName": "Academie des Eleveurs",
+    "country": "Camerún 🇨🇲",
+    "stayInformed": "Manténgase informado",
+    "emailPlaceholder": "Su correo electrónico",
+    "copyright": "© {{year}} Academie des Eleveurs.",
+    "foundedWith": "Fundado con",
+    "byAuthor": "por {{name}}",
+    "privacyShort": "Privacidad",
+    "termsShort": "Términos",
+    "language": "Francés (CM)"
   },
   "buttons": {
     "payNow": "Pagar ahora",
@@ -38,7 +51,8 @@
     "viewDetails": "Ver detalles",
     "download": "Descargar",
     "watchNow": "Ver ahora",
-    "readNow": "Leer ahora"
+    "readNow": "Leer ahora",
+    "addToCart": "Añadir"
   },
   "status": {
     "loading": "Cargando…",
@@ -182,5 +196,24 @@
     "article": "artículo",
     "articles": "artículos",
     "productsLabel": "Productos"
+  },
+  "productCard": {
+    "formatPdf": "PDF",
+    "formatVideo": "VÍDEO",
+    "formatEbook": "E-BOOK",
+    "formatAudio": "AUDIO",
+    "defaultCategory": "Salud animal",
+    "topBadge": "TOP",
+    "limitedOffer": "Oferta limitada",
+    "dayAbbr": "d",
+    "hourAbbr": "h",
+    "minuteAbbr": "m"
+  },
+  "chat": {
+    "openLabel": "Abrir el chat",
+    "closeLabel": "Cerrar el chat",
+    "title": "Chat de soporte",
+    "comingSoon": "¡El chat de soporte llega pronto!",
+    "contactSocial": "No dude en contactarnos a través de nuestras redes sociales."
   }
 }

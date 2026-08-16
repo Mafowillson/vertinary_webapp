@@ -15,14 +15,27 @@
     "toggleMenu": "Ouvrir le menu"
   },
   "footer": {
-    "rights": "Tous droits réservés",
     "contact": "Contact",
     "privacy": "Politique de confidentialité",
     "terms": "Conditions d'utilisation",
-    "quickLinks": "Liens rapides",
-    "description": "Votre partenaire pour réussir en élevage : guides professionnels, formations et documents sur l'élevage, la santé et le bien-être des animaux de ferme.",
-    "developedBy": "Développé par",
-    "store": "Boutique"
+    "findResources": "Trouver des Ressources",
+    "ourBooks": "Nos Livres & E-Books",
+    "onlineTraining": "Formations en Ligne",
+    "proServices": "Services Pro",
+    "support": "Support",
+    "helpCenter": "Centre d'Aide",
+    "contactUs": "Nous Contacter",
+    "brandDescription": "Plateforme dédiée au partage de savoir vétérinaire — livres, formations et ressources pour les éleveurs du Cameroun et du monde entier.",
+    "brandName": "Académie des Éleveurs",
+    "country": "Cameroun 🇨🇲",
+    "stayInformed": "Restez informé",
+    "emailPlaceholder": "Votre email",
+    "copyright": "© {{year}} Académie des Éleveurs.",
+    "foundedWith": "Fondé avec",
+    "byAuthor": "par {{name}}",
+    "privacyShort": "Confidentialité",
+    "termsShort": "Conditions",
+    "language": "Français (CM)"
   },
   "buttons": {
     "payNow": "Payer maintenant",
@@ -38,7 +51,8 @@
     "viewDetails": "Voir les détails",
     "download": "Télécharger",
     "watchNow": "Regarder maintenant",
-    "readNow": "Lire maintenant"
+    "readNow": "Lire maintenant",
+    "addToCart": "Ajouter"
   },
   "status": {
     "loading": "Chargement…",
@@ -182,5 +196,24 @@
     "article": "article",
     "articles": "articles",
     "productsLabel": "Produits"
+  },
+  "productCard": {
+    "formatPdf": "PDF",
+    "formatVideo": "VIDÉO",
+    "formatEbook": "E-BOOK",
+    "formatAudio": "AUDIO",
+    "defaultCategory": "Santé animale",
+    "topBadge": "TOP",
+    "limitedOffer": "Offre limitée",
+    "dayAbbr": "j",
+    "hourAbbr": "h",
+    "minuteAbbr": "m"
+  },
+  "chat": {
+    "openLabel": "Ouvrir le chat",
+    "closeLabel": "Fermer le chat",
+    "title": "Support Chat",
+    "comingSoon": "Le support chat arrive bientôt !",
+    "contactSocial": "N'hésitez pas à nous contacter via nos réseaux sociaux."
   }
 }

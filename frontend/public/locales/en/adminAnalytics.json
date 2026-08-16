@@ -1,0 +1,47 @@
+{
+  "header": {
+    "title": "Analytics",
+    "subtitle": "Track your business performance and insights"
+  },
+  "timeframe": {
+    "weekly": "Weekly",
+    "monthly": "Monthly",
+    "yearly": "Yearly"
+  },
+  "errors": {
+    "loadFailed": "Unable to load statistics."
+  },
+  "stats": {
+    "totalRevenue": "Total Revenue",
+    "totalOrders": "Total Orders",
+    "totalUsers": "Total Users",
+    "conversionRate": "Conversion Rate",
+    "pointsSuffix": " pts"
+  },
+  "charts": {
+    "revenue": {
+      "title": "Revenue Trend",
+      "subtitle": "Total revenue over time"
+    },
+    "orders": {
+      "title": "Orders Trend",
+      "subtitle": "Number of orders over time",
+      "tooltipSales": "{{count}} orders"
+    },
+    "users": {
+      "title": "User Growth",
+      "subtitle": "New users over time"
+    }
+  },
+  "performance": {
+    "title": "Performance Metrics",
+    "averageOrderValue": "Average Order Value",
+    "conversionRate": "Conversion Rate",
+    "activeProducts": "Active Products"
+  },
+  "topProducts": {
+    "title": "Top Products",
+    "empty": "No sales during this period.",
+    "salesCount": "{{count}} sales"
+  }
+}

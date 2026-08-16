@@ -1,0 +1,40 @@
+{
+  "list": {
+    "hero": {
+      "chipServiceCount": "{{count}} 项服务",
+      "chipRegion": "喀麦隆及全球",
+      "chipResponseTime": "快速响应"
+    },
+    "cta": {
+      "questionLabel": "有疑问？",
+      "titleLine1": "聊聊您的",
+      "titleLine2": "养殖项目",
+      "description": "我们的团队将在24小时内回复，帮助您选择合适的服务。",
+      "whatsappButton": "通过WhatsApp联系",
+      "viewProductsButton": "查看产品"
+    }
+  },
+  "detail": {
+    "loading": "加载中…",
+    "notFound": "该服务不存在或已下架。",
+    "descriptionHeading": "关于此服务",
+    "priceLabel": "价格",
+    "quickInfo": {
+      "heading": "信息",
+      "category": "类别",
+      "availability": "可用性",
+      "availabilityValue": "按需提供",
+      "zone": "地区",
+      "zoneValue": "🌍 喀麦隆及国际"
+    },
+    "relatedSectionLabel": "同类别服务",
+    "bottomCta": {
+      "readyLabel": "准备好开始了吗？",
+      "titlePrefix": "联系我们了解",
+      "titleHighlight": "此服务",
+      "description": "我们的团队将在24小时内回复，协助您的养殖项目。",
+      "whatsappButton": "通过WhatsApp联系",
+      "viewAllButton": "查看所有服务"
+    }
+  }
+}

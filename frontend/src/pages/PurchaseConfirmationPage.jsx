@@ -3,12 +3,12 @@ import { useParams, Link } from 'react-router-dom'
 import { orderService } from '../services/orderService'
 import { useLanguage } from '../contexts/LanguageContext'
 import { useApp } from '../contexts/AppContext'
-import { formatCurrency } from '../utils/formatters'
-import { 
-  FiCheck, 
-  FiCopy, 
-  FiDownload, 
-  FiMessageCircle, 
+import { useCurrency } from '../contexts/CurrencyContext'
+import {
+  FiCheck,
+  FiCopy,
+  FiPlayCircle,
+  FiMessageCircle,
   FiCheckCircle,
   FiArrowRight,
   FiShield,
@@ -21,6 +21,7 @@ const PurchaseConfirmationPage = () => {
   const { orderId } = useParams()
   const { socialLinks } = useApp()
   const { t } = useLanguage()
+  const { format } = useCurrency()
   const tx = (k, o) => t(`confirmation.${k}`, { ns: 'checkout', ...o })
   const tcp = (k, o) => t(`cart.${k}`, { ns: 'checkout', ...o })
   const tcom = (k, o) => t(`services.${k}`, { ns: 'common', ...o })
@@ -124,7 +125,7 @@ const PurchaseConfirmationPage = () => {
                     <span>{tx('orderDate')}</span>
                   </span>
                   <span className="font-medium text-gray-900">
-                    {order.created_at ? new Date(order.created_at).toLocaleDateString() : 'N/A'}
+                    {order.created_at ? new Date(order.created_at).toLocaleDateString() : tx('notAvailable')}
                   </span>
                 </div>
                 <div className="flex items-center justify-between text-sm">
@@ -133,13 +134,13 @@ const PurchaseConfirmationPage = () => {
                     <span>{tx('paymentMethod')}</span>
                   </span>
                   <span className="font-medium text-gray-900 capitalize">
-                    {order.payment_method || 'Online'}
+                    {order.payment_method || tx('onlinePaymentMethod')}
                   </span>
                 </div>
                 <div className="flex items-center justify-between text-sm">
                   <span className="text-gray-600">{tcp('total')}</span>
                   <span className="font-bold text-lg text-green-600">
-                    {formatCurrency(order.amount || order.total || 0)}
+                    {format(order.amount || order.total || 0)}
                   </span>
                 </div>
               </div>
@@ -210,24 +211,24 @@ const PurchaseConfirmationPage = () => {
               </div>
             </div>
 
-            {/* Download Section */}
+            {/* Content Access Section */}
             <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
               <div className="flex items-center space-x-3 mb-4">
                 <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
-                  <FiDownload className="w-5 h-5 text-green-600" />
+                  <FiPlayCircle className="w-5 h-5 text-green-600" />
                 </div>
                 <div>
-                  <h2 className="text-xl font-bold text-gray-900">{tx('downloadDocument')}</h2>
-                  <p className="text-sm text-gray-600 mt-1">{tx('downloadFileInstruction')}</p>
+                  <h2 className="text-xl font-bold text-gray-900">{tx('accessContent')}</h2>
+                  <p className="text-sm text-gray-600 mt-1">{tx('accessContentInstruction')}</p>
                 </div>
               </div>
-              
+
               <Link
-                to={`/download/${orderId}`}
+                to={`/learn/${order.productId || order.product_id || order.product?.id}`}
                 className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-4 px-6 rounded-lg flex items-center justify-center space-x-2 shadow-md hover:shadow-lg transform hover:scale-[1.02] transition-all"
               >
-                <FiDownload className="w-5 h-5" />
-                <span>{tx('downloadButton')}</span>
+                <FiPlayCircle className="w-5 h-5" />
+                <span>{tx('accessContentButton')}</span>
                 <FiArrowRight className="w-5 h-5" />
               </Link>
             </div>

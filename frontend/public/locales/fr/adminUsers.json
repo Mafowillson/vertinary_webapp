@@ -1,0 +1,74 @@
+{
+  "loadError": "Impossible de charger les utilisateurs.",
+  "statusUpdateError": "Impossible de modifier le statut de l'utilisateur.",
+  "roleUpdateError": "Impossible de modifier le rôle de l'utilisateur.",
+  "deleteError": "Impossible de supprimer l'utilisateur.",
+  "deleteConfirm": "Êtes-vous sûr de vouloir supprimer cet utilisateur ?",
+  "header": {
+    "title": "Gestion des utilisateurs",
+    "subtitle": "Gérer les comptes utilisateurs et les permissions",
+    "addUser": "Ajouter un utilisateur"
+  },
+  "stats": {
+    "total": "Utilisateurs totaux",
+    "admins": "Administrateurs",
+    "active": "Utilisateurs actifs",
+    "newThisMonth": "Nouveaux ce mois"
+  },
+  "filters": {
+    "searchPlaceholder": "Rechercher par nom ou email...",
+    "roleAll": "Tous les rôles",
+    "roleAdmin": "Admin",
+    "roleUser": "Utilisateur",
+    "statusAll": "Tous les statuts",
+    "statusActive": "Actif",
+    "statusInactive": "Inactif",
+    "sortRecent": "Plus récent",
+    "sortName": "Nom (A-Z)",
+    "sortEmail": "Email (A-Z)"
+  },
+  "roleLabels": {
+    "admin": "admin",
+    "user": "utilisateur"
+  },
+  "statusLabels": {
+    "active": "Actif",
+    "inactive": "Inactif"
+  },
+  "listItem": {
+    "orders": "Commandes",
+    "ordersCount": "{{count}} commandes",
+    "memberSince": "Membre depuis",
+    "userId": "ID Utilisateur"
+  },
+  "actions": {
+    "promote": "Promouvoir en administrateur",
+    "demote": "Rétrograder en utilisateur",
+    "activate": "Activer",
+    "deactivate": "Désactiver",
+    "viewDetails": "Voir les détails",
+    "delete": "Supprimer l'utilisateur",
+    "cannotChangeOwnRole": "Vous ne pouvez pas modifier votre propre rôle",
+    "cannotChangeOwnStatus": "Vous ne pouvez pas modifier votre propre statut"
+  },
+  "empty": {
+    "title": "Aucun utilisateur trouvé",
+    "withFilters": "Essayez d'ajuster vos filtres",
+    "noFilters": "Les utilisateurs apparaîtront ici une fois inscrits"
+  },
+  "modal": {
+    "title": "Détails de l'utilisateur",
+    "role": "Rôle",
+    "status": "Statut",
+    "userId": "ID Utilisateur",
+    "memberSince": "Membre depuis",
+    "totalOrders": "Total commandes",
+    "ordersCount": "{{count}} commandes",
+    "selfDisclaimer": "Vous ne pouvez pas modifier votre propre rôle ou statut.",
+    "close": "Fermer",
+    "promote": "Promouvoir en administrateur",
+    "demote": "Rétrograder en utilisateur",
+    "activateUser": "Activer l'utilisateur",
+    "deactivateUser": "Désactiver l'utilisateur"
+  }
+}

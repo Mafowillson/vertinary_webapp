@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import { useLanguage } from '../../contexts/LanguageContext'
-import { formatCurrency } from '../../utils/formatters'
+import { useCurrency } from '../../contexts/CurrencyContext'
 import { FiArrowRight, FiCheck } from 'react-icons/fi'
 
 const categoryStyles = {
@@ -14,6 +14,7 @@ const categoryStyles = {
 
 const ServiceCard = ({ service }) => {
   const { t } = useLanguage()
+  const { format } = useCurrency()
   const style = categoryStyles[service.category] ?? categoryStyles.default
 
   return (
@@ -63,7 +64,7 @@ const ServiceCard = ({ service }) => {
         {/* Footer */}
         <div className="mt-auto pt-4 border-t border-gray-100 flex items-center justify-between gap-3">
           {service.price ? (
-            <span className="text-base font-black text-[#1A7A6E]">{formatCurrency(service.price)}</span>
+            <span className="text-base font-black text-[#1A7A6E]">{format(service.price)}</span>
           ) : (
             <span className="text-xs text-gray-400 italic">{t('services.contactForPricing', { ns: 'common' })}</span>
           )}

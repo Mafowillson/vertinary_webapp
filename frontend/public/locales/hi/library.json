@@ -1,21 +1,31 @@
 {
   "title": "मेरी लाइब्रेरी",
   "empty": "अभी कोई सामग्री खरीदी नहीं।",
+  "digitalAccess": "डिजिटल एक्सेस",
   "watchNow": "अभी देखें",
-  "downloadNow": "अभी डाउनलोड",
   "readNow": "अभी पढ़ें",
-  "progress": "प्रगति",
   "completed": "पूर्ण",
-  "module": "मॉड्यूल",
-  "of": "/",
-  "continueWatching": "जारी रखें",
-  "recentlyAdded": "हाल ही में",
-  "files": "फ़ाइलें",
-  "howToDownload": "कैसे डाउनलोड करें?",
-  "downloadInstruction": "डाउनलोड दबाकर सहेजें।",
-  "downloading": "डाउनलोड…",
-  "download": "डाउनलोड",
-  "noFilesAvailable": "कोई फ़ाइल नहीं।",
-  "downloadHere": "यहाँ दस्तावेज़ डाउनलोड करें",
-  "downloadError": "डाउनलोड असफल, पुनः प्रयास करें।"
+  "list": {
+    "subtitle": "आपकी सभी खरीदी गई सामग्री यहाँ है।",
+    "emptyCta": "कैटलॉग देखें",
+    "purchasedOn": "{{date}} को खरीदा गया",
+    "continueButton": "जारी रखें",
+    "loadError": "आपकी लाइब्रेरी लोड नहीं हो सकी।"
+  },
+  "player": {
+    "backToProducts": "उत्पादों पर वापस जाएँ",
+    "backToCatalog": "कैटलॉग पर वापस जाएँ",
+    "contentCount": "सामग्री ({{count}})",
+    "contentComingSoon": "सामग्री जल्द ही उपलब्ध होगी।",
+    "selectContent": "आरंभ करने के लिए सामग्री चुनें",
+    "contentLocked": "सामग्री लॉक है",
+    "purchaseRequired": "इस सामग्री तक पहुँचने के लिए आपको यह उत्पाद खरीदना होगा।",
+    "viewProduct": "उत्पाद देखें",
+    "contentAccessError": "इस सामग्री तक पहुँचा नहीं जा सका।",
+    "lessonAccessError": "इस पाठ तक पहुँचा नहीं जा सका।",
+    "loadError": "यह सामग्री लोड नहीं हो सकी।",
+    "accountOnlyDisclaimer": "यह सामग्री केवल आपके खाते के लिए है — केवल ऑनलाइन देखने हेतु।",
+    "pdfLoadError": "दस्तावेज़ लोड नहीं हो सका।",
+    "pageIndicator": "पृष्ठ {{page}} / {{total}}"
+  }
 }

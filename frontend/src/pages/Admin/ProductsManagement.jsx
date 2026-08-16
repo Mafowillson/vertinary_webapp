@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { productService } from '../../services/productService'
 import { formatCurrency } from '../../utils/formatters'
+import { useLanguage } from '../../contexts/LanguageContext'
 import {
   FiEdit,
   FiTrash2,
@@ -14,13 +15,16 @@ import {
   FiFilter,
   FiX,
   FiEye,
+  FiAlertCircle,
 } from 'react-icons/fi'
 import ProductForm from '../../components/Admin/ProductForm'
 
 const ProductsManagement = () => {
+  const { t } = useLanguage()
   const [products, setProducts] = useState([])
   const [filteredProducts, setFilteredProducts] = useState([])
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState('')
   const [showForm, setShowForm] = useState(false)
   const [editingProduct, setEditingProduct] = useState(null)
   const [searchQuery, setSearchQuery] = useState('')
@@ -37,11 +41,13 @@ const ProductsManagement = () => {
   }, [products, searchQuery, sortBy])
 
   const loadProducts = async () => {
+    setLoading(true)
+    setError('')
     try {
       const data = await productService.getAllProducts()
-      setProducts(data.data || data)
-    } catch (error) {
-      console.error('Failed to load products:', error)
+      setProducts(data)
+    } catch (err) {
+      setError(err.message || t('list.errors.loadFailed', { ns: 'adminProducts' }))
     } finally {
       setLoading(false)
     }
@@ -84,12 +90,12 @@ const ProductsManagement = () => {
   }
 
   const handleDelete = async (id) => {
-    if (window.confirm('Êtes-vous sûr de vouloir supprimer ce produit ?')) {
+    if (window.confirm(t('list.confirm.delete', { ns: 'adminProducts' }))) {
       try {
         await productService.deleteProduct(id)
         loadProducts()
       } catch (error) {
-        alert('Erreur lors de la suppression')
+        alert(t('list.errors.deleteFailed', { ns: 'adminProducts' }))
       }
     }
   }
@@ -124,42 +130,49 @@ const ProductsManagement = () => {
       {/* Header Section */}
       <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 mb-1">Gestion du contenu</h1>
-          <p className="text-gray-600">Gérer vos produits et contenus numériques</p>
+          <h1 className="text-2xl font-bold text-gray-900 mb-1">{t('list.header.title', { ns: 'adminProducts' })}</h1>
+          <p className="text-gray-600">{t('list.header.subtitle', { ns: 'adminProducts' })}</p>
         </div>
         <button
           onClick={() => setShowForm(true)}
           className="bg-primary-600 hover:bg-primary-700 text-white px-6 py-3 rounded-lg font-medium transition-colors flex items-center justify-center space-x-2 shadow-sm"
         >
           <FiPlus className="w-5 h-5" />
-          <span>Ajouter un produit</span>
+          <span>{t('list.header.addButton', { ns: 'adminProducts' })}</span>
         </button>
       </div>
+
+      {error && (
+        <div className="flex items-start gap-3 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl text-sm">
+          <FiAlertCircle className="w-4 h-4 mt-0.5 flex-shrink-0" />
+          <span>{error}</span>
+        </div>
+      )}
 
       {/* Statistics Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <StatCard
-          label="Total produits"
+          label={t('list.stats.total.label', { ns: 'adminProducts' })}
           value={stats.total}
           icon={FiPackage}
           color="bg-blue-100 text-blue-600"
-          change="+2 ce mois"
+          change={t('list.stats.total.change', { ns: 'adminProducts' })}
         />
         <StatCard
-          label="Produits en vedette"
+          label={t('list.stats.featured.label', { ns: 'adminProducts' })}
           value={stats.featured}
           icon={FiTrendingUp}
           color="bg-purple-100 text-purple-600"
         />
         <StatCard
-          label="Ventes totales"
+          label={t('list.stats.sales.label', { ns: 'adminProducts' })}
           value={stats.totalSales}
           icon={FiTrendingUp}
           color="bg-green-100 text-green-600"
-          change="+12.5%"
+          change={t('list.stats.sales.change', { ns: 'adminProducts' })}
         />
         <StatCard
-          label="Revenu total"
+          label={t('list.stats.revenue.label', { ns: 'adminProducts' })}
           value={formatCurrency(stats.totalRevenue)}
           icon={FiDollarSign}
           color="bg-orange-100 text-orange-600"
@@ -174,7 +187,7 @@ const ProductsManagement = () => {
             <FiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
             <input
               type="text"
-              placeholder="Rechercher des produits par nom ou description..."
+              placeholder={t('list.search.placeholder', { ns: 'adminProducts' })}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
@@ -195,10 +208,10 @@ const ProductsManagement = () => {
             onChange={(e) => setSortBy(e.target.value)}
             className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white"
           >
-            <option value="recent">Plus récent</option>
-            <option value="name">Nom (A-Z)</option>
-            <option value="price">Prix (décroissant)</option>
-            <option value="sales">Meilleures ventes</option>
+            <option value="recent">{t('list.sort.recent', { ns: 'adminProducts' })}</option>
+            <option value="name">{t('list.sort.name', { ns: 'adminProducts' })}</option>
+            <option value="price">{t('list.sort.price', { ns: 'adminProducts' })}</option>
+            <option value="sales">{t('list.sort.sales', { ns: 'adminProducts' })}</option>
           </select>
 
           {/* View Toggle */}
@@ -263,11 +276,11 @@ const ProductsManagement = () => {
       ) : (
         <div className="bg-white rounded-lg shadow-sm p-12 text-center">
           <FiPackage className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-          <h3 className="text-lg font-semibold text-gray-900 mb-2">Aucun produit trouvé</h3>
+          <h3 className="text-lg font-semibold text-gray-900 mb-2">{t('list.empty.title', { ns: 'adminProducts' })}</h3>
           <p className="text-gray-600 mb-6">
             {searchQuery
-              ? 'Essayez d\'ajuster vos termes de recherche'
-              : 'Commencez par ajouter votre premier produit'}
+              ? t('list.empty.searchHint', { ns: 'adminProducts' })
+              : t('list.empty.noProductsHint', { ns: 'adminProducts' })}
           </p>
           {!searchQuery && (
             <button
@@ -275,7 +288,7 @@ const ProductsManagement = () => {
               className="bg-primary-600 hover:bg-primary-700 text-white px-6 py-3 rounded-lg font-medium transition-colors inline-flex items-center space-x-2"
             >
               <FiPlus className="w-5 h-5" />
-              <span>Ajouter votre premier produit</span>
+              <span>{t('list.empty.addFirstButton', { ns: 'adminProducts' })}</span>
             </button>
           )}
         </div>
@@ -304,6 +317,7 @@ const StatCard = ({ label, value, icon: Icon, color, change }) => {
 
 // Product Card Component (Grid View)
 const ProductCard = ({ product, onEdit, onDelete, formatCurrency }) => {
+  const { t } = useLanguage()
   return (
     <div className="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-lg transition-all duration-200 group">
       {/* Image */}
@@ -321,7 +335,7 @@ const ProductCard = ({ product, onEdit, onDelete, formatCurrency }) => {
         )}
         {product.featured && (
           <div className="absolute top-3 right-3 bg-yellow-400 text-yellow-900 px-2 py-1 rounded-full text-xs font-semibold">
-            En vedette
+            {t('list.card.featuredBadge', { ns: 'adminProducts' })}
           </div>
         )}
         {/* Action Buttons Overlay */}
@@ -330,14 +344,14 @@ const ProductCard = ({ product, onEdit, onDelete, formatCurrency }) => {
             <button
               onClick={() => onEdit(product)}
               className="bg-white text-primary-600 p-2 rounded-lg hover:bg-primary-50 transition-colors"
-              title="Modifier"
+              title={t('list.actions.edit', { ns: 'adminProducts' })}
             >
               <FiEdit className="w-5 h-5" />
             </button>
             <button
               onClick={() => onDelete(product.id)}
               className="bg-white text-red-600 p-2 rounded-lg hover:bg-red-50 transition-colors"
-              title="Supprimer"
+              title={t('list.actions.delete', { ns: 'adminProducts' })}
             >
               <FiTrash2 className="w-5 h-5" />
             </button>
@@ -364,7 +378,7 @@ const ProductCard = ({ product, onEdit, onDelete, formatCurrency }) => {
           <div className="flex items-center space-x-4 text-sm text-gray-600">
             <div className="flex items-center space-x-1">
               <FiTrendingUp className="w-4 h-4" />
-              <span>{product.purchaseCount || 0} ventes</span>
+              <span>{t('list.card.salesCount', { ns: 'adminProducts', count: product.purchaseCount || 0 })}</span>
             </div>
           </div>
         </div>
@@ -375,6 +389,7 @@ const ProductCard = ({ product, onEdit, onDelete, formatCurrency }) => {
 
 // Product List Item Component
 const ProductListItem = ({ product, onEdit, onDelete, formatCurrency }) => {
+  const { t } = useLanguage()
   return (
     <div className="p-6 hover:bg-gray-50 transition-colors group">
       <div className="flex items-center space-x-4">
@@ -401,21 +416,21 @@ const ProductListItem = ({ product, onEdit, onDelete, formatCurrency }) => {
                 <h3 className="font-semibold text-gray-900 truncate">{product.title}</h3>
                 {product.featured && (
                   <span className="bg-yellow-100 text-yellow-800 px-2 py-0.5 rounded-full text-xs font-semibold flex-shrink-0">
-                    En vedette
+                    {t('list.card.featuredBadge', { ns: 'adminProducts' })}
                   </span>
                 )}
               </div>
               <p className="text-sm text-gray-600 line-clamp-2 mb-3">{product.description}</p>
               <div className="flex items-center space-x-6 text-sm">
                 <div>
-                  <span className="text-gray-500">Prix : </span>
+                  <span className="text-gray-500">{t('list.listItem.priceLabel', { ns: 'adminProducts' })}</span>
                   <span className="font-semibold text-primary-600">
                     {formatCurrency(product.price)}
                   </span>
                 </div>
                 <div className="flex items-center space-x-1 text-gray-600">
                   <FiTrendingUp className="w-4 h-4" />
-                  <span>{product.purchaseCount || 0} ventes</span>
+                  <span>{t('list.card.salesCount', { ns: 'adminProducts', count: product.purchaseCount || 0 })}</span>
                 </div>
               </div>
             </div>
@@ -425,14 +440,14 @@ const ProductListItem = ({ product, onEdit, onDelete, formatCurrency }) => {
               <button
                 onClick={() => onEdit(product)}
                 className="p-2 text-primary-600 hover:bg-primary-50 rounded-lg transition-colors"
-              title="Modifier"
+              title={t('list.actions.edit', { ns: 'adminProducts' })}
             >
               <FiEdit className="w-5 h-5" />
             </button>
             <button
               onClick={() => onDelete(product.id)}
               className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-              title="Supprimer"
+              title={t('list.actions.delete', { ns: 'adminProducts' })}
               >
                 <FiTrash2 className="w-5 h-5" />
               </button>

@@ -1,0 +1,47 @@
+{
+  "header": {
+    "title": "数据分析",
+    "subtitle": "追踪您的业务表现和洞察"
+  },
+  "timeframe": {
+    "weekly": "每周",
+    "monthly": "每月",
+    "yearly": "每年"
+  },
+  "errors": {
+    "loadFailed": "无法加载统计数据。"
+  },
+  "stats": {
+    "totalRevenue": "总收入",
+    "totalOrders": "订单总数",
+    "totalUsers": "用户总数",
+    "conversionRate": "转化率",
+    "pointsSuffix": " 点"
+  },
+  "charts": {
+    "revenue": {
+      "title": "收入趋势",
+      "subtitle": "随时间变化的总收入"
+    },
+    "orders": {
+      "title": "订单趋势",
+      "subtitle": "随时间变化的订单数量",
+      "tooltipSales": "{{count}} 笔订单"
+    },
+    "users": {
+      "title": "用户增长",
+      "subtitle": "随时间变化的新用户"
+    }
+  },
+  "performance": {
+    "title": "绩效指标",
+    "averageOrderValue": "平均订单价值",
+    "conversionRate": "转化率",
+    "activeProducts": "活跃产品"
+  },
+  "topProducts": {
+    "title": "热门产品",
+    "empty": "此期间没有销售记录。",
+    "salesCount": "{{count}} 次销售"
+  }
+}

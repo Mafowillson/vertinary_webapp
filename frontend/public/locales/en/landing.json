@@ -1,0 +1,55 @@
+{
+  "hero": {
+    "badge": "Verified Content Expert · Cameroon 🇨🇲",
+    "titlePrefix": "Veterinary Resources to",
+    "titleHighlight": "Succeed",
+    "titleSuffix": "in Your Farming",
+    "description": "Access specialized books, training, and certified veterinary medicine resources — created by an expert, for farmers in Cameroon and around the world.",
+    "browseButton": "Browse Resources",
+    "howItWorksButton": "How It Works",
+    "socialProofPrefix": "Join",
+    "socialProofSuffix": "happy farmers",
+    "experienceValue": "4+ Years",
+    "experienceLabel": "of Experience",
+    "guidesValue": "50+",
+    "guidesLabel": "Verified Guides"
+  },
+  "stats": {
+    "farmersValue": "5,000+",
+    "farmersLabel": "Farmers & Pros",
+    "guidesValue": "50+",
+    "guidesLabel": "Verified Guides",
+    "experienceValue": "4+ Years",
+    "experienceLabel": "of Expertise",
+    "countriesValue": "10+",
+    "countriesLabel": "Countries Served"
+  },
+  "categories": {
+    "eyebrow": "Collections",
+    "heading": "Browse by Category",
+    "seeAll": "See all",
+    "explore": "Explore"
+  },
+  "resources": {
+    "eyebrow": "Expert Selection",
+    "heading": "Featured Resources",
+    "description": "The best digital resources, curated and verified by veterinary experts.",
+    "discountBadge": "-{{percent}}% OFF",
+    "expiresIn": "Expires in",
+    "discover": "Discover"
+  },
+  "services": {
+    "eyebrow": "Expertise & Support"
+  },
+  "founder": {
+    "eyebrow": "About the Founder",
+    "quote": "Sharing my livestock farming knowledge with Cameroon and the world.",
+    "learnMore": "Learn more"
+  },
+  "cta": {
+    "heading": "Ready to grow your knowledge?",
+    "description": "Join our community of farmers in Cameroon and around the world. Get exclusive veterinary tips, training, and discounts every week.",
+    "emailPlaceholder": "Your email address",
+    "subscribeButton": "Subscribe"
+  }
+}

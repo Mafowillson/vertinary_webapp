@@ -1,6 +1,4 @@
-import api from '../../axiosInterceptor'
-import { createMockOrder, getMockOrderById, processMockPayment, getMockUserOrders } from '../data/mockOrders'
-import { productService } from './productService'
+import api, { getApiErrorMessage } from '../../axiosInterceptor'
 
 export const orderService = {
   async createOrder(orderData) {
@@ -11,17 +9,7 @@ export const orderService = {
       })
       return response.data
     } catch (error) {
-      console.warn('API unavailable, using mock data:', error.message)
-      // Get product details for the mock order
-      let product = null
-      try {
-        product = await productService.getProductById(orderData.productId)
-      } catch (err) {
-        console.warn('Could not fetch product details:', err.message)
-      }
-      // Create mock order
-      const mockOrder = createMockOrder(orderData, product)
-      return mockOrder
+      throw new Error(getApiErrorMessage(error))
     }
   },
 
@@ -30,12 +18,7 @@ export const orderService = {
       const response = await api.get(`/orders/${orderId}`)
       return response.data
     } catch (error) {
-      console.warn('API unavailable, using mock data:', error.message)
-      const mockOrder = getMockOrderById(orderId)
-      if (!mockOrder) {
-        throw new Error('Order not found')
-      }
-      return mockOrder
+      throw new Error(getApiErrorMessage(error))
     }
   },
 
@@ -44,8 +27,7 @@ export const orderService = {
       const response = await api.get('/orders/my-orders')
       return response.data
     } catch (error) {
-      console.warn('API unavailable, using mock data:', error.message)
-      return getMockUserOrders()
+      throw new Error(getApiErrorMessage(error))
     }
   },
 
@@ -54,11 +36,7 @@ export const orderService = {
       const response = await api.post(`/orders/${orderId}/payment`, paymentData)
       return response.data
     } catch (error) {
-      console.warn('API unavailable, using mock data:', error.message)
-      // Process mock payment
-      const result = processMockPayment(orderId, paymentData)
-      return result
+      throw new Error(getApiErrorMessage(error))
     }
   },
 }
-

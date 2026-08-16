@@ -1,0 +1,75 @@
+{
+  "badge": "管理后台",
+  "sidebar": {
+    "dashboard": "仪表盘",
+    "products": "内容管理",
+    "orders": "订单与付款",
+    "users": "用户管理",
+    "analytics": "数据分析",
+    "settings": "设置",
+    "sections": {
+      "management": "管理",
+      "system": "系统"
+    },
+    "backToSite": "返回网站"
+  },
+  "header": {
+    "breadcrumbRoot": "管理后台"
+  },
+  "notFound": {
+    "title": "页面未找到",
+    "description": "您要查找的页面不存在。",
+    "backToDashboard": "返回仪表盘"
+  },
+  "errors": {
+    "loadOverview": "无法加载仪表盘。"
+  },
+  "overview": {
+    "title": "仪表盘",
+    "welcome": "欢迎，{{name}}。以下是学院今天的最新动态。",
+    "defaultName": "管理员"
+  },
+  "stats": {
+    "totalSales": "总销售额",
+    "completedOrders": "已完成订单",
+    "catalogProducts": "在售产品",
+    "newCustomers": "新客户"
+  },
+  "chart": {
+    "title": "销售趋势",
+    "periods": {
+      "weekly": "周",
+      "monthly": "月",
+      "yearly": "年"
+    }
+  },
+  "summary": {
+    "title": "本期摘要",
+    "averageOrderValue": "平均订单价值",
+    "conversionRate": "转化率",
+    "conversionRatePoints": "个百分点",
+    "bestProduct": "最佳产品",
+    "noSales": "暂无销售",
+    "manageProducts": "管理产品"
+  },
+  "recentOrders": {
+    "title": "最近订单",
+    "viewAll": "查看所有订单",
+    "columns": {
+      "orderNumber": "订单号",
+      "customer": "客户",
+      "product": "产品",
+      "price": "价格",
+      "status": "状态",
+      "actions": "操作"
+    },
+    "status": {
+      "paid": "已付款",
+      "failed": "失败",
+      "pending": "待处理"
+    },
+    "deletedUser": "已删除用户",
+    "noProduct": "—",
+    "empty": "暂无订单。"
+  }
+}

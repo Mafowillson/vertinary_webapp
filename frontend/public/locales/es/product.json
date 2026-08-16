@@ -1,5 +1,10 @@
 {
-  "types": { "course": "Curso", "document": "Documento", "article": "Artículo", "audio": "Audio" },
+  "types": {
+    "course": "Curso",
+    "document": "Documento",
+    "article": "Artículo",
+    "audio": "Audio"
+  },
   "detail": {
     "price": "Precio",
     "currency": "Moneda",
@@ -16,22 +21,48 @@
     "noDescriptionAvailable": "Sin descripción.",
     "limitedOffer": "Oferta limitada",
     "saveMoney": "Ahorre",
-    "downloadNow": "Descargar ahora",
+    "buyNow": "Comprar ahora",
+    "continueLearning": "Continuar",
     "loginToAddToCart": "Inicie sesión para añadir",
-    "loginRequired": "Se requiere inicio de sesión"
-  },
-  "upload": {
-    "title": "Subir producto",
-    "titleLabel": "Título",
-    "descriptionLabel": "Descripción",
-    "typeLabel": "Tipo",
-    "priceLabel": "Precio",
-    "categoryLabel": "Categoría",
-    "coverLabel": "Portada",
-    "fileLabel": "Archivo",
-    "publishButton": "Publicar",
-    "uploadSuccess": "Subida correcta",
-    "publishSuccess": "Producto publicado"
+    "loginRequired": "Se requiere inicio de sesión",
+    "loadingProduct": "Cargando producto…",
+    "productNotFoundDesc": "El producto que busca no existe o ha sido eliminado.",
+    "catalogueLink": "Catálogo",
+    "topSeller": "MÁS VENDIDO",
+    "share": "Compartir",
+    "salesCountLabel": "{{count}} ventas",
+    "soldCount": "{{count}} vendidos",
+    "defaultCategory": "Recurso veterinario",
+    "saveAmountExpiring": "Ahorre {{amount}} — expira pronto",
+    "offerExpiresIn": "Esta oferta expira en",
+    "priceInsteadOf": "en lugar de {{price}}",
+    "featureOnlineAccess": "Acceso en línea",
+    "featureImmediate": "Inmediato",
+    "featureGuarantee30Days": "30 días",
+    "labelFormat": "Formato",
+    "formatBadgePdf": "PDF",
+    "formatBadgeVideo": "VÍDEO",
+    "formatBadgeEbook": "E-BOOK",
+    "formatBadgeAudio": "AUDIO",
+    "labelAccess": "Acceso",
+    "labelGuarantee": "Garantía",
+    "valueAccessFull": "Inmediato tras la compra, en línea",
+    "valueGuaranteeFull": "Satisfacción garantizada o reembolso en 30 días",
+    "labelRating": "Valoración",
+    "valueRating": "{{rating}}/5.0 — {{count}} reseñas",
+    "labelQuality": "Calidad",
+    "valueQuality": "Contenido verificado y aprobado",
+    "labelSales": "Ventas",
+    "trustSecurePayment": "Pago seguro",
+    "trustImmediateAccess": "Acceso inmediato",
+    "trustQualityGuarantee": "Garantía de calidad",
+    "tabContentCount": "Contenido ({{count}})",
+    "tabDetails": "Detalles",
+    "tabReviewsCount": "Reseñas ({{count}})",
+    "curriculumComingSoon": "El contenido de este producto estará disponible pronto.",
+    "onlineViewingOnly": "Visualización solo en línea, directamente en su cuenta.",
+    "noReviewsYetTitle": "Aún no hay reseñas",
+    "beFirstToReview": "¡Sea el primero en dejar una reseña de este producto!"
   },
   "filters": {
     "all": "Todos",
@@ -40,24 +71,88 @@
     "sortBy": "Ordenar",
     "priceAsc": "Precio ascendente",
     "priceDesc": "Precio descendente",
-    "newest": "Más reciente"
+    "newest": "Más reciente",
+    "mostPopular": "Más popular",
+    "refineTitle": "Filtrar",
+    "refineSubtitle": "Especies · Formatos · Presupuesto",
+    "clearAll": "Borrar todo",
+    "close": "Cerrar",
+    "speciesSectionTitle": "¿Para qué crianza?",
+    "contentTypeSectionTitle": "Tipo de contenido",
+    "budgetMax": "Presupuesto máximo",
+    "viewResults": "Ver {{count}} resultado(s)",
+    "maxPriceLabel": "Máx {{price}}",
+    "speciesOptions": {
+      "poultry": {
+        "label": "Gallinas y aves",
+        "hint": "Ponedoras, engorde, avicultura"
+      },
+      "pigs": {
+        "label": "Cerdos",
+        "hint": "Porcicultura"
+      },
+      "turkeys": {
+        "label": "Pavos",
+        "hint": "Cría de pavos"
+      },
+      "small_ruminants": {
+        "label": "Cabras y ovejas",
+        "hint": "Caprinos, ovinos"
+      },
+      "cattle": {
+        "label": "Bovinos",
+        "hint": "Vacas, bueyes"
+      },
+      "rabbits": {
+        "label": "Conejos",
+        "hint": "Cunicultura"
+      }
+    },
+    "contentTypeOptions": {
+      "course": {
+        "label": "Cursos (video)",
+        "hint": "Series, formación"
+      },
+      "document": {
+        "label": "Documentos",
+        "hint": "PDF, fichas"
+      },
+      "audio": {
+        "label": "Audio",
+        "hint": "Podcasts, grabaciones"
+      },
+      "article": {
+        "label": "Artículos",
+        "hint": "Lectura breve"
+      },
+      "ebook": {
+        "label": "E-books",
+        "hint": "Libros digitales"
+      }
+    }
   },
-  "mock": {
-    "product1Title": "Guía completa de gallinas ponedoras",
-    "product1Desc": "De la raza a la producción de huevos: nutrición, salud e instalaciones.",
-    "product2Title": "Todo sobre porcicultura — guía completa",
-    "product2Desc": "Porcicultura moderna: genética, alimentación, sanidad y reproducción.",
-    "product3Title": "Kit de inicio avícola — edición especial",
-    "product3Desc": "Galpón, selección de pollitos, alimentación y prevención.",
-    "product4Title": "Vacunación y medicación — pollos 0–8 semanas",
-    "product4Desc": "Protocolos y dosis.",
-    "product5Title": "Manejo de la postura",
-    "product5Desc": "Optimización del hato ponedor.",
-    "product6Title": "Caprinos y ovinos — guía práctica",
-    "product6Desc": "Razas, alimentación, reproducción, pastoreo y sanidad.",
-    "product7Title": "Sanidad en la explotación — prevención y tratamiento",
-    "product7Desc": "Bioseguridad, vacunación y control de enfermedades.",
-    "product8Title": "Alimentación animal — formulación y gestión",
-    "product8Desc": "Raciones, inventario y costos."
+  "catalogue": {
+    "eyebrow": "Catálogo para Ganaderos",
+    "headline": "Formación y Recursos",
+    "headlineHighlight": "para criar bien",
+    "subheading": "Cursos en video, guías PDF, audios y artículos — todo para gallinas, cerdos, bovinos y otras crianzas. Elija una especie para filtrar.",
+    "statResources": "Recursos",
+    "statSpecies": "Especies",
+    "statFormats": "Formatos",
+    "searchPlaceholder": "Buscar cursos, guías, especies…",
+    "filtersButton": "Filtros",
+    "filteredResults": "Resultados filtrados",
+    "allContent": "Todo el contenido",
+    "loading": "Cargando…",
+    "contentCount": "{{count}} contenido(s)",
+    "loadMore": "Cargar más",
+    "loadErrorTitle": "No se pudo cargar el catálogo",
+    "noResultsTitle": "Sin resultados",
+    "noResultsForQuery": "Ningún recurso coincide con \"{{query}}\". Pruebe con otras palabras clave.",
+    "noResultsAvailable": "No hay ningún recurso disponible por el momento.",
+    "noResultsFiltered": "Ningún recurso coincide con sus filtros. Intente ampliar su búsqueda.",
+    "retry": "Reintentar",
+    "resetFilters": "Restablecer filtros",
+    "defaultLoadError": "No se pudieron cargar los productos."
   }
 }

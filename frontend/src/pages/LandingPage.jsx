@@ -6,10 +6,10 @@ import {
   FiBook, FiAward
 } from 'react-icons/fi'
 import { categories, featuredResources, founderData } from '../data/mockHomePage'
-import { formatCurrency } from '../utils/formatters'
 import { useCountdown } from '../utils/countdown'
 import { getServices } from '../data/mockServices'
 import { useLanguage } from '../contexts/LanguageContext'
+import { useCurrency } from '../contexts/CurrencyContext'
 import ServiceCard from '../components/ServiceCard/ServiceCard'
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -17,6 +17,8 @@ import ServiceCard from '../components/ServiceCard/ServiceCard'
 // ─────────────────────────────────────────────────────────────────────────────
 
 const FeaturedResourceCard = ({ resource }) => {
+  const { t } = useLanguage()
+  const { format } = useCurrency()
   const originalPrice = resource.originalPrice || resource.original_price
   const discountEndDate =
     resource.discountEndDate ||
@@ -55,7 +57,7 @@ const FeaturedResourceCard = ({ resource }) => {
           </span>
           {hasActiveDiscount && (
             <span className="bg-rose-500 text-white text-[10px] font-bold px-2.5 py-1 rounded-lg shadow-md">
-              -{discountPercentage}% OFF
+              {t('resources.discountBadge', { ns: 'landing', percent: discountPercentage })}
             </span>
           )}
         </div>
@@ -72,7 +74,7 @@ const FeaturedResourceCard = ({ resource }) => {
           <div className="mb-3 flex items-center gap-2 bg-amber-50 border border-amber-100 rounded-xl px-3 py-2">
             <FiClock className="w-3.5 h-3.5 text-amber-500 shrink-0" />
             <span className="text-amber-700 text-xs font-semibold">
-              Expire dans{' '}
+              {t('resources.expiresIn', { ns: 'landing' })}{' '}
               <span className="font-mono font-bold">
                 {timeLeft.days > 0 ? `${timeLeft.days}j ` : ''}
                 {String(timeLeft.hours).padStart(2, '0')}h {String(timeLeft.minutes).padStart(2, '0')}m
@@ -86,15 +88,15 @@ const FeaturedResourceCard = ({ resource }) => {
           <div className="leading-none">
             {hasActiveDiscount && (
               <span className="block text-[11px] text-gray-400 line-through mb-0.5 tabular-nums">
-                {formatCurrency(originalPrice)}
+                {format(originalPrice)}
               </span>
             )}
             <span className={`text-lg font-extrabold tabular-nums ${hasActiveDiscount ? 'text-rose-600' : 'text-gray-900'}`}>
-              {formatCurrency(resource.price)}
+              {format(resource.price)}
             </span>
           </div>
           <span className="inline-flex items-center gap-1.5 text-[#1A7A6E] text-xs font-bold group-hover:gap-2.5 transition-all">
-            Découvrir <FiArrowRight className="w-3.5 h-3.5" />
+            {t('resources.discover', { ns: 'landing' })} <FiArrowRight className="w-3.5 h-3.5" />
           </span>
         </div>
       </div>
@@ -102,7 +104,9 @@ const FeaturedResourceCard = ({ resource }) => {
   )
 }
 
-const CategoryCard = ({ category }) => (
+const CategoryCard = ({ category }) => {
+  const { t } = useLanguage()
+  return (
   <Link
     to={`/products?category=${encodeURIComponent(category.title)}`}
     className="group block bg-white rounded-2xl p-6 border border-gray-100 hover:border-green-300 hover:shadow-lg transition-all duration-300"
@@ -113,11 +117,12 @@ const CategoryCard = ({ category }) => (
     <h3 className="text-base font-bold text-gray-900 mb-2">{category.title}</h3>
     <p className="text-gray-500 text-sm leading-relaxed mb-4">{category.description}</p>
     <div className="flex items-center gap-1 text-[#1A7A6E] font-semibold text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-      <span>Explorer</span>
+      <span>{t('categories.explore', { ns: 'landing' })}</span>
       <FiArrowRight className="w-3.5 h-3.5" />
     </div>
   </Link>
-)
+  )
+}
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Main Page
@@ -160,20 +165,20 @@ const LandingPage = () => {
             <div className="order-2 lg:order-1">
               <div className="inline-flex items-center gap-2 bg-green-50 border border-green-200 text-green-700 text-xs font-bold px-4 py-2 rounded-full mb-6">
                 <FiCheckCircle className="w-4 h-4" />
-                <span>Expert de Contenu Vérifié · Cameroun 🇨🇲</span>
+                <span>{t('hero.badge', { ns: 'landing' })}</span>
               </div>
 
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-gray-900 leading-tight mb-6">
-                Ressources Vétérinaires pour{' '}
+                {t('hero.titlePrefix', { ns: 'landing' })}{' '}
                 <span className="relative inline-block">
-                  <span className="text-[#1A7A6E]">Réussir</span>
+                  <span className="text-[#1A7A6E]">{t('hero.titleHighlight', { ns: 'landing' })}</span>
                   <span className="absolute -bottom-1 left-0 right-0 h-0.5 bg-[#1A7A6E]/30 rounded-full" />
                 </span>
-                {' '}votre Élevage
+                {' '}{t('hero.titleSuffix', { ns: 'landing' })}
               </h1>
 
               <p className="text-gray-600 text-lg leading-relaxed mb-8 max-w-xl">
-                Accédez à des livres spécialisés, des formations et des ressources certifiées en médecine vétérinaire — créées par un expert, pour les éleveurs du Cameroun et du monde entier.
+                {t('hero.description', { ns: 'landing' })}
               </p>
 
               <div className="flex flex-wrap gap-4 mb-10">
@@ -181,14 +186,14 @@ const LandingPage = () => {
                   to="/products"
                   className="inline-flex items-center gap-2 bg-[#1A7A6E] hover:bg-[#155f55] text-white font-bold px-8 py-3.5 rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl hover:-translate-y-0.5"
                 >
-                  <span>Parcourir les Ressources</span>
+                  <span>{t('hero.browseButton', { ns: 'landing' })}</span>
                   <FiArrowRight className="w-4 h-4" />
                 </Link>
                 <Link
                   to="/about"
                   className="inline-flex items-center gap-2 bg-white hover:bg-gray-50 text-gray-800 font-bold px-8 py-3.5 rounded-xl border-2 border-gray-200 hover:border-gray-300 transition-all duration-200"
                 >
-                  <span>Comment ça marche</span>
+                  <span>{t('hero.howItWorksButton', { ns: 'landing' })}</span>
                 </Link>
               </div>
 
@@ -212,7 +217,7 @@ const LandingPage = () => {
                     <span className="text-xs text-gray-600 font-semibold ml-1">4.9/5</span>
                   </div>
                   <p className="text-gray-500 text-sm">
-                    Rejoignez <strong className="text-gray-900">5,000+</strong> éleveurs satisfaits
+                    {t('hero.socialProofPrefix', { ns: 'landing' })} <strong className="text-gray-900">5,000+</strong> {t('hero.socialProofSuffix', { ns: 'landing' })}
                   </p>
                 </div>
               </div>
@@ -242,8 +247,8 @@ const LandingPage = () => {
                       <FiAward className="w-5 h-5 text-amber-600" />
                     </div>
                     <div>
-                      <div className="text-lg font-extrabold text-gray-900 leading-none">4+ Ans</div>
-                      <div className="text-xs text-gray-400 whitespace-nowrap">d'Expérience</div>
+                      <div className="text-lg font-extrabold text-gray-900 leading-none">{t('hero.experienceValue', { ns: 'landing' })}</div>
+                      <div className="text-xs text-gray-400 whitespace-nowrap">{t('hero.experienceLabel', { ns: 'landing' })}</div>
                     </div>
                   </div>
                 </div>
@@ -255,8 +260,8 @@ const LandingPage = () => {
                       <FiBook className="w-5 h-5 text-[#1A7A6E]" />
                     </div>
                     <div>
-                      <div className="text-lg font-extrabold text-gray-900 leading-none">50+</div>
-                      <div className="text-xs text-gray-400 whitespace-nowrap">Guides Vérifiés</div>
+                      <div className="text-lg font-extrabold text-gray-900 leading-none">{t('hero.guidesValue', { ns: 'landing' })}</div>
+                      <div className="text-xs text-gray-400 whitespace-nowrap">{t('hero.guidesLabel', { ns: 'landing' })}</div>
                     </div>
                   </div>
                 </div>
@@ -273,10 +278,10 @@ const LandingPage = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-0 lg:divide-x lg:divide-white/20">
             {[
-              { emoji: '👥', value: '5,000+', label: 'Éleveurs & Pro.' },
-              { emoji: '📚', value: '50+',    label: 'Guides Vérifiés' },
-              { emoji: '⭐', value: '4+ Ans', label: "d'Expertise" },
-              { emoji: '🌍', value: '10+',    label: 'Pays Desservis' },
+              { emoji: '👥', value: t('stats.farmersValue', { ns: 'landing' }), label: t('stats.farmersLabel', { ns: 'landing' }) },
+              { emoji: '📚', value: t('stats.guidesValue', { ns: 'landing' }), label: t('stats.guidesLabel', { ns: 'landing' }) },
+              { emoji: '⭐', value: t('stats.experienceValue', { ns: 'landing' }), label: t('stats.experienceLabel', { ns: 'landing' }) },
+              { emoji: '🌍', value: t('stats.countriesValue', { ns: 'landing' }), label: t('stats.countriesLabel', { ns: 'landing' }) },
             ].map((stat, i) => (
               <div key={i} className="text-center text-white lg:px-8">
                 <div className="text-2xl mb-1">{stat.emoji}</div>
@@ -295,16 +300,16 @@ const LandingPage = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-10">
             <div>
-              <span className="text-[#1A7A6E] text-xs font-extrabold uppercase tracking-widest">Collections</span>
+              <span className="text-[#1A7A6E] text-xs font-extrabold uppercase tracking-widest">{t('categories.eyebrow', { ns: 'landing' })}</span>
               <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 mt-1">
-                Parcourir par Catégorie
+                {t('categories.heading', { ns: 'landing' })}
               </h2>
             </div>
             <Link
               to="/products"
               className="inline-flex items-center gap-2 text-[#1A7A6E] font-semibold text-sm hover:gap-3 transition-all"
             >
-              Voir tout <FiArrowRight className="w-4 h-4" />
+              {t('categories.seeAll', { ns: 'landing' })} <FiArrowRight className="w-4 h-4" />
             </Link>
           </div>
 
@@ -323,12 +328,12 @@ const LandingPage = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-10">
             <div>
-              <span className="text-[#1A7A6E] text-xs font-extrabold uppercase tracking-widest">Sélection Experte</span>
+              <span className="text-[#1A7A6E] text-xs font-extrabold uppercase tracking-widest">{t('resources.eyebrow', { ns: 'landing' })}</span>
               <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 mt-1">
-                Ressources en Vedette
+                {t('resources.heading', { ns: 'landing' })}
               </h2>
               <p className="text-gray-500 mt-2 text-sm max-w-xl">
-                Meilleures ressources numériques sélectionnées et vérifiées par des experts vétérinaires.
+                {t('resources.description', { ns: 'landing' })}
               </p>
             </div>
             <Link
@@ -353,7 +358,7 @@ const LandingPage = () => {
       <section id="services" className="py-16 sm:py-20 bg-white scroll-mt-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <span className="text-[#1A7A6E] text-xs font-extrabold uppercase tracking-widest">Expertise & Accompagnement</span>
+            <span className="text-[#1A7A6E] text-xs font-extrabold uppercase tracking-widest">{t('services.eyebrow', { ns: 'landing' })}</span>
             <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 mt-1 mb-3">
               {t('services.pageTitle', { ns: 'common' })}
             </h2>
@@ -410,11 +415,11 @@ const LandingPage = () => {
               {/* Content */}
               <div className="lg:col-span-3 p-8 sm:p-10 lg:p-12 flex flex-col justify-center">
                 <span className="inline-block bg-green-50 text-[#1A7A6E] text-xs font-bold px-3 py-1.5 rounded-full mb-6 w-fit border border-green-100">
-                  À Propos du Fondateur
+                  {t('founder.eyebrow', { ns: 'landing' })}
                 </span>
 
                 <blockquote className="text-xl sm:text-2xl font-bold text-gray-900 leading-snug mb-6 pl-5 border-l-4 border-[#1A7A6E]">
-                  Partager mes connaissances en élevage avec le Cameroun et le monde entier.
+                  {t('founder.quote', { ns: 'landing' })}
                 </blockquote>
 
                 <p className="text-gray-600 leading-relaxed mb-8 text-sm sm:text-base">
@@ -461,7 +466,7 @@ const LandingPage = () => {
                     to="/about"
                     className="inline-flex items-center gap-2 text-[#1A7A6E] font-semibold text-sm px-4 py-2.5 rounded-xl border border-[#1A7A6E]/20 hover:border-[#1A7A6E]/50 hover:bg-green-50 transition-all"
                   >
-                    En savoir plus <FiArrowRight className="w-3.5 h-3.5" />
+                    {t('founder.learnMore', { ns: 'landing' })} <FiArrowRight className="w-3.5 h-3.5" />
                   </Link>
                 </div>
               </div>
@@ -480,10 +485,10 @@ const LandingPage = () => {
         <div className="relative max-w-3xl mx-auto px-4 sm:px-6 text-center">
           <div className="text-5xl mb-5">🐾</div>
           <h2 className="text-3xl sm:text-4xl font-extrabold text-white mb-4">
-            Prêt à améliorer vos connaissances?
+            {t('cta.heading', { ns: 'landing' })}
           </h2>
           <p className="text-white/75 text-base sm:text-lg mb-10 leading-relaxed">
-            Rejoignez notre communauté d'éleveurs au Cameroun et dans le monde. Recevez des conseils vétérinaires exclusifs, des formations et des réductions chaque semaine.
+            {t('cta.description', { ns: 'landing' })}
           </p>
 
           <form
@@ -492,14 +497,14 @@ const LandingPage = () => {
           >
             <input
               type="email"
-              placeholder="Votre adresse email"
+              placeholder={t('cta.emailPlaceholder', { ns: 'landing' })}
               className="flex-1 px-5 py-3.5 rounded-xl text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-white/50 text-sm font-medium placeholder-gray-400"
             />
             <button
               type="submit"
               className="px-7 py-3.5 bg-gray-900 hover:bg-gray-800 text-white rounded-xl font-bold transition-colors whitespace-nowrap text-sm"
             >
-              S'inscrire
+              {t('cta.subscribeButton', { ns: 'landing' })}
             </button>
           </form>
 

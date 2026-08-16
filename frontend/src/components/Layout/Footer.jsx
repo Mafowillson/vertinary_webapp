@@ -1,22 +1,24 @@
 import { Link } from 'react-router-dom'
 import { FiMapPin, FiPhone, FiYoutube, FiFacebook, FiArrowRight, FiHeart } from 'react-icons/fi'
+import { useLanguage } from '../../contexts/LanguageContext'
 
 const Footer = () => {
+  const { t } = useLanguage()
   const year = new Date().getFullYear()
 
   const resourceLinks = [
-    { label: 'Trouver des Ressources', to: '/products' },
-    { label: 'Nos Livres & E-Books',   to: '/products' },
-    { label: 'Formations en Ligne',    to: '/services' },
-    { label: 'Services Pro',           to: '/services' },
-    { label: 'À Propos',               to: '/about' },
+    { label: t('footer.findResources', { ns: 'common' }), to: '/products' },
+    { label: t('footer.ourBooks', { ns: 'common' }),       to: '/products' },
+    { label: t('footer.onlineTraining', { ns: 'common' }), to: '/services' },
+    { label: t('footer.proServices', { ns: 'common' }),    to: '/services' },
+    { label: t('nav.about', { ns: 'common' }),              to: '/about' },
   ]
 
   const supportLinks = [
-    { label: "Centre d'Aide",                to: '/help',    external: false },
-    { label: 'Nous Contacter',               href: 'https://wa.me/237699933135', external: true },
-    { label: 'Politique de Confidentialité', to: '/privacy', external: false },
-    { label: "Conditions d'Utilisation",     to: '/terms',   external: false },
+    { label: t('footer.helpCenter', { ns: 'common' }), to: '/help',    external: false },
+    { label: t('footer.contactUs', { ns: 'common' }),  href: 'https://wa.me/237699933135', external: true },
+    { label: t('footer.privacy', { ns: 'common' }),    to: '/privacy', external: false },
+    { label: t('footer.terms', { ns: 'common' }),      to: '/terms',   external: false },
   ]
 
   const LinkItem = ({ item }) => {
@@ -44,13 +46,13 @@ const Footer = () => {
           <div className="lg:col-span-1">
             <Link to="/" className="inline-block mb-5">
               <img
-                src="/academydeseleveurs.jpg"
-                alt="Académie des Éleveurs"
+                src="/academydeseleveurs.png"
+                alt={t('footer.brandName', { ns: 'common' })}
                 className="h-10 w-auto brightness-0 invert opacity-90"
               />
             </Link>
             <p className="text-sm leading-relaxed mb-6 text-gray-500">
-              Plateforme dédiée au partage de savoir vétérinaire — livres, formations et ressources pour les éleveurs du Cameroun et du monde entier.
+              {t('footer.brandDescription', { ns: 'common' })}
             </p>
 
             {/* Social Icons */}
@@ -88,7 +90,7 @@ const Footer = () => {
           {/* Col 2: Resources */}
           <div>
             <h4 className="text-white text-xs font-extrabold uppercase tracking-widest mb-6">
-              Ressources
+              {t('nav.resources', { ns: 'common' })}
             </h4>
             <ul className="space-y-3.5">
               {resourceLinks.map((link) => (
@@ -102,7 +104,7 @@ const Footer = () => {
           {/* Col 3: Support */}
           <div>
             <h4 className="text-white text-xs font-extrabold uppercase tracking-widest mb-6">
-              Support
+              {t('footer.support', { ns: 'common' })}
             </h4>
             <ul className="space-y-3.5">
               {supportLinks.map((link) => (
@@ -116,7 +118,7 @@ const Footer = () => {
           {/* Col 4: Contact + Mini Newsletter */}
           <div>
             <h4 className="text-white text-xs font-extrabold uppercase tracking-widest mb-6">
-              Contact
+              {t('footer.contact', { ns: 'common' })}
             </h4>
 
             <ul className="space-y-4 mb-8">
@@ -125,8 +127,8 @@ const Footer = () => {
                   <FiMapPin className="w-3.5 h-3.5 text-[#1A7A6E]" />
                 </div>
                 <div>
-                  <p className="text-white text-sm font-semibold">Cameroun 🇨🇲</p>
-                  <p className="text-gray-600 text-xs mt-0.5">Académie des Éleveurs</p>
+                  <p className="text-white text-sm font-semibold">{t('footer.country', { ns: 'common' })}</p>
+                  <p className="text-gray-600 text-xs mt-0.5">{t('footer.brandName', { ns: 'common' })}</p>
                 </div>
               </li>
               <li className="flex items-center gap-3">
@@ -147,12 +149,12 @@ const Footer = () => {
             {/* Mini Newsletter */}
             <div>
               <p className="text-xs font-bold text-gray-600 uppercase tracking-widest mb-3">
-                Restez informé
+                {t('footer.stayInformed', { ns: 'common' })}
               </p>
               <form onSubmit={(e) => e.preventDefault()} className="flex gap-2">
                 <input
                   type="email"
-                  placeholder="Votre email"
+                  placeholder={t('footer.emailPlaceholder', { ns: 'common' })}
                   className="flex-1 min-w-0 bg-white/5 border border-white/10 text-white placeholder-gray-700 text-sm px-3 py-2.5 rounded-xl focus:outline-none focus:border-[#1A7A6E] transition-colors"
                 />
                 <button
@@ -176,21 +178,21 @@ const Footer = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5">
         <div className="flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-gray-600">
           <div className="flex items-center gap-1.5 flex-wrap justify-center sm:justify-start">
-            <span>© {year} Académie des Éleveurs.</span>
-            <span>Fondé avec</span>
+            <span>{t('footer.copyright', { ns: 'common', year })}</span>
+            <span>{t('footer.foundedWith', { ns: 'common' })}</span>
             <FiHeart className="w-3 h-3 text-red-500 fill-current flex-shrink-0" />
-            <span>par TCHOUALA FONDEM BODRIC</span>
+            <span>{t('footer.byAuthor', { ns: 'common', name: 'TCHOUALA FONDEM BODRIC' })}</span>
           </div>
           <div className="flex items-center gap-4">
             <Link to="/privacy" className="hover:text-gray-400 transition-colors">
-              Confidentialité
+              {t('footer.privacyShort', { ns: 'common' })}
             </Link>
             <span className="text-white/10">|</span>
             <Link to="/terms" className="hover:text-gray-400 transition-colors">
-              Conditions
+              {t('footer.termsShort', { ns: 'common' })}
             </Link>
             <span className="text-white/10">|</span>
-            <span className="text-[#4ade80]">Français (CM)</span>
+            <span className="text-[#4ade80]">{t('footer.language', { ns: 'common' })}</span>
           </div>
         </div>
       </div>

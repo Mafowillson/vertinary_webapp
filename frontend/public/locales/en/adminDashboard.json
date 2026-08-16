@@ -1,0 +1,75 @@
+{
+  "badge": "Administration",
+  "sidebar": {
+    "dashboard": "Dashboard",
+    "products": "Content Management",
+    "orders": "Orders & Payments",
+    "users": "User Management",
+    "analytics": "Analytics",
+    "settings": "Settings",
+    "sections": {
+      "management": "MANAGEMENT",
+      "system": "SYSTEM"
+    },
+    "backToSite": "Back to site"
+  },
+  "header": {
+    "breadcrumbRoot": "Administration"
+  },
+  "notFound": {
+    "title": "Page not found",
+    "description": "The page you're looking for doesn't exist.",
+    "backToDashboard": "Back to dashboard"
+  },
+  "errors": {
+    "loadOverview": "Unable to load the dashboard."
+  },
+  "overview": {
+    "title": "Dashboard",
+    "welcome": "Welcome, {{name}}. Here's what's happening at the academy today.",
+    "defaultName": "Admin"
+  },
+  "stats": {
+    "totalSales": "Total sales",
+    "completedOrders": "Completed orders",
+    "catalogProducts": "Products in catalog",
+    "newCustomers": "New customers"
+  },
+  "chart": {
+    "title": "Sales over time",
+    "periods": {
+      "weekly": "Weekly",
+      "monthly": "Monthly",
+      "yearly": "Yearly"
+    }
+  },
+  "summary": {
+    "title": "Period summary",
+    "averageOrderValue": "Average order value",
+    "conversionRate": "Conversion rate",
+    "conversionRatePoints": "pts",
+    "bestProduct": "Best product",
+    "noSales": "No sales yet",
+    "manageProducts": "Manage products"
+  },
+  "recentOrders": {
+    "title": "Recent orders",
+    "viewAll": "View all orders",
+    "columns": {
+      "orderNumber": "ORDER #",
+      "customer": "CUSTOMER",
+      "product": "PRODUCT",
+      "price": "PRICE",
+      "status": "STATUS",
+      "actions": "ACTIONS"
+    },
+    "status": {
+      "paid": "PAID",
+      "failed": "FAILED",
+      "pending": "PENDING"
+    },
+    "deletedUser": "Deleted user",
+    "noProduct": "—",
+    "empty": "No orders yet."
+  }
+}

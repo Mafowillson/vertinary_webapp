@@ -1,0 +1,75 @@
+{
+  "badge": "प्रशासन",
+  "sidebar": {
+    "dashboard": "डैशबोर्ड",
+    "products": "सामग्री प्रबंधन",
+    "orders": "ऑर्डर और भुगतान",
+    "users": "उपयोगकर्ता प्रबंधन",
+    "analytics": "विश्लेषिकी",
+    "settings": "सेटिंग्स",
+    "sections": {
+      "management": "प्रबंधन",
+      "system": "सिस्टम"
+    },
+    "backToSite": "साइट पर वापस जाएं"
+  },
+  "header": {
+    "breadcrumbRoot": "प्रशासन"
+  },
+  "notFound": {
+    "title": "पृष्ठ नहीं मिला",
+    "description": "आप जिस पृष्ठ की तलाश कर रहे हैं वह मौजूद नहीं है।",
+    "backToDashboard": "डैशबोर्ड पर वापस जाएं"
+  },
+  "errors": {
+    "loadOverview": "डैशबोर्ड लोड नहीं किया जा सका।"
+  },
+  "overview": {
+    "title": "डैशबोर्ड",
+    "welcome": "स्वागत है, {{name}}। आज अकादमी में यह हो रहा है।",
+    "defaultName": "एडमिन"
+  },
+  "stats": {
+    "totalSales": "कुल बिक्री",
+    "completedOrders": "पूर्ण ऑर्डर",
+    "catalogProducts": "कैटलॉग में उत्पाद",
+    "newCustomers": "नए ग्राहक"
+  },
+  "chart": {
+    "title": "समय के साथ बिक्री",
+    "periods": {
+      "weekly": "साप्ताहिक",
+      "monthly": "मासिक",
+      "yearly": "वार्षिक"
+    }
+  },
+  "summary": {
+    "title": "अवधि सारांश",
+    "averageOrderValue": "औसत ऑर्डर मूल्य",
+    "conversionRate": "रूपांतरण दर",
+    "conversionRatePoints": "अंक",
+    "bestProduct": "सर्वश्रेष्ठ उत्पाद",
+    "noSales": "अभी तक कोई बिक्री नहीं",
+    "manageProducts": "उत्पाद प्रबंधित करें"
+  },
+  "recentOrders": {
+    "title": "हाल के ऑर्डर",
+    "viewAll": "सभी ऑर्डर देखें",
+    "columns": {
+      "orderNumber": "ऑर्डर नंबर",
+      "customer": "ग्राहक",
+      "product": "उत्पाद",
+      "price": "मूल्य",
+      "status": "स्थिति",
+      "actions": "कार्रवाई"
+    },
+    "status": {
+      "paid": "भुगतान हो गया",
+      "failed": "विफल",
+      "pending": "लंबित"
+    },
+    "deletedUser": "हटाया गया उपयोगकर्ता",
+    "noProduct": "—",
+    "empty": "अभी तक कोई ऑर्डर नहीं है।"
+  }
+}

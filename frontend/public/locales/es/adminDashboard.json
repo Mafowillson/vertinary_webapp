@@ -1,0 +1,75 @@
+{
+  "badge": "Administración",
+  "sidebar": {
+    "dashboard": "Panel de control",
+    "products": "Gestión de contenido",
+    "orders": "Pedidos y pagos",
+    "users": "Gestión de usuarios",
+    "analytics": "Analítica",
+    "settings": "Configuración",
+    "sections": {
+      "management": "GESTIÓN",
+      "system": "SISTEMA"
+    },
+    "backToSite": "Volver al sitio"
+  },
+  "header": {
+    "breadcrumbRoot": "Administración"
+  },
+  "notFound": {
+    "title": "Página no encontrada",
+    "description": "La página que busca no existe.",
+    "backToDashboard": "Volver al panel de control"
+  },
+  "errors": {
+    "loadOverview": "No se pudo cargar el panel de control."
+  },
+  "overview": {
+    "title": "Panel de control",
+    "welcome": "Bienvenido, {{name}}. Esto es lo que ocurre hoy en la academia.",
+    "defaultName": "Admin"
+  },
+  "stats": {
+    "totalSales": "Ventas totales",
+    "completedOrders": "Pedidos completados",
+    "catalogProducts": "Productos en catálogo",
+    "newCustomers": "Nuevos clientes"
+  },
+  "chart": {
+    "title": "Ventas a lo largo del tiempo",
+    "periods": {
+      "weekly": "Semanal",
+      "monthly": "Mensual",
+      "yearly": "Anual"
+    }
+  },
+  "summary": {
+    "title": "Resumen del período",
+    "averageOrderValue": "Valor medio de los pedidos",
+    "conversionRate": "Tasa de conversión",
+    "conversionRatePoints": "pts",
+    "bestProduct": "Mejor producto",
+    "noSales": "Sin ventas por ahora",
+    "manageProducts": "Gestionar productos"
+  },
+  "recentOrders": {
+    "title": "Pedidos recientes",
+    "viewAll": "Ver todos los pedidos",
+    "columns": {
+      "orderNumber": "N.º PEDIDO",
+      "customer": "CLIENTE",
+      "product": "PRODUCTO",
+      "price": "PRECIO",
+      "status": "ESTADO",
+      "actions": "ACCIONES"
+    },
+    "status": {
+      "paid": "PAGADO",
+      "failed": "FALLIDO",
+      "pending": "PENDIENTE"
+    },
+    "deletedUser": "Usuario eliminado",
+    "noProduct": "—",
+    "empty": "Aún no hay pedidos."
+  }
+}

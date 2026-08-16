@@ -20,6 +20,7 @@ export const AppProvider = ({ children }) => {
     siteName: "L'Académie DES Éleveurs",
     currency: 'FCFA',
     currencySymbol: 'FCFA',
+    exchangeRates: { FCFA: 1, USD: 0.00164, EUR: 0.00152, NGN: 2.6 },
   })
   const [loading, setLoading] = useState(true)
 
@@ -52,11 +53,17 @@ export const AppProvider = ({ children }) => {
     }
   }
 
+  const updateExchangeRates = async (rates) => {
+    const updated = await appService.updateExchangeRates(rates)
+    setSiteConfig((prev) => ({ ...prev, exchangeRates: updated.exchangeRates }))
+  }
+
   const value = {
     socialLinks,
     siteConfig,
     loading,
     updateSocialLinks,
+    updateExchangeRates,
   }
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>

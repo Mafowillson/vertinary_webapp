@@ -1,0 +1,59 @@
+{
+  "loadError": "Impossible de charger les commandes.",
+  "header": {
+    "title": "Commandes & Paiements",
+    "subtitle": "Gérer les commandes clients et suivre les paiements"
+  },
+  "stats": {
+    "total": "Total commandes",
+    "completed": "Complétées",
+    "pending": "En attente",
+    "totalRevenue": "Revenu total"
+  },
+  "statusLabels": {
+    "all": "Toutes",
+    "completed": "Complétée",
+    "pending": "En attente",
+    "failed": "Échouée"
+  },
+  "paymentLabels": {
+    "mobileMoney": "Mobile Money",
+    "orangeMoney": "Orange Money",
+    "bankTransfer": "Virement bancaire",
+    "online": "Carte bancaire",
+    "unpaid": "Non payé"
+  },
+  "filters": {
+    "searchPlaceholder": "Rechercher par n° de commande, client ou produit...",
+    "sortRecent": "Plus récent",
+    "sortDate": "Date (récent)",
+    "sortAmount": "Montant (décroissant)"
+  },
+  "card": {
+    "product": "Produit",
+    "amount": "Montant",
+    "payment": "Paiement",
+    "viewDetails": "Voir les détails"
+  },
+  "list": {
+    "customer": "Client",
+    "product": "Produit",
+    "paymentAndDate": "Paiement & Date"
+  },
+  "empty": {
+    "title": "Aucune commande trouvée",
+    "withFilters": "Essayez d'ajuster vos filtres",
+    "noFilters": "Les commandes apparaîtront ici une fois que les clients effectueront des achats"
+  },
+  "modal": {
+    "title": "Détails de la commande",
+    "orderNumber": "Numéro de commande",
+    "customerInfo": "Informations client",
+    "product": "Produit",
+    "amount": "Montant",
+    "paymentMethod": "Mode de paiement",
+    "orderDate": "Date de commande",
+    "status": "Statut",
+    "close": "Fermer"
+  }
+}

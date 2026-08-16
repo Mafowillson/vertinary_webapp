@@ -15,14 +15,27 @@
     "toggleMenu": "मेनू टॉगल करें"
   },
   "footer": {
-    "rights": "सर्वाधिकार सुरक्षित",
     "contact": "संपर्क",
     "privacy": "गोपनीयता नीति",
     "terms": "सेवा की शर्तें",
-    "quickLinks": "त्वरित लिंक",
-    "description": "पालतू पशु पालन, स्वास्थ्य और कल्याण पर पेशेवर मार्गदर्शिकाएँ और पाठ्य सामग्री—आपका भरोसेमंद साथी।",
-    "developedBy": "विकासकर्ता",
-    "store": "स्टोर"
+    "findResources": "संसाधन खोजें",
+    "ourBooks": "हमारी पुस्तकें और ई-बुक्स",
+    "onlineTraining": "ऑनलाइन प्रशिक्षण",
+    "proServices": "प्रो सेवाएँ",
+    "support": "सहायता",
+    "helpCenter": "सहायता केंद्र",
+    "contactUs": "हमसे संपर्क करें",
+    "brandDescription": "पशु चिकित्सा ज्ञान साझा करने हेतु समर्पित मंच — कैमरून और दुनिया भर के पशुपालकों के लिए पुस्तकें, प्रशिक्षण और संसाधन।",
+    "brandName": "Academie des Eleveurs",
+    "country": "कैमरून 🇨🇲",
+    "stayInformed": "सूचित रहें",
+    "emailPlaceholder": "आपका ईमेल",
+    "copyright": "© {{year}} Academie des Eleveurs.",
+    "foundedWith": "के साथ स्थापित",
+    "byAuthor": "{{name}} द्वारा",
+    "privacyShort": "गोपनीयता",
+    "termsShort": "शर्तें",
+    "language": "फ़्रेंच (CM)"
   },
   "buttons": {
     "payNow": "अभी भुगतान करें",
@@ -38,7 +51,8 @@
     "viewDetails": "विवरण देखें",
     "download": "डाउनलोड",
     "watchNow": "अभी देखें",
-    "readNow": "अभी पढ़ें"
+    "readNow": "अभी पढ़ें",
+    "addToCart": "जोड़ें"
   },
   "status": {
     "loading": "लोड हो रहा है…",
@@ -182,5 +196,24 @@
     "article": "आइटम",
     "articles": "आइटम",
     "productsLabel": "उत्पाद"
+  },
+  "productCard": {
+    "formatPdf": "PDF",
+    "formatVideo": "वीडियो",
+    "formatEbook": "ई-बुक",
+    "formatAudio": "ऑडियो",
+    "defaultCategory": "पशु स्वास्थ्य",
+    "topBadge": "टॉप",
+    "limitedOffer": "सीमित ऑफ़र",
+    "dayAbbr": "दि",
+    "hourAbbr": "घं",
+    "minuteAbbr": "मि"
+  },
+  "chat": {
+    "openLabel": "चैट खोलें",
+    "closeLabel": "चैट बंद करें",
+    "title": "सहायता चैट",
+    "comingSoon": "सहायता चैट जल्द ही आ रही है!",
+    "contactSocial": "हमारे सोशल नेटवर्क के माध्यम से हमसे संपर्क करने में संकोच न करें।"
   }
 }

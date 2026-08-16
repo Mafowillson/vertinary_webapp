@@ -66,7 +66,9 @@
     "paymentDetails": "Detalles",
     "price": "Precio",
     "reduction": "Descuento",
-    "securePaymentNote": "Pago seguro"
+    "securePaymentNote": "Pago seguro",
+    "emailPlaceholder": "tu@ejemplo.com",
+    "orderCreationFailed": "No se pudo crear el pedido."
   },
   "confirmation": {
     "title": "Gracias",
@@ -87,21 +89,23 @@
     "digitalAccess": "Acceso digital",
     "thisProduct": "este producto",
     "congratulations": "Felicidades",
-    "purchaseSuccessMessage": "Puede descargar al instante.",
-    "downloadDocument": "Descargar documento",
-    "downloadFileInstruction": "Pulse el botón inferior.",
-    "downloadButton": "Descargar ahora",
+    "purchaseSuccessMessage": "Puede acceder a su compra en línea de inmediato.",
+    "accessContent": "Acceda a su contenido",
+    "accessContentInstruction": "Vea, escuche o lea directamente desde su cuenta — sin descarga necesaria.",
+    "accessContentButton": "Comenzar",
     "needHelp": "¿Ayuda?",
     "contactWhatsAppHelp": "Escríbanos por WhatsApp:",
     "contactWhatsApp": "Soporte WhatsApp",
     "securePurchase": "Compra segura",
     "securePurchaseMessage": "Transacción protegida.",
     "nextSteps": "Próximos pasos",
-    "step1": "Pulse descarga",
-    "step2": "Guarde el archivo",
-    "step3": "Aplique en su finca",
+    "step1": "Haga clic en «Comenzar» para acceder a su contenido",
+    "step2": "Se abre directamente en el reproductor de cursos de su cuenta",
+    "step3": "Vea, escuche o lea a su ritmo, sin necesidad de descargar nada",
     "faqTitle": "No veo mi archivo",
     "faqAnswer": "Desactive bloqueadores, actualice o contáctenos.",
-    "instructions": "Instrucciones"
+    "instructions": "Instrucciones",
+    "onlinePaymentMethod": "En línea",
+    "notAvailable": "No disponible"
   }
 }

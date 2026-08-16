@@ -1,29 +1,33 @@
 import { useState, useEffect } from 'react'
-import { productService, setTranslationFunction } from '../services/productService'
+import { productService } from '../services/productService'
 import ProductCard from '../components/ProductCard/ProductCard'
 import SkeletonLoader from '../components/LoadingSpinner/SkeletonLoader'
 import { useLanguage } from '../contexts/LanguageContext'
+import { useCurrency } from '../contexts/CurrencyContext'
 import {
   FiSearch, FiX, FiFilter, FiSliders, FiDollarSign,
   FiVideo, FiHeadphones, FiBookOpen, FiBook, FiFileText, FiChevronDown,
 } from 'react-icons/fi'
-import { formatCurrency } from '../utils/formatters'
 
+// NOTE: `id` and `keywords` below are used for filter matching against product
+// text/tags (French keywords), so they stay hardcoded/untranslated. Display
+// `label`/`hint` text is resolved via t(`filters.speciesOptions.${id}.label`, ...)
+// (see product.json) at render time instead of being stored here.
 const SPECIES_OPTIONS = [
-  { id: 'poultry',         label: 'Poules & volailles', hint: 'Pondeuses, chair, aviculture', emoji: '🐔', keywords: ['poule','poussin','avicole','pondeuse','chair','volaille','poulet','œuf','oeuf'] },
-  { id: 'pigs',            label: 'Porcs',              hint: 'Élevage porcin',               emoji: '🐷', keywords: ['porc','porcin','truie'] },
-  { id: 'turkeys',         label: 'Dindes',             hint: 'Dindons, dinde',               emoji: '🦃', keywords: ['dinde','dindon'] },
-  { id: 'small_ruminants', label: 'Chèvres & moutons',  hint: 'Caprins, ovins',               emoji: '🐐', keywords: ['chèvre','mouton','caprin','ovin'] },
-  { id: 'cattle',          label: 'Bovins',             hint: 'Vaches, bœufs',                emoji: '🐄', keywords: ['bovin','vache','bœuf','boeuf'] },
-  { id: 'rabbits',         label: 'Lapins',             hint: 'Cuniculture',                  emoji: '🐰', keywords: ['lapin','cunicole'] },
+  { id: 'poultry',         emoji: '🐔', keywords: ['poule','poussin','avicole','pondeuse','chair','volaille','poulet','œuf','oeuf'] },
+  { id: 'pigs',            emoji: '🐷', keywords: ['porc','porcin','truie'] },
+  { id: 'turkeys',         emoji: '🦃', keywords: ['dinde','dindon'] },
+  { id: 'small_ruminants', emoji: '🐐', keywords: ['chèvre','mouton','caprin','ovin'] },
+  { id: 'cattle',          emoji: '🐄', keywords: ['bovin','vache','bœuf','boeuf'] },
+  { id: 'rabbits',         emoji: '🐰', keywords: ['lapin','cunicole'] },
 ]
 
 const CONTENT_TYPE_OPTIONS = [
-  { id: 'course',   label: 'Cours (vidéo)', hint: 'Séries, formations',         icon: FiVideo,     keywords: ['cours','vidéo','video','formation','série','serie'] },
-  { id: 'document', label: 'Documents',    hint: 'PDF, fiches',                 icon: FiFileText,  keywords: ['pdf','document','fiche','manuel','kit'] },
-  { id: 'audio',    label: 'Audio',        hint: 'Podcasts, enregistrements',   icon: FiHeadphones,keywords: ['audio','podcast','enregistrement'] },
-  { id: 'article',  label: 'Articles',     hint: 'Lecture courte',              icon: FiBookOpen,  keywords: ['article','blog'] },
-  { id: 'ebook',    label: 'E-books',      hint: 'Livres numériques',           icon: FiBook,      keywords: ['e-book','ebook','livre numérique'] },
+  { id: 'course',   icon: FiVideo,      keywords: ['cours','vidéo','video','formation','série','serie'] },
+  { id: 'document', icon: FiFileText,   keywords: ['pdf','document','fiche','manuel','kit'] },
+  { id: 'audio',    icon: FiHeadphones, keywords: ['audio','podcast','enregistrement'] },
+  { id: 'article',  icon: FiBookOpen,   keywords: ['article','blog'] },
+  { id: 'ebook',    icon: FiBook,       keywords: ['e-book','ebook','livre numérique'] },
 ]
 
 function productTextBlob(p) {
@@ -58,6 +62,7 @@ const CROSS_SVG = `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox
 const ProductsPage = () => {
   const [products, setProducts]               = useState([])
   const [loading, setLoading]                 = useState(true)
+  const [loadError, setLoadError]             = useState('')
   const [searchQuery, setSearchQuery]         = useState('')
   const [filteredProducts, setFilteredProducts] = useState([])
   const [displayedProducts, setDisplayedProducts] = useState([])
@@ -71,24 +76,25 @@ const ProductsPage = () => {
   const [selectedFormats, setSelectedFormats] = useState([])
 
   const { t } = useLanguage()
-
-  useEffect(() => { setTranslationFunction(t) }, [t])
+  const { format } = useCurrency()
 
   useEffect(() => {
     const loadProducts = async () => {
+      setLoadError('')
       try {
         const urlParams = new URLSearchParams(window.location.search)
         const searchParam = urlParams.get('search')
         if (searchParam) {
           setSearchQuery(searchParam)
           const data = await productService.searchProducts(searchParam)
-          setProducts(Array.isArray(data) ? data : (data?.data || []))
+          setProducts(data)
         } else {
           const data = await productService.getAllProducts()
-          setProducts(Array.isArray(data) ? data : (data?.data || []))
+          setProducts(data)
         }
-      } catch {
+      } catch (err) {
         setProducts([])
+        setLoadError(err.message || t('catalogue.defaultLoadError', { ns: 'product' }))
       } finally {
         setLoading(false)
       }
@@ -135,8 +141,12 @@ const ProductsPage = () => {
   const removeSpeciesFilter = (id) => setSelectedSpecies((prev) => prev.filter((s) => s !== id))
   const removeFormatFilter  = (id) => setSelectedFormats((prev) => prev.filter((f) => f !== id))
 
-  const speciesLabel     = (id) => SPECIES_OPTIONS.find((o) => o.id === id)?.label || id
-  const contentTypeLabel = (id) => CONTENT_TYPE_OPTIONS.find((o) => o.id === id)?.label || id
+  const speciesLabel     = (id) => SPECIES_OPTIONS.find((o) => o.id === id)
+    ? t(`filters.speciesOptions.${id}.label`, { ns: 'product' })
+    : id
+  const contentTypeLabel = (id) => CONTENT_TYPE_OPTIONS.find((o) => o.id === id)
+    ? t(`filters.contentTypeOptions.${id}.label`, { ns: 'product' })
+    : id
 
   const loadMore    = () => setCurrentPage((p) => p + 1)
   const totalPages  = Math.ceil(filteredProducts.length / productsPerPage)
@@ -177,8 +187,8 @@ const ProductsPage = () => {
               <FiSliders className="w-3.5 h-3.5" />
             </span>
             <div>
-              <p className="text-sm font-bold text-slate-900 leading-none">Affiner</p>
-              <p className="text-[11px] text-slate-400 mt-0.5">Espèces · Formats · Budget</p>
+              <p className="text-sm font-bold text-slate-900 leading-none">{t('filters.refineTitle', { ns: 'product' })}</p>
+              <p className="text-[11px] text-slate-400 mt-0.5">{t('filters.refineSubtitle', { ns: 'product' })}</p>
             </div>
           </div>
           <div className="flex items-center gap-2 shrink-0">
@@ -188,7 +198,7 @@ const ProductsPage = () => {
                 onClick={clearAllFilters}
                 className="text-[11px] font-semibold text-rose-500 hover:text-rose-700 transition-colors"
               >
-                Tout effacer
+                {t('filters.clearAll', { ns: 'product' })}
               </button>
             )}
             {isMobile && (
@@ -196,7 +206,7 @@ const ProductsPage = () => {
                 type="button"
                 onClick={() => setMobileFiltersOpen(false)}
                 className="rounded-xl p-1.5 text-slate-500 hover:bg-slate-100 transition-colors"
-                aria-label="Fermer"
+                aria-label={t('filters.close', { ns: 'product' })}
               >
                 <FiX className="w-5 h-5" />
               </button>
@@ -208,10 +218,10 @@ const ProductsPage = () => {
           {/* ── Species ── */}
           <section>
             <p className="text-[10px] font-extrabold uppercase tracking-widest text-slate-400 mb-3">
-              Pour quel élevage ?
+              {t('filters.speciesSectionTitle', { ns: 'product' })}
             </p>
             <div className="space-y-1.5">
-              {SPECIES_OPTIONS.map(({ id, label, hint, emoji }) => {
+              {SPECIES_OPTIONS.map(({ id, emoji }) => {
                 const on = selectedSpecies.includes(id)
                 return (
                   <button
@@ -227,9 +237,9 @@ const ProductsPage = () => {
                     <span className="text-lg leading-none shrink-0">{emoji}</span>
                     <span className="flex-1 min-w-0">
                       <span className={`block text-sm font-semibold leading-tight ${on ? 'text-emerald-900' : 'text-slate-800'}`}>
-                        {label}
+                        {t(`filters.speciesOptions.${id}.label`, { ns: 'product' })}
                       </span>
-                      <span className="block text-[11px] text-slate-400 leading-tight mt-0.5 truncate">{hint}</span>
+                      <span className="block text-[11px] text-slate-400 leading-tight mt-0.5 truncate">{t(`filters.speciesOptions.${id}.hint`, { ns: 'product' })}</span>
                     </span>
                     <span className={`h-4 w-4 shrink-0 rounded-full border-2 flex items-center justify-center transition-colors
                       ${on ? 'border-emerald-600 bg-emerald-600' : 'border-slate-300 group-hover:border-emerald-400'}`}>
@@ -244,10 +254,10 @@ const ProductsPage = () => {
           {/* ── Content type ── */}
           <section>
             <p className="text-[10px] font-extrabold uppercase tracking-widest text-slate-400 mb-3">
-              Type de contenu
+              {t('filters.contentTypeSectionTitle', { ns: 'product' })}
             </p>
             <div className="space-y-1.5">
-              {CONTENT_TYPE_OPTIONS.map(({ id, label, hint, icon: Icon }) => {
+              {CONTENT_TYPE_OPTIONS.map(({ id, icon: Icon }) => {
                 const on = selectedFormats.includes(id)
                 return (
                   <button
@@ -266,9 +276,9 @@ const ProductsPage = () => {
                     </span>
                     <span className="flex-1 min-w-0">
                       <span className={`block text-sm font-semibold leading-tight ${on ? 'text-amber-900' : 'text-slate-800'}`}>
-                        {label}
+                        {t(`filters.contentTypeOptions.${id}.label`, { ns: 'product' })}
                       </span>
-                      <span className="block text-[11px] text-slate-400 mt-0.5">{hint}</span>
+                      <span className="block text-[11px] text-slate-400 mt-0.5">{t(`filters.contentTypeOptions.${id}.hint`, { ns: 'product' })}</span>
                     </span>
                   </button>
                 )
@@ -279,8 +289,8 @@ const ProductsPage = () => {
           {/* ── Price ── */}
           <section>
             <div className="flex items-center justify-between mb-3">
-              <p className="text-[10px] font-extrabold uppercase tracking-widest text-slate-400">Budget max</p>
-              <span className="text-sm font-bold text-slate-800 tabular-nums">{formatCurrency(priceRange)}</span>
+              <p className="text-[10px] font-extrabold uppercase tracking-widest text-slate-400">{t('filters.budgetMax', { ns: 'product' })}</p>
+              <span className="text-sm font-bold text-slate-800 tabular-nums">{format(priceRange)}</span>
             </div>
             <div className="px-1">
               <input
@@ -308,7 +318,7 @@ const ProductsPage = () => {
               onClick={() => setMobileFiltersOpen(false)}
               className="w-full rounded-xl bg-emerald-600 hover:bg-emerald-700 py-3 text-sm font-bold text-white transition-colors shadow-md shadow-emerald-200"
             >
-              Voir {filteredProducts.length} résultat{filteredProducts.length !== 1 ? 's' : ''}
+              {t('filters.viewResults', { ns: 'product', count: filteredProducts.length })}
             </button>
           </div>
         )}
@@ -336,25 +346,24 @@ const ProductsPage = () => {
             {/* Eyebrow */}
             <div className="inline-flex items-center gap-2 bg-white/10 rounded-full px-3 py-1 mb-4 backdrop-blur-sm ring-1 ring-white/15">
               <span className="text-[10px] font-extrabold uppercase tracking-widest text-emerald-200">
-                Catalogue Éleveurs
+                {t('catalogue.eyebrow', { ns: 'product' })}
               </span>
             </div>
 
             {/* Headline */}
             <h1 className="text-3xl md:text-4xl lg:text-5xl font-extrabold leading-[1.1] mb-4 tracking-tight">
-              Formations &amp; Ressources
-              <span className="block text-emerald-300"> pour bien élever</span>
+              {t('catalogue.headline', { ns: 'product' })}
+              <span className="block text-emerald-300"> {t('catalogue.headlineHighlight', { ns: 'product' })}</span>
             </h1>
 
             {/* Sub */}
             <p className="text-emerald-100/85 text-base md:text-lg max-w-xl leading-relaxed">
-              Cours vidéo, guides PDF, audios et articles — tout pour les poules, porcs, bovins et autres élevages.
-              Choisissez une espèce pour affiner.
+              {t('catalogue.subheading', { ns: 'product' })}
             </p>
 
             {/* Species quick-filter chips */}
             <div className="mt-6 flex flex-wrap gap-2">
-              {SPECIES_OPTIONS.map(({ id, label, emoji }) => {
+              {SPECIES_OPTIONS.map(({ id, emoji }) => {
                 const on = selectedSpecies.includes(id)
                 return (
                   <button
@@ -368,7 +377,7 @@ const ProductsPage = () => {
                     }`}
                   >
                     <span className="text-base leading-none">{emoji}</span>
-                    <span>{label}</span>
+                    <span>{t(`filters.speciesOptions.${id}.label`, { ns: 'product' })}</span>
                   </button>
                 )
               })}
@@ -378,9 +387,9 @@ const ProductsPage = () => {
           {/* Stats strip */}
           <div className="mt-10 pt-6 border-t border-white/10 grid grid-cols-3 gap-4 max-w-sm">
             {[
-              { val: loading ? '…' : `${products.length}+`, lbl: 'Ressources' },
-              { val: '6',                                   lbl: 'Espèces' },
-              { val: '5',                                   lbl: 'Formats' },
+              { val: loading ? '…' : `${products.length}+`, lbl: t('catalogue.statResources', { ns: 'product' }) },
+              { val: '6',                                   lbl: t('catalogue.statSpecies', { ns: 'product' }) },
+              { val: '5',                                   lbl: t('catalogue.statFormats', { ns: 'product' }) },
             ].map(({ val, lbl }) => (
               <div key={lbl}>
                 <p className="text-xl font-extrabold text-white tabular-nums">{val}</p>
@@ -401,7 +410,7 @@ const ProductsPage = () => {
             <FiSearch className="absolute left-4 w-5 h-5 text-slate-400 pointer-events-none" />
             <input
               type="text"
-              placeholder="Rechercher formations, guides, espèces…"
+              placeholder={t('catalogue.searchPlaceholder', { ns: 'product' })}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full pl-11 pr-10 py-3 text-slate-900 placeholder-slate-400 text-sm font-medium focus:outline-none bg-transparent"
@@ -423,7 +432,7 @@ const ProductsPage = () => {
             className="lg:hidden flex items-center gap-2 px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-bold rounded-xl transition-colors shrink-0"
           >
             <FiFilter className="w-4 h-4" />
-            Filtres
+            {t('catalogue.filtersButton', { ns: 'product' })}
             {activeFiltersCount > 0 && (
               <span className="bg-white text-emerald-700 text-[10px] font-extrabold w-5 h-5 rounded-full flex items-center justify-center">
                 {activeFiltersCount}
@@ -467,7 +476,7 @@ const ProductsPage = () => {
             {priceRange < 100000 && (
               <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-violet-100 text-violet-900 rounded-full text-xs font-semibold">
                 <FiDollarSign className="w-3 h-3 shrink-0" />
-                Max {formatCurrency(priceRange)}
+                {t('filters.maxPriceLabel', { ns: 'product', price: format(priceRange) })}
                 <button onClick={() => setPriceRange(100000)} className="hover:text-violet-700 ml-0.5">
                   <FiX className="w-3.5 h-3.5" />
                 </button>
@@ -495,12 +504,14 @@ const ProductsPage = () => {
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6">
               <div>
                 <p className="text-[11px] font-extrabold uppercase tracking-widest text-slate-400 mb-0.5">
-                  {activeFiltersCount > 0 || searchQuery ? 'Résultats filtrés' : 'Tous les contenus'}
+                  {activeFiltersCount > 0 || searchQuery
+                    ? t('catalogue.filteredResults', { ns: 'product' })
+                    : t('catalogue.allContent', { ns: 'product' })}
                 </p>
                 <h2 className="text-xl font-extrabold text-slate-900">
                   {loading
-                    ? 'Chargement…'
-                    : `${filteredProducts.length} contenu${filteredProducts.length !== 1 ? 's' : ''}`}
+                    ? t('catalogue.loading', { ns: 'product' })
+                    : t('catalogue.contentCount', { ns: 'product', count: filteredProducts.length })}
                 </h2>
               </div>
 
@@ -511,10 +522,10 @@ const ProductsPage = () => {
                   onChange={(e) => setSortBy(e.target.value)}
                   className="appearance-none pl-4 pr-9 py-2.5 border border-slate-200 rounded-xl text-sm font-semibold text-slate-700 bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent shadow-sm cursor-pointer"
                 >
-                  <option value="most-popular">Plus populaire</option>
-                  <option value="price-low">Prix croissant</option>
-                  <option value="price-high">Prix décroissant</option>
-                  <option value="newest">Plus récent</option>
+                  <option value="most-popular">{t('filters.mostPopular', { ns: 'product' })}</option>
+                  <option value="price-low">{t('filters.priceAsc', { ns: 'product' })}</option>
+                  <option value="price-high">{t('filters.priceDesc', { ns: 'product' })}</option>
+                  <option value="newest">{t('filters.newest', { ns: 'product' })}</option>
                 </select>
                 <FiChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
               </div>
@@ -538,7 +549,7 @@ const ProductsPage = () => {
                       onClick={loadMore}
                       className="inline-flex items-center gap-2 px-8 py-3.5 border-2 border-emerald-600 text-emerald-700 rounded-xl text-sm font-bold hover:bg-emerald-50 transition-all hover:shadow-md"
                     >
-                      Charger plus
+                      {t('catalogue.loadMore', { ns: 'product' })}
                       <span className="bg-emerald-100 text-emerald-700 text-xs font-extrabold px-2 py-0.5 rounded-full">
                         {filteredProducts.length - displayedProducts.length}
                       </span>
@@ -584,26 +595,41 @@ const ProductsPage = () => {
                 )}
               </>
             ) : (
-              /* ── Empty state ── */
+              /* ── Empty / error state ── */
               <div className="flex flex-col items-center justify-center py-20 text-center">
                 <div className="relative mb-6">
-                  <div className="w-24 h-24 rounded-3xl bg-slate-100 flex items-center justify-center">
-                    <FiSearch className="w-10 h-10 text-slate-300" />
+                  <div className={`w-24 h-24 rounded-3xl flex items-center justify-center ${loadError ? 'bg-red-50' : 'bg-slate-100'}`}>
+                    <FiSearch className={`w-10 h-10 ${loadError ? 'text-red-300' : 'text-slate-300'}`} />
                   </div>
-                  <div className="absolute -bottom-2 -right-2 text-3xl">🔍</div>
+                  <div className="absolute -bottom-2 -right-2 text-3xl">{loadError ? '⚠️' : '🔍'}</div>
                 </div>
-                <h3 className="text-xl font-extrabold text-slate-900 mb-2">Aucun résultat</h3>
+                <h3 className="text-xl font-extrabold text-slate-900 mb-2">
+                  {loadError ? t('catalogue.loadErrorTitle', { ns: 'product' }) : t('catalogue.noResultsTitle', { ns: 'product' })}
+                </h3>
                 <p className="text-slate-500 text-sm max-w-xs leading-relaxed mb-6">
-                  {searchQuery
-                    ? `Aucune ressource ne correspond à "${searchQuery}". Essayez d'autres mots-clés.`
-                    : 'Aucune ressource ne correspond à vos filtres. Essayez d\'élargir votre recherche.'}
+                  {loadError
+                    ? loadError
+                    : searchQuery
+                    ? t('catalogue.noResultsForQuery', { ns: 'product', query: searchQuery })
+                    : products.length === 0
+                    ? t('catalogue.noResultsAvailable', { ns: 'product' })
+                    : t('catalogue.noResultsFiltered', { ns: 'product' })}
                 </p>
-                <button
-                  onClick={clearAllFilters}
-                  className="px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-bold rounded-xl shadow-md shadow-emerald-200 transition-all hover:shadow-lg hover:shadow-emerald-200 hover:-translate-y-0.5"
-                >
-                  Réinitialiser les filtres
-                </button>
+                {loadError ? (
+                  <button
+                    onClick={() => window.location.reload()}
+                    className="px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-bold rounded-xl shadow-md shadow-emerald-200 transition-all hover:shadow-lg hover:shadow-emerald-200 hover:-translate-y-0.5"
+                  >
+                    {t('catalogue.retry', { ns: 'product' })}
+                  </button>
+                ) : products.length > 0 ? (
+                  <button
+                    onClick={clearAllFilters}
+                    className="px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-bold rounded-xl shadow-md shadow-emerald-200 transition-all hover:shadow-lg hover:shadow-emerald-200 hover:-translate-y-0.5"
+                  >
+                    {t('catalogue.resetFilters', { ns: 'product' })}
+                  </button>
+                ) : null}
               </div>
             )}
           </div>

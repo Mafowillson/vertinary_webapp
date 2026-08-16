@@ -32,18 +32,3 @@ class Order(Base):
     # Relationships
     user = relationship("User", back_populates="orders")
     product = relationship("Product", back_populates="orders")
-    files = relationship("OrderFile", back_populates="order", cascade="all, delete-orphan")
-
-class OrderFile(Base):
-    __tablename__ = "order_files"
-
-    id = Column(Integer, primary_key=True, index=True)
-    order_id = Column(Integer, ForeignKey("orders.id"), nullable=False)
-    file_name = Column(String, nullable=False)
-    file_path = Column(String, nullable=False)
-    file_size = Column(Integer, nullable=False)
-    created_at = Column(DateTime(timezone=True), server_default=func.now())
-
-    # Relationships
-    order = relationship("Order", back_populates="files")
-

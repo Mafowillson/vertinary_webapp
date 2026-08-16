@@ -1,0 +1,159 @@
+{
+  "list": {
+    "header": {
+      "title": "Gestion du contenu",
+      "subtitle": "Gérer vos produits et contenus numériques",
+      "addButton": "Ajouter un produit"
+    },
+    "stats": {
+      "total": { "label": "Total produits", "change": "+2 ce mois" },
+      "featured": { "label": "Produits en vedette" },
+      "sales": { "label": "Ventes totales", "change": "+12.5%" },
+      "revenue": { "label": "Revenu total" }
+    },
+    "search": {
+      "placeholder": "Rechercher des produits par nom ou description..."
+    },
+    "sort": {
+      "recent": "Plus récent",
+      "name": "Nom (A-Z)",
+      "price": "Prix (décroissant)",
+      "sales": "Meilleures ventes"
+    },
+    "empty": {
+      "title": "Aucun produit trouvé",
+      "searchHint": "Essayez d'ajuster vos termes de recherche",
+      "noProductsHint": "Commencez par ajouter votre premier produit",
+      "addFirstButton": "Ajouter votre premier produit"
+    },
+    "card": {
+      "featuredBadge": "En vedette",
+      "salesCount": "{{count}} ventes"
+    },
+    "listItem": {
+      "priceLabel": "Prix : "
+    },
+    "actions": {
+      "edit": "Modifier",
+      "delete": "Supprimer"
+    },
+    "confirm": {
+      "delete": "Êtes-vous sûr de vouloir supprimer ce produit ?"
+    },
+    "errors": {
+      "loadFailed": "Impossible de charger les produits.",
+      "deleteFailed": "Erreur lors de la suppression"
+    }
+  },
+  "form": {
+    "header": {
+      "editTitle": "Modifier le produit",
+      "createTitle": "Créer un nouveau produit",
+      "editSubtitle": "Mettre à jour les informations du produit",
+      "createSubtitle": "Ajouter un nouveau produit à votre catalogue"
+    },
+    "success": {
+      "updated": "Produit mis à jour avec succès !",
+      "created": "Produit créé avec succès ! Ajoutez maintenant son contenu (vidéos, audios ou PDF) ci-dessous."
+    },
+    "errors": {
+      "titleRequired": "Le titre est requis",
+      "descriptionRequired": "La description est requise",
+      "priceRequired": "Un prix valide est requis",
+      "originalPriceInvalid": "Le prix original doit être supérieur au prix actuel",
+      "saveFailed": "Échec de l'enregistrement du produit. Veuillez réessayer."
+    },
+    "sections": {
+      "basicInfo": "Informations de base",
+      "pricing": "Tarification",
+      "media": "Image du produit",
+      "inventory": "Inventaire & Paramètres"
+    },
+    "fields": {
+      "title": {
+        "label": "Titre du produit",
+        "placeholder": "ex. Guide avancé d'élevage bovin"
+      },
+      "description": {
+        "label": "Description",
+        "placeholder": "Fournissez une description détaillée du produit..."
+      },
+      "price": {
+        "label": "Prix actuel (FCFA)"
+      },
+      "originalPrice": {
+        "label": "Prix original (FCFA)",
+        "hint": "(pour les réductions)",
+        "discountLabel": "Réduction :",
+        "discountValue": "{{percent}}%"
+      },
+      "image": {
+        "label": "Image du produit",
+        "uploadButton": "Téléverser une image",
+        "uploading": "Téléversement en cours...",
+        "hint": "JPG, PNG, WEBP ou GIF — 10 Mo maximum.",
+        "previewAlt": "Aperçu",
+        "changeButton": "Changer l'image",
+        "uploadError": "Échec du téléversement de l'image."
+      },
+      "stock": {
+        "label": "Quantité en stock",
+        "placeholder": "0",
+        "hint": "Laissez vide ou 0 pour un stock illimité"
+      },
+      "offerEndDate": {
+        "label": "Date de fin d'offre",
+        "hint": "Définir quand l'offre spéciale expire"
+      },
+      "featured": {
+        "label": "Produit en vedette",
+        "hint": "Les produits en vedette sont mis en avant et affichés de manière visible sur le site"
+      }
+    },
+    "buttons": {
+      "done": "Terminé",
+      "cancel": "Annuler",
+      "saving": "Enregistrement...",
+      "saved": "Enregistré !",
+      "update": "Mettre à jour le produit",
+      "create": "Créer le produit"
+    }
+  },
+  "lessons": {
+    "header": {
+      "title": "Contenu du cours (leçons)",
+      "subtitle": "Les acheteurs visionnent/écoutent/lisent ce contenu directement dans l'application — aucun téléchargement n'est proposé."
+    },
+    "types": {
+      "video": "Vidéo",
+      "audio": "Audio",
+      "pdf": "PDF (livre)"
+    },
+    "empty": {
+      "title": "Aucune leçon pour le moment."
+    },
+    "actions": {
+      "moveUp": "Monter",
+      "moveDown": "Descendre",
+      "delete": "Supprimer"
+    },
+    "confirm": {
+      "delete": "Supprimer cette leçon ? Cette action est irréversible."
+    },
+    "errors": {
+      "loadFailed": "Impossible de charger les leçons.",
+      "titleRequired": "Le titre de la leçon est requis",
+      "fileRequired": "Sélectionnez un fichier à téléverser",
+      "uploadFailed": "Échec du téléversement de la leçon.",
+      "deleteFailed": "Échec de la suppression de la leçon.",
+      "reorderFailed": "Échec du réordonnancement."
+    },
+    "form": {
+      "title": "Ajouter une leçon",
+      "titlePlaceholder": "Titre de la leçon",
+      "descriptionPlaceholder": "Description (optionnel)",
+      "uploading": "Téléversement... {{progress}}%",
+      "submit": "Téléverser la leçon"
+    }
+  }
+}

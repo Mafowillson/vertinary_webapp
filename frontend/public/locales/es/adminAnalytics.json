@@ -1,0 +1,47 @@
+{
+  "header": {
+    "title": "Analítica",
+    "subtitle": "Siga el rendimiento y las estadísticas de su negocio"
+  },
+  "timeframe": {
+    "weekly": "Semanal",
+    "monthly": "Mensual",
+    "yearly": "Anual"
+  },
+  "errors": {
+    "loadFailed": "No se pudieron cargar las estadísticas."
+  },
+  "stats": {
+    "totalRevenue": "Ingresos totales",
+    "totalOrders": "Total de pedidos",
+    "totalUsers": "Total de usuarios",
+    "conversionRate": "Tasa de conversión",
+    "pointsSuffix": " pts"
+  },
+  "charts": {
+    "revenue": {
+      "title": "Tendencia de ingresos",
+      "subtitle": "Ingresos totales a lo largo del tiempo"
+    },
+    "orders": {
+      "title": "Tendencia de pedidos",
+      "subtitle": "Número de pedidos a lo largo del tiempo",
+      "tooltipSales": "{{count}} pedidos"
+    },
+    "users": {
+      "title": "Crecimiento de usuarios",
+      "subtitle": "Nuevos usuarios a lo largo del tiempo"
+    }
+  },
+  "performance": {
+    "title": "Métricas de rendimiento",
+    "averageOrderValue": "Valor medio del pedido",
+    "conversionRate": "Tasa de conversión",
+    "activeProducts": "Productos activos"
+  },
+  "topProducts": {
+    "title": "Productos más vendidos",
+    "empty": "No hay ventas durante este período.",
+    "salesCount": "{{count}} ventas"
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "header": {
+    "title": "एनालिटिक्स",
+    "subtitle": "अपने व्यवसाय के प्रदर्शन और जानकारियों को ट्रैक करें"
+  },
+  "timeframe": {
+    "weekly": "साप्ताहिक",
+    "monthly": "मासिक",
+    "yearly": "वार्षिक"
+  },
+  "errors": {
+    "loadFailed": "आंकड़े लोड नहीं हो सके।"
+  },
+  "stats": {
+    "totalRevenue": "कुल राजस्व",
+    "totalOrders": "कुल ऑर्डर",
+    "totalUsers": "कुल उपयोगकर्ता",
+    "conversionRate": "रूपांतरण दर",
+    "pointsSuffix": " अंक"
+  },
+  "charts": {
+    "revenue": {
+      "title": "राजस्व रुझान",
+      "subtitle": "समय के साथ कुल राजस्व"
+    },
+    "orders": {
+      "title": "ऑर्डर रुझान",
+      "subtitle": "समय के साथ ऑर्डर की संख्या",
+      "tooltipSales": "{{count}} ऑर्डर"
+    },
+    "users": {
+      "title": "उपयोगकर्ता वृद्धि",
+      "subtitle": "समय के साथ नए उपयोगकर्ता"
+    }
+  },
+  "performance": {
+    "title": "प्रदर्शन मेट्रिक्स",
+    "averageOrderValue": "औसत ऑर्डर मूल्य",
+    "conversionRate": "रूपांतरण दर",
+    "activeProducts": "सक्रिय उत्पाद"
+  },
+  "topProducts": {
+    "title": "सर्वश्रेष्ठ उत्पाद",
+    "empty": "इस अवधि में कोई बिक्री नहीं हुई।",
+    "salesCount": "{{count}} बिक्री"
+  }
+}

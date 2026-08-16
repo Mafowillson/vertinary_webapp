@@ -1,219 +1,186 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { FiShield, FiArrowLeft, FiPhone, FiMail, FiMapPin, FiChevronDown, FiChevronUp } from 'react-icons/fi'
+import { useLanguage } from '../contexts/LanguageContext'
 
-const sections = [
-  {
-    id: 'introduction',
-    title: 'Introduction',
-    content: (
-      <div className="space-y-3">
-        <p>
-          Bienvenue chez Académie des Éleveurs (« nous », « notre » ou « nos »). Nous nous engageons à protéger votre vie privée et à assurer la sécurité de vos informations personnelles. Cette Politique de Confidentialité explique comment nous collectons, utilisons, divulguons et protégeons vos informations lorsque vous visitez notre site web et utilisez nos services.
-        </p>
-        <p>
-          En utilisant nos services, vous acceptez la collecte et l'utilisation des informations conformément à cette politique. Si vous n'êtes pas d'accord avec nos politiques et pratiques, veuillez ne pas utiliser nos services.
-        </p>
-      </div>
-    ),
-  },
-  {
-    id: 'information-collection',
-    title: 'Informations que nous collectons',
-    content: (
-      <div className="space-y-4">
-        <div>
-          <h4>Informations personnelles</h4>
-          <p className="mb-2">Nous pouvons collecter les types d'informations personnelles suivants :</p>
+const getSections = (t) => {
+  const tl = (key, options) => t(key, { ns: 'legal', ...options })
+  const items = (key) => tl(key, { returnObjects: true })
+
+  return [
+    {
+      id: 'introduction',
+      title: tl('privacy.sections.introduction.title'),
+      content: (
+        <div className="space-y-3">
+          <p>{tl('privacy.sections.introduction.paragraph1')}</p>
+          <p>{tl('privacy.sections.introduction.paragraph2')}</p>
+        </div>
+      ),
+    },
+    {
+      id: 'information-collection',
+      title: tl('privacy.sections.informationCollection.title'),
+      content: (
+        <div className="space-y-4">
+          <div>
+            <h4>{tl('privacy.sections.informationCollection.personalInfo.heading')}</h4>
+            <p className="mb-2">{tl('privacy.sections.informationCollection.personalInfo.intro')}</p>
+            <ul>
+              {items('privacy.sections.informationCollection.personalInfo.items').map((item, idx) => (
+                <li key={idx}>{item}</li>
+              ))}
+            </ul>
+          </div>
+          <div>
+            <h4>{tl('privacy.sections.informationCollection.autoInfo.heading')}</h4>
+            <p className="mb-2">{tl('privacy.sections.informationCollection.autoInfo.intro')}</p>
+            <ul>
+              {items('privacy.sections.informationCollection.autoInfo.items').map((item, idx) => (
+                <li key={idx}>{item}</li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      ),
+    },
+    {
+      id: 'how-we-use',
+      title: tl('privacy.sections.howWeUse.title'),
+      content: (
+        <div className="space-y-3">
+          <p>{tl('privacy.sections.howWeUse.intro')}</p>
           <ul>
-            <li>Nom et coordonnées (adresse email, numéro de téléphone)</li>
-            <li>Identifiants de compte (nom d'utilisateur, mot de passe)</li>
-            <li>Informations de paiement (détails de carte de crédit, adresse de facturation)</li>
-            <li>Informations professionnelles (numéro de licence vétérinaire, informations sur la clinique)</li>
-            <li>Historique des achats et enregistrements de transactions</li>
+            {items('privacy.sections.howWeUse.items').map((item, idx) => (
+              <li key={idx}>{item}</li>
+            ))}
           </ul>
         </div>
-        <div>
-          <h4>Informations collectées automatiquement</h4>
-          <p className="mb-2">Lorsque vous visitez notre site web, nous collectons automatiquement certaines informations :</p>
+      ),
+    },
+    {
+      id: 'information-sharing',
+      title: tl('privacy.sections.informationSharing.title'),
+      content: (
+        <div className="space-y-4">
+          <p>{tl('privacy.sections.informationSharing.intro')}</p>
+          <div>
+            <h4>{tl('privacy.sections.informationSharing.serviceProviders.heading')}</h4>
+            <p>{tl('privacy.sections.informationSharing.serviceProviders.body')}</p>
+          </div>
+          <div>
+            <h4>{tl('privacy.sections.informationSharing.legalRequirements.heading')}</h4>
+            <p>{tl('privacy.sections.informationSharing.legalRequirements.body')}</p>
+          </div>
+          <div>
+            <h4>{tl('privacy.sections.informationSharing.businessTransfers.heading')}</h4>
+            <p>{tl('privacy.sections.informationSharing.businessTransfers.body')}</p>
+          </div>
+        </div>
+      ),
+    },
+    {
+      id: 'data-security',
+      title: tl('privacy.sections.dataSecurity.title'),
+      content: (
+        <div className="space-y-3">
+          <p>{tl('privacy.sections.dataSecurity.intro')}</p>
           <ul>
-            <li>Adresse IP et informations sur l'appareil</li>
-            <li>Type et version du navigateur</li>
-            <li>Pages visitées et temps passé sur les pages</li>
-            <li>Adresses des sites web de référence</li>
-            <li>Cookies et technologies de suivi similaires</li>
+            {items('privacy.sections.dataSecurity.items').map((item, idx) => (
+              <li key={idx}>{item}</li>
+            ))}
           </ul>
+          <p className="text-sm text-gray-500 italic">{tl('privacy.sections.dataSecurity.disclaimer')}</p>
         </div>
-      </div>
-    ),
-  },
-  {
-    id: 'how-we-use',
-    title: 'Comment nous utilisons vos informations',
-    content: (
-      <div className="space-y-3">
-        <p>Nous utilisons les informations collectées aux fins suivantes :</p>
-        <ul>
-          <li>Fournir, maintenir et améliorer nos services</li>
-          <li>Traiter les transactions et envoyer les informations associées</li>
-          <li>Envoyer des informations administratives et des mises à jour</li>
-          <li>Répondre à vos demandes et fournir un support client</li>
-          <li>Envoyer des communications marketing (avec votre consentement)</li>
-          <li>Détecter, prévenir et résoudre les problèmes techniques</li>
-          <li>Se conformer aux obligations légales et faire respecter nos conditions</li>
-          <li>Protéger les droits, la propriété et la sécurité de nos utilisateurs</li>
-        </ul>
-      </div>
-    ),
-  },
-  {
-    id: 'information-sharing',
-    title: 'Partage et divulgation des informations',
-    content: (
-      <div className="space-y-4">
-        <p>Nous ne vendons, n'échangeons ni ne louons vos informations personnelles à des tiers. Nous ne pouvons partager vos informations que dans les circonstances suivantes :</p>
-        <div>
-          <h4>Prestataires de services</h4>
-          <p>Nous pouvons partager des informations avec des prestataires de services tiers qui effectuent des services en notre nom, tels que le traitement des paiements, l'analyse de données et la livraison d'emails.</p>
+      ),
+    },
+    {
+      id: 'cookies',
+      title: tl('privacy.sections.cookies.title'),
+      content: (
+        <div className="space-y-3">
+          <p>{tl('privacy.sections.cookies.intro')}</p>
+          <div>
+            <h4>{tl('privacy.sections.cookies.types.heading')}</h4>
+            <ul>
+              {items('privacy.sections.cookies.types.items').map((item, idx) => (
+                <li key={idx}><strong>{item.label}</strong> {item.text}</li>
+              ))}
+            </ul>
+          </div>
+          <p>{tl('privacy.sections.cookies.outro')}</p>
         </div>
-        <div>
-          <h4>Exigences légales</h4>
-          <p>Nous pouvons divulguer des informations si la loi l'exige ou en réponse à des demandes valides des autorités publiques.</p>
-        </div>
-        <div>
-          <h4>Transferts d'entreprise</h4>
-          <p>En cas de fusion, d'acquisition ou de vente d'actifs, vos informations peuvent être transférées à l'entité acquéreuse.</p>
-        </div>
-      </div>
-    ),
-  },
-  {
-    id: 'data-security',
-    title: 'Sécurité des données',
-    content: (
-      <div className="space-y-3">
-        <p>
-          Nous mettons en œuvre des mesures de sécurité techniques et organisationnelles appropriées pour protéger vos informations personnelles contre l'accès, la modification, la divulgation ou la destruction non autorisés. Ces mesures comprennent :
-        </p>
-        <ul>
-          <li>Cryptage SSL 256 bits pour la transmission des données</li>
-          <li>Infrastructure de serveurs sécurisée avec des audits de sécurité réguliers</li>
-          <li>Contrôles d'accès et mécanismes d'authentification</li>
-          <li>Sauvegardes régulières et procédures de reprise après sinistre</li>
-          <li>Pratiques de traitement des données conformes aux normes HIPAA</li>
-        </ul>
-        <p className="text-sm text-gray-500 italic">
-          Aucune méthode de transmission sur Internet n'est sûre à 100 %. Bien que nous nous efforcions d'utiliser des moyens commercialement acceptables pour protéger vos informations, nous ne pouvons garantir une sécurité absolue.
-        </p>
-      </div>
-    ),
-  },
-  {
-    id: 'cookies',
-    title: 'Cookies et technologies de suivi',
-    content: (
-      <div className="space-y-3">
-        <p>
-          Nous utilisons des cookies et des technologies de suivi similaires pour suivre l'activité sur notre site web et stocker certaines informations.
-        </p>
-        <div>
-          <h4>Types de cookies que nous utilisons</h4>
+      ),
+    },
+    {
+      id: 'your-rights',
+      title: tl('privacy.sections.yourRights.title'),
+      content: (
+        <div className="space-y-3">
+          <p>{tl('privacy.sections.yourRights.intro')}</p>
           <ul>
-            <li><strong>Cookies essentiels :</strong> Nécessaires au bon fonctionnement du site web</li>
-            <li><strong>Cookies analytiques :</strong> Nous aident à comprendre comment les visiteurs interagissent avec notre site</li>
-            <li><strong>Cookies de préférences :</strong> Mémorisent vos préférences et paramètres</li>
-            <li><strong>Cookies marketing :</strong> Utilisés pour diffuser des publicités pertinentes</li>
+            {items('privacy.sections.yourRights.items').map((item, idx) => (
+              <li key={idx}><strong>{item.label}</strong> {item.text}</li>
+            ))}
           </ul>
+          <p>{tl('privacy.sections.yourRights.outro')}</p>
         </div>
-        <p>
-          Vous pouvez configurer votre navigateur pour refuser tous les cookies. Cependant, certaines fonctionnalités du site pourraient ne plus fonctionner correctement.
-        </p>
-      </div>
-    ),
-  },
-  {
-    id: 'your-rights',
-    title: 'Vos droits et choix',
-    content: (
-      <div className="space-y-3">
-        <p>Vous disposez des droits suivants concernant vos informations personnelles :</p>
-        <ul>
-          <li><strong>Accès :</strong> Demander l'accès à vos informations personnelles</li>
-          <li><strong>Correction :</strong> Demander la correction d'informations inexactes</li>
-          <li><strong>Suppression :</strong> Demander la suppression de vos informations personnelles</li>
-          <li><strong>Opposition :</strong> Vous opposer au traitement de vos informations personnelles</li>
-          <li><strong>Portabilité :</strong> Demander le transfert de vos données vers un autre service</li>
-          <li><strong>Retrait :</strong> Retirer votre consentement au traitement des données</li>
-        </ul>
-        <p>Pour exercer ces droits, veuillez nous contacter via les coordonnées ci-dessous.</p>
-      </div>
-    ),
-  },
-  {
-    id: 'data-retention',
-    title: 'Conservation des données',
-    content: (
-      <div className="space-y-3">
-        <p>
-          Nous ne conserverons vos informations personnelles que pendant la durée nécessaire pour atteindre les objectifs décrits dans cette Politique de Confidentialité, sauf si une période de conservation plus longue est requise ou autorisée par la loi.
-        </p>
-        <p>
-          Lorsque nous n'avons plus besoin de vos informations personnelles, nous les supprimerons ou les anonymiserons de manière sécurisée conformément à nos politiques de conservation des données.
-        </p>
-      </div>
-    ),
-  },
-  {
-    id: 'children-privacy',
-    title: 'Confidentialité des mineurs',
-    content: (
-      <div className="space-y-3">
-        <p>
-          Nos services ne sont pas destinés aux personnes de moins de 18 ans. Nous ne collectons pas sciemment d'informations personnelles auprès de mineurs. Si vous êtes un parent ou un tuteur et pensez que votre enfant nous a fourni des informations personnelles, veuillez nous contacter immédiatement.
-        </p>
-      </div>
-    ),
-  },
-  {
-    id: 'international-transfers',
-    title: 'Transferts internationaux de données',
-    content: (
-      <div className="space-y-3">
-        <p>
-          Vos informations peuvent être transférées vers et conservées sur des ordinateurs situés en dehors de votre pays où les lois sur la protection des données peuvent différer de celles de votre juridiction.
-        </p>
-        <p>
-          En utilisant nos services, vous consentez au transfert de vos informations. Nous prendrons toutes les mesures raisonnablement nécessaires pour garantir que vos données sont traitées de manière sécurisée conformément à cette Politique de Confidentialité.
-        </p>
-      </div>
-    ),
-  },
-  {
-    id: 'changes',
-    title: 'Modifications de cette politique',
-    content: (
-      <div className="space-y-3">
-        <p>
-          Nous pouvons mettre à jour notre Politique de Confidentialité de temps à autre. Nous vous informerons de tout changement en publiant la nouvelle Politique sur cette page et en mettant à jour la date de « Dernière mise à jour ».
-        </p>
-        <p>
-          Il vous est conseillé de consulter périodiquement cette Politique pour tout changement. Les modifications prennent effet dès leur publication sur cette page.
-        </p>
-      </div>
-    ),
-  },
-  {
-    id: 'contact',
-    title: 'Nous contacter',
-    content: (
-      <p>
-        Si vous avez des questions concernant cette Politique de Confidentialité ou nos pratiques en matière de données, veuillez nous contacter via les coordonnées affichées ci-dessous.
-      </p>
-    ),
-  },
-]
+      ),
+    },
+    {
+      id: 'data-retention',
+      title: tl('privacy.sections.dataRetention.title'),
+      content: (
+        <div className="space-y-3">
+          <p>{tl('privacy.sections.dataRetention.paragraph1')}</p>
+          <p>{tl('privacy.sections.dataRetention.paragraph2')}</p>
+        </div>
+      ),
+    },
+    {
+      id: 'children-privacy',
+      title: tl('privacy.sections.childrenPrivacy.title'),
+      content: (
+        <div className="space-y-3">
+          <p>{tl('privacy.sections.childrenPrivacy.paragraph1')}</p>
+        </div>
+      ),
+    },
+    {
+      id: 'international-transfers',
+      title: tl('privacy.sections.internationalTransfers.title'),
+      content: (
+        <div className="space-y-3">
+          <p>{tl('privacy.sections.internationalTransfers.paragraph1')}</p>
+          <p>{tl('privacy.sections.internationalTransfers.paragraph2')}</p>
+        </div>
+      ),
+    },
+    {
+      id: 'changes',
+      title: tl('privacy.sections.changes.title'),
+      content: (
+        <div className="space-y-3">
+          <p>{tl('privacy.sections.changes.paragraph1')}</p>
+          <p>{tl('privacy.sections.changes.paragraph2')}</p>
+        </div>
+      ),
+    },
+    {
+      id: 'contact',
+      title: tl('privacy.sections.contact.title'),
+      content: (
+        <p>{tl('privacy.sections.contact.paragraph1')}</p>
+      ),
+    },
+  ]
+}
 
 const PrivacyPolicyPage = () => {
+  const { t } = useLanguage()
+  const tl = (key, options) => t(key, { ns: 'legal', ...options })
+  const sections = getSections(t)
+
   const [activeId, setActiveId] = useState(sections[0].id)
   const [tocOpen, setTocOpen] = useState(false)
 
@@ -246,7 +213,7 @@ const PrivacyPolicyPage = () => {
             className="inline-flex items-center gap-2 text-white/60 hover:text-white transition-colors text-sm mb-8"
           >
             <FiArrowLeft className="w-4 h-4" />
-            Retour à l'accueil
+            {tl('privacy.backToHome')}
           </Link>
           <div className="flex items-start gap-5">
             <div className="w-14 h-14 bg-white/15 rounded-2xl flex items-center justify-center flex-shrink-0">
@@ -254,14 +221,14 @@ const PrivacyPolicyPage = () => {
             </div>
             <div>
               <h1 className="text-3xl sm:text-4xl font-extrabold text-white leading-tight">
-                Politique de Confidentialité
+                {tl('privacy.pageTitle')}
               </h1>
               <div className="flex flex-wrap items-center gap-3 mt-2">
-                <span className="text-white/60 text-sm">Mise à jour : {lastUpdated}</span>
+                <span className="text-white/60 text-sm">{tl('privacy.updated', { date: lastUpdated })}</span>
                 <span className="text-white/30">·</span>
-                <span className="text-white/60 text-sm">~8 min de lecture</span>
+                <span className="text-white/60 text-sm">{tl('privacy.readTime')}</span>
                 <span className="text-white/30">·</span>
-                <span className="text-white/60 text-sm">{sections.length} sections</span>
+                <span className="text-white/60 text-sm">{tl('privacy.sectionsCount', { count: sections.length })}</span>
               </div>
             </div>
           </div>
@@ -275,7 +242,7 @@ const PrivacyPolicyPage = () => {
           {/* Sidebar TOC (desktop) */}
           <aside className="hidden lg:block sticky top-24 self-start">
             <p className="text-[11px] font-extrabold text-gray-400 uppercase tracking-widest mb-4 px-3">
-              Table des matières
+              {tl('privacy.toc.heading')}
             </p>
             <nav className="space-y-0.5">
               {sections.map((s, i) => (
@@ -309,7 +276,7 @@ const PrivacyPolicyPage = () => {
                 onClick={() => setTocOpen(!tocOpen)}
                 className="w-full flex items-center justify-between bg-white border border-gray-200 rounded-2xl px-4 py-3 text-sm font-semibold text-gray-700 shadow-sm"
               >
-                <span>Table des matières · {sections.length} sections</span>
+                <span>{tl('privacy.toc.mobileLabel', { count: sections.length })}</span>
                 {tocOpen
                   ? <FiChevronUp className="w-4 h-4 text-gray-500" />
                   : <FiChevronDown className="w-4 h-4 text-gray-500" />
@@ -365,8 +332,8 @@ const PrivacyPolicyPage = () => {
             {/* Contact card */}
             <div className="mt-6 bg-white border border-[#1A7A6E]/20 rounded-2xl p-6 sm:p-8 shadow-sm">
               <div className="mb-5">
-                <h3 className="text-base font-bold text-gray-900">Des questions sur cette politique ?</h3>
-                <p className="text-sm text-gray-500 mt-1">Notre équipe est disponible pour répondre à toutes vos questions.</p>
+                <h3 className="text-base font-bold text-gray-900">{tl('privacy.contactCard.heading')}</h3>
+                <p className="text-sm text-gray-500 mt-1">{tl('privacy.contactCard.subtext')}</p>
               </div>
               <div className="grid sm:grid-cols-3 gap-3">
                 <a
@@ -379,7 +346,7 @@ const PrivacyPolicyPage = () => {
                     <FiPhone className="w-4 h-4 text-[#1A7A6E] group-hover:text-white transition-colors" />
                   </div>
                   <div className="min-w-0">
-                    <p className="text-xs font-semibold text-gray-400">WhatsApp</p>
+                    <p className="text-xs font-semibold text-gray-400">{tl('privacy.contactCard.whatsappLabel')}</p>
                     <p className="text-sm font-bold text-gray-900 truncate">+237 699 933 135</p>
                   </div>
                 </a>
@@ -388,7 +355,7 @@ const PrivacyPolicyPage = () => {
                     <FiMail className="w-4 h-4 text-[#1A7A6E]" />
                   </div>
                   <div className="min-w-0">
-                    <p className="text-xs font-semibold text-gray-400">Email</p>
+                    <p className="text-xs font-semibold text-gray-400">{tl('privacy.contactCard.emailLabel')}</p>
                     <p className="text-sm font-bold text-gray-900 truncate">privacy@academie-eleveurs.com</p>
                   </div>
                 </div>
@@ -397,8 +364,8 @@ const PrivacyPolicyPage = () => {
                     <FiMapPin className="w-4 h-4 text-[#1A7A6E]" />
                   </div>
                   <div>
-                    <p className="text-xs font-semibold text-gray-400">Adresse</p>
-                    <p className="text-sm font-bold text-gray-900">Cameroun 🇨🇲</p>
+                    <p className="text-xs font-semibold text-gray-400">{tl('privacy.contactCard.addressLabel')}</p>
+                    <p className="text-sm font-bold text-gray-900">{tl('privacy.contactCard.addressValue')} 🇨🇲</p>
                   </div>
                 </div>
               </div>
@@ -406,7 +373,7 @@ const PrivacyPolicyPage = () => {
 
             {/* Closing note */}
             <p className="mt-6 text-center text-xs text-gray-400">
-              En utilisant nos services, vous reconnaissez avoir lu et compris cette Politique de Confidentialité.
+              {tl('privacy.closingNote')}
             </p>
           </main>
         </div>

@@ -66,7 +66,9 @@
     "paymentDetails": "विवरण",
     "price": "मूल्य",
     "reduction": "छूट",
-    "securePaymentNote": "सुरक्षित चेकआउट"
+    "securePaymentNote": "सुरक्षित चेकआउट",
+    "emailPlaceholder": "अपना ईमेल दर्ज करें",
+    "orderCreationFailed": "ऑर्डर बनाने में विफल।"
   },
   "confirmation": {
     "title": "धन्यवाद",
@@ -87,21 +89,23 @@
     "digitalAccess": "डिजिटल पहुँच",
     "thisProduct": "यह उत्पाद",
     "congratulations": "बधाई",
-    "purchaseSuccessMessage": "तुरंत डाउनलोड कर सकते हैं।",
-    "downloadDocument": "दस्तावेज़ डाउनलोड",
-    "downloadFileInstruction": "नीचे बटन दबाएँ।",
-    "downloadButton": "अभी डाउनलोड",
+    "purchaseSuccessMessage": "आप तुरंत ऑनलाइन एक्सेस कर सकते हैं।",
+    "accessContent": "अपनी सामग्री देखें",
+    "accessContentInstruction": "अपने खाते से सीधे देखें, सुनें या पढ़ें — डाउनलोड की आवश्यकता नहीं।",
+    "accessContentButton": "शुरू करें",
     "needHelp": "मदद?",
     "contactWhatsAppHelp": "समस्या पर WhatsApp:",
     "contactWhatsApp": "WhatsApp सहायता",
     "securePurchase": "सुरक्षित खरीद",
     "securePurchaseMessage": "लेनदेन सुरक्षित।",
     "nextSteps": "अगले कदम",
-    "step1": "डाउनलोड बटन दबाएँ",
-    "step2": "फ़ाइल सहेजें",
-    "step3": "फार्म पर लागू करें",
+    "step1": "अपनी सामग्री तक पहुँचने के लिए \"शुरू करें\" पर क्लिक करें",
+    "step2": "यह सीधे आपके खाते के कोर्स प्लेयर में खुल जाता है",
+    "step3": "अपनी गति से देखें, सुनें या पढ़ें — डाउनलोड की आवश्यकता नहीं",
     "faqTitle": "फ़ाइल नहीं दिख रही?",
     "faqAnswer": "पॉप-अप बंद करें, रीफ़्रेश करें या WhatsApp करें।",
-    "instructions": "निर्देश"
+    "instructions": "निर्देश",
+    "onlinePaymentMethod": "ऑनलाइन",
+    "notAvailable": "उपलब्ध नहीं"
   }
 }

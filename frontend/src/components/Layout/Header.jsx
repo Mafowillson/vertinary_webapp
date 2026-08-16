@@ -4,7 +4,7 @@ import { useAuth } from '../../contexts/AuthContext'
 import { useLanguage } from '../../contexts/LanguageContext'
 import { useCart } from '../../contexts/CartContext'
 import {
-  FiMenu, FiX, FiUser, FiShoppingCart, FiLogOut
+  FiMenu, FiX, FiUser, FiShoppingCart, FiLogOut, FiBook
 } from 'react-icons/fi'
 import CurrencySelector from '../CurrencySelector/CurrencySelector'
 import LanguageSwitcher from '../LanguageSwitcher'
@@ -63,7 +63,7 @@ const Header = () => {
           {/* Logo */}
           <Link to="/" className="flex-shrink-0">
             <img
-              src="/academydeseleveurs.jpg"
+              src="/academydeseleveurs.png"
               alt="Académie des Éleveurs"
               className="h-10 w-auto"
             />
@@ -114,11 +114,26 @@ const Header = () => {
                 {isAdmin() && (
                   <Link
                     to="/admin"
-                    className="text-sm font-semibold text-gray-700 hover:text-[#1A7A6E] hover:bg-green-50 px-3 py-2 rounded-lg transition-all"
+                    className={`text-sm font-semibold px-3 py-2 rounded-lg transition-all ${
+                      isActive('/admin')
+                        ? 'text-[#1A7A6E] bg-green-50'
+                        : 'text-gray-700 hover:text-[#1A7A6E] hover:bg-green-50'
+                    }`}
                   >
                     {tc('nav.admin')}
                   </Link>
                 )}
+                <Link
+                  to="/library"
+                  className={`flex items-center gap-1.5 text-sm font-semibold px-3 py-2 rounded-lg transition-all ${
+                    isActive('/library')
+                      ? 'text-[#1A7A6E] bg-green-50'
+                      : 'text-gray-700 hover:text-[#1A7A6E] hover:bg-green-50'
+                  }`}
+                >
+                  <FiBook className="w-4 h-4" />
+                  {tc('nav.myLibrary')}
+                </Link>
                 <Link
                   to="/cart"
                   className="relative p-2.5 text-gray-600 hover:text-[#1A7A6E] hover:bg-green-50 rounded-xl transition-all"
@@ -237,11 +252,26 @@ const Header = () => {
                   <Link
                     to="/admin"
                     onClick={() => setMobileMenuOpen(false)}
-                    className="block px-4 py-2.5 text-sm font-semibold text-gray-700 hover:text-[#1A7A6E] hover:bg-green-50 rounded-xl transition-all"
+                    className={`block px-4 py-2.5 text-sm font-semibold rounded-xl transition-all ${
+                      isActive('/admin')
+                        ? 'text-[#1A7A6E] bg-green-50'
+                        : 'text-gray-700 hover:text-[#1A7A6E] hover:bg-green-50'
+                    }`}
                   >
                     {tc('nav.admin')}
                   </Link>
                 )}
+                <Link
+                  to="/library"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={`block px-4 py-2.5 text-sm font-semibold rounded-xl transition-all ${
+                    isActive('/library')
+                      ? 'text-[#1A7A6E] bg-green-50'
+                      : 'text-gray-700 hover:text-[#1A7A6E] hover:bg-green-50'
+                  }`}
+                >
+                  {tc('nav.myLibrary')}
+                </Link>
                 <div className="flex items-center justify-between py-1">
                   <div className="flex items-center gap-2.5">
                     <div className="w-8 h-8 rounded-xl bg-green-100 flex items-center justify-center flex-shrink-0">

@@ -1,0 +1,40 @@
+{
+  "list": {
+    "hero": {
+      "chipServiceCount": "{{count}} सेवाएँ",
+      "chipRegion": "कैमरून व अंतरराष्ट्रीय",
+      "chipResponseTime": "त्वरित प्रतिक्रिया"
+    },
+    "cta": {
+      "questionLabel": "कोई प्रश्न है?",
+      "titleLine1": "आइए आपकी पशुपालन परियोजना पर",
+      "titleLine2": "बात करें",
+      "description": "आपकी ज़रूरत के अनुसार सही सेवा चुनने में मदद के लिए हमारी टीम 24 घंटे में जवाब देती है।",
+      "whatsappButton": "WhatsApp पर संपर्क करें",
+      "viewProductsButton": "उत्पाद देखें"
+    }
+  },
+  "detail": {
+    "loading": "लोड हो रहा है…",
+    "notFound": "यह सेवा मौजूद नहीं है या हटा दी गई है।",
+    "descriptionHeading": "इस सेवा के बारे में",
+    "priceLabel": "मूल्य",
+    "quickInfo": {
+      "heading": "जानकारी",
+      "category": "श्रेणी",
+      "availability": "उपलब्धता",
+      "availabilityValue": "अनुरोध पर",
+      "zone": "क्षेत्र",
+      "zoneValue": "🌍 कैमरून व अंतरराष्ट्रीय"
+    },
+    "relatedSectionLabel": "उसी श्रेणी में",
+    "bottomCta": {
+      "readyLabel": "शुरू करने के लिए तैयार हैं?",
+      "titlePrefix": "इस सेवा के लिए",
+      "titleHighlight": "हमसे संपर्क करें",
+      "description": "आपकी पशुपालन परियोजना में मदद के लिए हमारी टीम 24 घंटे में जवाब देती है।",
+      "whatsappButton": "WhatsApp पर संपर्क करें",
+      "viewAllButton": "सभी सेवाएँ देखें"
+    }
+  }
+}

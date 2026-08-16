@@ -1,19 +1,19 @@
 import { Link } from 'react-router-dom'
-import { formatCurrency } from '../../utils/formatters'
 import { useLanguage } from '../../contexts/LanguageContext'
+import { useCurrency } from '../../contexts/CurrencyContext'
 import {
   FiShoppingCart, FiClock, FiPlay, FiFileText, FiBook, FiHeadphones, FiAward, FiZap,
 } from 'react-icons/fi'
 import { useCountdown } from '../../utils/countdown'
 
 const FORMAT_MAP = {
-  'PDF Guide':     { label: 'PDF',    gradient: 'from-amber-400 to-orange-600',   badgeBg: 'bg-amber-500',   Icon: FiFileText   },
-  'Video Lecture': { label: 'VIDÉO',  gradient: 'from-blue-500 to-indigo-700',    badgeBg: 'bg-blue-600',    Icon: FiPlay       },
-  'E-book':        { label: 'E-BOOK', gradient: 'from-violet-500 to-purple-700',  badgeBg: 'bg-violet-600',  Icon: FiBook       },
-  'Audio':         { label: 'AUDIO',  gradient: 'from-teal-400 to-emerald-600',   badgeBg: 'bg-teal-600',    Icon: FiHeadphones },
+  'PDF Guide':     { labelKey: 'productCard.formatPdf',   gradient: 'from-amber-400 to-orange-600',   badgeBg: 'bg-amber-500',   Icon: FiFileText   },
+  'Video Lecture': { labelKey: 'productCard.formatVideo', gradient: 'from-blue-500 to-indigo-700',    badgeBg: 'bg-blue-600',    Icon: FiPlay       },
+  'E-book':        { labelKey: 'productCard.formatEbook', gradient: 'from-violet-500 to-purple-700',  badgeBg: 'bg-violet-600',  Icon: FiBook       },
+  'Audio':         { labelKey: 'productCard.formatAudio', gradient: 'from-teal-400 to-emerald-600',   badgeBg: 'bg-teal-600',    Icon: FiHeadphones },
 }
 const DEFAULT_FMT = {
-  label: 'PDF', gradient: 'from-emerald-500 to-teal-700', badgeBg: 'bg-emerald-600', Icon: FiFileText,
+  labelKey: 'productCard.formatPdf', gradient: 'from-emerald-500 to-teal-700', badgeBg: 'bg-emerald-600', Icon: FiFileText,
 }
 
 const CROSS_SVG = `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
@@ -37,6 +37,7 @@ function PlaceholderCover({ format }) {
 
 const ProductCard = ({ product }) => {
   const { t } = useLanguage()
+  const { format: formatPrice } = useCurrency()
   const imageUrl = product.image_url || product.imageUrl
   const price = product.price
   const originalPrice = product.original_price || product.originalPrice
@@ -53,7 +54,7 @@ const ProductCard = ({ product }) => {
     : 0
   const format = product.format || 'PDF Guide'
   const fmt = FORMAT_MAP[format] || DEFAULT_FMT
-  const category = product.category || 'Santé animale'
+  const category = product.category || t('productCard.defaultCategory', { ns: 'common' })
   const isBestseller = product.bestseller || (product.purchase_count || product.sold || 0) > 50
 
   return (
@@ -89,7 +90,7 @@ const ProductCard = ({ product }) => {
           <span
             className={`${fmt.badgeBg} text-white text-[10px] font-extrabold px-2.5 py-1 rounded-lg tracking-wider shadow-md`}
           >
-            {fmt.label}
+            {t(fmt.labelKey, { ns: 'common' })}
           </span>
           {hasActiveDiscount && (
             <span className="bg-rose-500 text-white text-[10px] font-extrabold px-2.5 py-1 rounded-lg shadow-md">
@@ -103,7 +104,7 @@ const ProductCard = ({ product }) => {
           <div className="absolute top-3 right-3">
             <span className="flex items-center gap-1 bg-amber-400 text-amber-950 text-[10px] font-extrabold px-2.5 py-1 rounded-lg shadow-md">
               <FiAward className="w-3 h-3" />
-              TOP
+              {t('productCard.topBadge', { ns: 'common' })}
             </span>
           </div>
         )}
@@ -131,13 +132,13 @@ const ProductCard = ({ product }) => {
           <div className="mt-2.5 flex items-center gap-2 bg-rose-50 border border-rose-100 rounded-xl px-3 py-2">
             <FiClock className="w-3.5 h-3.5 text-rose-500 shrink-0" />
             <span className="text-xs font-bold text-rose-600 tabular-nums">
-              {timeLeft.days > 0 ? `${timeLeft.days}j ` : ''}
-              {String(timeLeft.hours).padStart(2, '0')}h{' '}
-              {String(timeLeft.minutes).padStart(2, '0')}m
+              {timeLeft.days > 0 ? `${timeLeft.days}${t('productCard.dayAbbr', { ns: 'common' })} ` : ''}
+              {String(timeLeft.hours).padStart(2, '0')}{t('productCard.hourAbbr', { ns: 'common' })}{' '}
+              {String(timeLeft.minutes).padStart(2, '0')}{t('productCard.minuteAbbr', { ns: 'common' })}
             </span>
             <span className="ml-auto flex items-center gap-0.5 text-[10px] font-semibold text-rose-400">
               <FiZap className="w-3 h-3" />
-              Offre limitée
+              {t('productCard.limitedOffer', { ns: 'common' })}
             </span>
           </div>
         )}
@@ -147,7 +148,7 @@ const ProductCard = ({ product }) => {
           <div>
             {hasActiveDiscount && originalPrice && (
               <span className="block text-[11px] text-slate-400 line-through leading-none mb-0.5 tabular-nums">
-                {formatCurrency(originalPrice)}
+                {formatPrice(originalPrice)}
               </span>
             )}
             <span
@@ -155,12 +156,12 @@ const ProductCard = ({ product }) => {
                 hasActiveDiscount ? 'text-rose-600' : 'text-slate-900'
               }`}
             >
-              {formatCurrency(price)}
+              {formatPrice(price)}
             </span>
           </div>
           <button className="shrink-0 flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white text-xs font-bold px-3 py-2 rounded-xl transition-all shadow-sm shadow-emerald-200/80 hover:shadow-md hover:shadow-emerald-300/60">
             <FiShoppingCart className="w-3.5 h-3.5" />
-            Ajouter
+            {t('buttons.addToCart', { ns: 'common' })}
           </button>
         </div>
       </div>

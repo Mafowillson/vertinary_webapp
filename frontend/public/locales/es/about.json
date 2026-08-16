@@ -1,0 +1,86 @@
+{
+  "hero": {
+    "badge": "Fundador y Experto Verificado",
+    "titleLine1": "La visión",
+    "titleHighlightLine1": "detrás de",
+    "titleHighlightLine2": "la Academia",
+    "social": {
+      "youtube": "YouTube",
+      "facebook": "Facebook",
+      "whatsapp": "WhatsApp"
+    },
+    "floatingGuides": "Guías",
+    "floatingBreeders": "Ganaderos"
+  },
+  "stats": {
+    "breedersTrained": "Ganaderos formados",
+    "guidesCreated": "Guías creadas",
+    "yearsExpertise": "Años de experiencia",
+    "videos": "Vídeos educativos"
+  },
+  "pillars": {
+    "eyebrow": "Lo que nos guía",
+    "heading": "Nuestros cuatro pilares",
+    "education": {
+      "title": "Educación",
+      "description": "Hacer que el conocimiento veterinario sea accesible para cada ganadero, en todas partes."
+    },
+    "globalReach": {
+      "title": "Alcance Global",
+      "description": "Conectar a ganaderos cameruneses e internacionales a través del conocimiento compartido."
+    },
+    "innovation": {
+      "title": "Innovación",
+      "description": "Crear productos y herramientas innovadoras para acelerar el crecimiento en la ganadería."
+    },
+    "passion": {
+      "title": "Pasión",
+      "description": "Cada contenido nace de una pasión auténtica por el bienestar animal."
+    }
+  },
+  "timeline": {
+    "eyebrow": "Evolución",
+    "heading": "Nuestro recorrido",
+    "milestones": {
+      "2020": { "title": "Inicio del recorrido", "description": "Comienzo de los estudios de medicina veterinaria" },
+      "2021": { "title": "Creación de contenido", "description": "Lanzamiento del canal de YouTube y la página de Facebook" },
+      "2022": { "title": "Primer libro", "description": "Publicación del primer libro \"TODO SOBRE LA GANADERÍA\"" },
+      "2023": { "title": "La Academia", "description": "Creación de la Academia de Ganaderos" },
+      "2024": { "title": "Plataforma digital", "description": "Lanzamiento de la plataforma web educativa" }
+    }
+  },
+  "credentials": {
+    "eyebrow": "Experiencia",
+    "heading": "Logros y Reconocimientos",
+    "tabs": {
+      "formation": "Formación",
+      "innovation": "Innovación"
+    },
+    "items": {
+      "vetStudent": { "label": "Estudiante de Doctorado en Medicina Veterinaria", "sub": "Formación continua" },
+      "animalProdEngineer": { "label": "Ingeniero en Producción Animal", "sub": "Experiencia en gestión animal" },
+      "author": { "label": "Autor — serie \"TODO SOBRE LA GANADERÍA\"", "sub": "Varios libros publicados" },
+      "founder": { "label": "Fundador de la Academia de Ganaderos", "sub": "Plataforma educativa" },
+      "manufacturer": { "label": "Fabricante del Acelerador de Crecimiento Bio", "sub": "Producto innovador" },
+      "contentCreator": { "label": "Creador de contenido educativo", "sub": "YouTube y Facebook" }
+    }
+  },
+  "quote": {
+    "eyebrow": "Nuestra visión",
+    "text": "Crear una comunidad global de ganaderos educados y prósperos, donde el conocimiento veterinario sea accesible para",
+    "highlight": "todos, en todas partes.",
+    "cards": {
+      "accessibility": { "title": "Accesibilidad", "body": "La información no debería ser un privilegio. La estamos democratizando." },
+      "community": { "title": "Comunidad", "body": "Juntos, construimos una red de ganaderos solidarios e informados." },
+      "sustainability": { "title": "Sostenibilidad", "body": "Una ganadería educada es una agricultura más sostenible para el mañana." }
+    }
+  },
+  "cta": {
+    "eyebrow": "Únete a nosotros",
+    "headingLine1": "¿Listo para transformar",
+    "headingLine2": "tu granja?",
+    "text": "Explora nuestros recursos, formaciones y libros para dominar tu oficio de ganadero.",
+    "resourcesButton": "Ver recursos",
+    "contactButton": "Contáctanos"
+  }
+}

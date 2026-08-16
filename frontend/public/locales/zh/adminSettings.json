@@ -1,0 +1,70 @@
+{
+  "header": {
+    "title": "设置",
+    "subtitle": "管理网站配置和社交媒体链接"
+  },
+  "tabs": {
+    "social": "社交媒体",
+    "exchangeRates": "汇率",
+    "general": "常规"
+  },
+  "messages": {
+    "updateSuccess": "设置更新成功！",
+    "updateError": "更新设置失败，请重试。",
+    "invalidUrl": "请输入有效的网址"
+  },
+  "socialLinks": {
+    "sectionTitle": "社交媒体链接",
+    "sectionSubtitle": "更新在整个网站显示的社交媒体链接",
+    "testLinkTitle": "测试链接",
+    "whatsapp": {
+      "label": "WhatsApp",
+      "placeholder": "https://wa.me/237699933135",
+      "hint": "格式：https://wa.me/[国家代码][电话号码]"
+    },
+    "facebook": {
+      "label": "Facebook",
+      "placeholder": "https://web.facebook.com/your-page",
+      "hint": "您的 Facebook 主页或群组链接"
+    },
+    "youtube": {
+      "label": "YouTube",
+      "placeholder": "https://www.youtube.com/@your-channel",
+      "hint": "您的 YouTube 频道链接"
+    },
+    "reset": "重置",
+    "saving": "保存中...",
+    "save": "保存更改"
+  },
+  "exchangeRates": {
+    "sectionTitle": "汇率",
+    "sectionSubtitle": "FCFA 仍是记账货币——所有价格均以 FCFA 输入和收费。这些汇率仅用于向访客展示的换算显示。",
+    "baseCurrencyNote": "FCFA — 基础货币，不可编辑（始终为 1）",
+    "usd": { "label": "美元 (USD)", "hint": "1 美元等于多少 FCFA？" },
+    "eur": { "label": "欧元 (EUR)", "hint": "1 欧元等于多少 FCFA？" },
+    "ngn": { "label": "奈拉 (NGN)", "hint": "1 奈拉等于多少 FCFA？" },
+    "unitSuffix": "FCFA 兑 1",
+    "previewTitle": "预览",
+    "previewLine": "50,000 FCFA ≈",
+    "reset": "重置",
+    "saving": "保存中...",
+    "save": "保存汇率",
+    "invalidRate": "汇率必须为正数"
+  },
+  "general": {
+    "sectionTitle": "常规设置",
+    "sectionSubtitle": "网站配置设置",
+    "siteName": {
+      "label": "网站名称",
+      "readOnlyNote": "此设置无法更改"
+    },
+    "currency": {
+      "label": "货币",
+      "readOnlyNote": "所有交易的默认货币"
+    },
+    "info": {
+      "title": "信息",
+      "text": "常规设置由系统管理。如需更改网站名称或货币，请联系您的管理员。"
+    }
+  }
+}

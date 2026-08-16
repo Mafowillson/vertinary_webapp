@@ -9,16 +9,18 @@ export default {
     extend: {
       colors: {
         primary: {
-          50: '#f0fdf4',
-          100: '#dcfce7',
-          200: '#bbf7d0',
-          300: '#86efac',
-          400: '#4ade80',
-          500: '#22c55e',
-          600: '#16a34a',
-          700: '#15803d',
-          800: '#166534',
-          900: '#14532d',
+          // Anchored on the site's brand teal (#1A7A6E, see Header.jsx) so admin
+          // and the public site share one accent color instead of two greens.
+          50: '#f0faf8',
+          100: '#d7f0ea',
+          200: '#b0e0d6',
+          300: '#7cc9bc',
+          400: '#45a996',
+          500: '#228979',
+          600: '#1A7A6E',
+          700: '#146157',
+          800: '#124f47',
+          900: '#0f423c',
         },
         accent: {
           50: '#fefce8',

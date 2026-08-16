@@ -1,0 +1,70 @@
+{
+  "header": {
+    "title": "सेटिंग्स",
+    "subtitle": "साइट कॉन्फ़िगरेशन और सोशल मीडिया लिंक प्रबंधित करें"
+  },
+  "tabs": {
+    "social": "सोशल मीडिया",
+    "exchangeRates": "विनिमय दरें",
+    "general": "सामान्य"
+  },
+  "messages": {
+    "updateSuccess": "सेटिंग्स सफलतापूर्वक अपडेट की गईं!",
+    "updateError": "सेटिंग्स अपडेट करने में विफल। कृपया पुनः प्रयास करें।",
+    "invalidUrl": "कृपया एक मान्य URL दर्ज करें"
+  },
+  "socialLinks": {
+    "sectionTitle": "सोशल मीडिया लिंक",
+    "sectionSubtitle": "अपने सोशल मीडिया लिंक अपडेट करें जो पूरी साइट पर दिखाई देते हैं",
+    "testLinkTitle": "लिंक जांचें",
+    "whatsapp": {
+      "label": "WhatsApp",
+      "placeholder": "https://wa.me/237699933135",
+      "hint": "फ़ॉर्मैट: https://wa.me/[देश कोड][फ़ोन नंबर]"
+    },
+    "facebook": {
+      "label": "Facebook",
+      "placeholder": "https://web.facebook.com/your-page",
+      "hint": "अपने Facebook पेज या समूह का लिंक"
+    },
+    "youtube": {
+      "label": "YouTube",
+      "placeholder": "https://www.youtube.com/@your-channel",
+      "hint": "अपने YouTube चैनल का लिंक"
+    },
+    "reset": "रीसेट करें",
+    "saving": "सहेजा जा रहा है...",
+    "save": "परिवर्तन सहेजें"
+  },
+  "exchangeRates": {
+    "sectionTitle": "विनिमय दरें",
+    "sectionSubtitle": "FCFA मुख्य मुद्रा बनी रहती है — सभी कीमतें FCFA में दर्ज और वसूल की जाती हैं। ये दरें केवल आगंतुकों को दिखाए जाने वाले रूपांतरित मूल्य को नियंत्रित करती हैं।",
+    "baseCurrencyNote": "FCFA — आधार मुद्रा, संपादन योग्य नहीं (हमेशा 1)",
+    "usd": { "label": "अमेरिकी डॉलर (USD)", "hint": "1 USD कितने FCFA के बराबर है?" },
+    "eur": { "label": "यूरो (EUR)", "hint": "1 EUR कितने FCFA के बराबर है?" },
+    "ngn": { "label": "नायरा (NGN)", "hint": "1 NGN कितने FCFA के बराबर है?" },
+    "unitSuffix": "FCFA प्रति 1",
+    "previewTitle": "पूर्वावलोकन",
+    "previewLine": "50,000 FCFA ≈",
+    "reset": "रीसेट करें",
+    "saving": "सहेजा जा रहा है...",
+    "save": "दरें सहेजें",
+    "invalidRate": "दर एक सकारात्मक संख्या होनी चाहिए"
+  },
+  "general": {
+    "sectionTitle": "सामान्य सेटिंग्स",
+    "sectionSubtitle": "साइट कॉन्फ़िगरेशन सेटिंग्स",
+    "siteName": {
+      "label": "साइट का नाम",
+      "readOnlyNote": "इस सेटिंग को बदला नहीं जा सकता"
+    },
+    "currency": {
+      "label": "मुद्रा",
+      "readOnlyNote": "सभी लेन-देन के लिए डिफ़ॉल्ट मुद्रा"
+    },
+    "info": {
+      "title": "जानकारी",
+      "text": "सामान्य सेटिंग्स सिस्टम द्वारा प्रबंधित की जाती हैं। साइट का नाम या मुद्रा बदलने के लिए अपने व्यवस्थापक से संपर्क करें।"
+    }
+  }
+}

@@ -84,6 +84,20 @@ async def create_order(
     
     return OrderResponse.model_validate(order)
 
+@router.get("/my-orders", response_model=List[OrderResponse])
+async def get_user_orders(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    """Get all orders for the current user."""
+    # Must stay registered before /{order_id} — otherwise FastAPI matches the
+    # generic int path param first and "my-orders" fails int parsing (422).
+    orders = db.query(Order).options(
+        joinedload(Order.product),
+        joinedload(Order.user),
+    ).filter(Order.user_id == current_user.id).all()
+    return [OrderResponse.model_validate(o) for o in orders]
+
 @router.get("/{order_id}", response_model=OrderResponse)
 async def get_order(
     order_id: int,
@@ -101,27 +115,15 @@ async def get_order(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=get_translation("errors.order_not_found", lang=locale),
         )
-    
+
     # Check if user owns the order or is admin
     if order.user_id != current_user.id and current_user.role.value != "admin":
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail=get_translation("errors.forbidden_order", lang=locale),
         )
-    
-    return OrderResponse.model_validate(order)
 
-@router.get("/my-orders", response_model=List[OrderResponse])
-async def get_user_orders(
-    db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user)
-):
-    """Get all orders for the current user."""
-    orders = db.query(Order).options(
-        joinedload(Order.product),
-        joinedload(Order.user),
-    ).filter(Order.user_id == current_user.id).all()
-    return [OrderResponse.model_validate(o) for o in orders]
+    return OrderResponse.model_validate(order)
 
 @router.post("/{order_id}/payment", response_model=PaymentResponse)
 async def process_payment(

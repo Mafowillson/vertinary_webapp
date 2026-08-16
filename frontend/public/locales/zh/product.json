@@ -1,5 +1,10 @@
 {
-  "types": { "course": "课程", "document": "文档", "article": "文章", "audio": "音频" },
+  "types": {
+    "course": "课程",
+    "document": "文档",
+    "article": "文章",
+    "audio": "音频"
+  },
   "detail": {
     "price": "价格",
     "currency": "货币",
@@ -16,22 +21,48 @@
     "noDescriptionAvailable": "暂无描述。",
     "limitedOffer": "限时优惠",
     "saveMoney": "节省",
-    "downloadNow": "立即下载",
+    "buyNow": "立即购买",
+    "continueLearning": "继续学习",
     "loginToAddToCart": "登录后加入购物车",
-    "loginRequired": "需要登录"
-  },
-  "upload": {
-    "title": "上传产品",
-    "titleLabel": "标题",
-    "descriptionLabel": "描述",
-    "typeLabel": "类型",
-    "priceLabel": "价格",
-    "categoryLabel": "类别",
-    "coverLabel": "封面图",
-    "fileLabel": "文件",
-    "publishButton": "发布",
-    "uploadSuccess": "上传成功",
-    "publishSuccess": "产品已上架"
+    "loginRequired": "需要登录",
+    "loadingProduct": "正在加载产品…",
+    "productNotFoundDesc": "您查找的产品不存在或已被删除。",
+    "catalogueLink": "产品目录",
+    "topSeller": "热销榜首",
+    "share": "分享",
+    "salesCountLabel": "{{count}} 次销售",
+    "soldCount": "已售 {{count}}",
+    "defaultCategory": "兽医资源",
+    "saveAmountExpiring": "节省 {{amount}} — 即将结束",
+    "offerExpiresIn": "此优惠将在以下时间后结束",
+    "priceInsteadOf": "原价 {{price}}",
+    "featureOnlineAccess": "在线访问",
+    "featureImmediate": "即时",
+    "featureGuarantee30Days": "30 天",
+    "labelFormat": "格式",
+    "formatBadgePdf": "PDF",
+    "formatBadgeVideo": "视频",
+    "formatBadgeEbook": "电子书",
+    "formatBadgeAudio": "音频",
+    "labelAccess": "访问方式",
+    "labelGuarantee": "保障",
+    "valueAccessFull": "购买后即时在线获取",
+    "valueGuaranteeFull": "30 天内满意保证或退款",
+    "labelRating": "评分",
+    "valueRating": "{{rating}}/5.0 — {{count}} 条评价",
+    "labelQuality": "质量",
+    "valueQuality": "内容经过验证和审核",
+    "labelSales": "销量",
+    "trustSecurePayment": "安全支付",
+    "trustImmediateAccess": "即时访问",
+    "trustQualityGuarantee": "质量保障",
+    "tabContentCount": "内容（{{count}}）",
+    "tabDetails": "详情",
+    "tabReviewsCount": "评价（{{count}}）",
+    "curriculumComingSoon": "该产品的内容即将上线。",
+    "onlineViewingOnly": "仅限在线观看，直接在您的账户中查看。",
+    "noReviewsYetTitle": "暂无评价",
+    "beFirstToReview": "成为第一个评价此产品的人！"
   },
   "filters": {
     "all": "全部",
@@ -40,24 +71,88 @@
     "sortBy": "排序",
     "priceAsc": "价格从低到高",
     "priceDesc": "价格从高到低",
-    "newest": "最新"
+    "newest": "最新",
+    "mostPopular": "最受欢迎",
+    "refineTitle": "筛选",
+    "refineSubtitle": "动物种类 · 格式 · 预算",
+    "clearAll": "清除全部",
+    "close": "关闭",
+    "speciesSectionTitle": "养殖哪种动物？",
+    "contentTypeSectionTitle": "内容类型",
+    "budgetMax": "最高预算",
+    "viewResults": "查看 {{count}} 个结果",
+    "maxPriceLabel": "最高 {{price}}",
+    "speciesOptions": {
+      "poultry": {
+        "label": "鸡与家禽",
+        "hint": "蛋鸡、肉鸡、家禽养殖"
+      },
+      "pigs": {
+        "label": "猪",
+        "hint": "养猪"
+      },
+      "turkeys": {
+        "label": "火鸡",
+        "hint": "火鸡养殖"
+      },
+      "small_ruminants": {
+        "label": "山羊与绵羊",
+        "hint": "山羊、绵羊"
+      },
+      "cattle": {
+        "label": "牛",
+        "hint": "奶牛、公牛"
+      },
+      "rabbits": {
+        "label": "兔子",
+        "hint": "养兔"
+      }
+    },
+    "contentTypeOptions": {
+      "course": {
+        "label": "课程（视频）",
+        "hint": "系列课程、培训"
+      },
+      "document": {
+        "label": "文档",
+        "hint": "PDF、资料表"
+      },
+      "audio": {
+        "label": "音频",
+        "hint": "播客、录音"
+      },
+      "article": {
+        "label": "文章",
+        "hint": "简短阅读"
+      },
+      "ebook": {
+        "label": "电子书",
+        "hint": "数字图书"
+      }
+    }
   },
-  "mock": {
-    "product1Title": "蛋鸡养殖完整指南",
-    "product1Desc": "从品种选择到产蛋管理：营养、健康与设施。",
-    "product2Title": "生猪养殖完全指南",
-    "product2Desc": "现代养猪：遗传、饲喂、兽医保健与繁殖。",
-    "product3Title": "家禽养殖入门套装（特别版）",
-    "product3Desc": "禽舍建设、雏禽选择、饲喂与防病。",
-    "product4Title": "0–8 周肉鸡防疫与用药",
-    "product4Desc": "规程、日程与剂量。",
-    "product5Title": "产蛋期管理——从开产到月度计划",
-    "product5Desc": "优化产蛋性能与鸡群管理。",
-    "product6Title": "山羊与绵羊养殖实用指南",
-    "product6Desc": "品种、饲喂、繁殖、放牧与兽医护理。",
-    "product7Title": "牧场健康管理——预防与治疗",
-    "product7Desc": "生物安全、免疫程序与常见病控制。",
-    "product8Title": "动物营养——配方与管理",
-    "product8Desc": "日粮设计、库存与成本控制。"
+  "catalogue": {
+    "eyebrow": "养殖户产品目录",
+    "headline": "培训与资源",
+    "headlineHighlight": "助您科学养殖",
+    "subheading": "视频课程、PDF 指南、音频和文章——涵盖鸡、猪、牛及其他养殖动物所需的一切。选择一种动物以筛选内容。",
+    "statResources": "资源",
+    "statSpecies": "动物种类",
+    "statFormats": "格式",
+    "searchPlaceholder": "搜索课程、指南、动物种类…",
+    "filtersButton": "筛选",
+    "filteredResults": "筛选结果",
+    "allContent": "全部内容",
+    "loading": "加载中…",
+    "contentCount": "{{count}} 项内容",
+    "loadMore": "加载更多",
+    "loadErrorTitle": "无法加载产品目录",
+    "noResultsTitle": "没有结果",
+    "noResultsForQuery": "没有与“{{query}}”匹配的资源。请尝试其他关键词。",
+    "noResultsAvailable": "目前没有可用的资源。",
+    "noResultsFiltered": "没有符合您筛选条件的资源。请尝试放宽搜索范围。",
+    "retry": "重试",
+    "resetFilters": "重置筛选",
+    "defaultLoadError": "无法加载产品。"
   }
 }

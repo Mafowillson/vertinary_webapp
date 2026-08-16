@@ -21,22 +21,48 @@
     "noDescriptionAvailable": "No description available.",
     "limitedOffer": "Limited-time offer",
     "saveMoney": "Save",
-    "downloadNow": "Download now",
+    "buyNow": "Buy now",
+    "continueLearning": "Continue",
     "loginToAddToCart": "Sign in to add to cart",
-    "loginRequired": "Sign-in required"
-  },
-  "upload": {
-    "title": "Upload product",
-    "titleLabel": "Title",
-    "descriptionLabel": "Description",
-    "typeLabel": "Type",
-    "priceLabel": "Price",
-    "categoryLabel": "Category",
-    "coverLabel": "Cover image",
-    "fileLabel": "File",
-    "publishButton": "Publish",
-    "uploadSuccess": "Upload successful",
-    "publishSuccess": "Product is now live"
+    "loginRequired": "Sign-in required",
+    "loadingProduct": "Loading product…",
+    "productNotFoundDesc": "The product you're looking for doesn't exist or has been removed.",
+    "catalogueLink": "Catalogue",
+    "topSeller": "BESTSELLER",
+    "share": "Share",
+    "salesCountLabel": "{{count}} sales",
+    "soldCount": "{{count}} sold",
+    "defaultCategory": "Veterinary resource",
+    "saveAmountExpiring": "Save {{amount}} — expires soon",
+    "offerExpiresIn": "This offer expires in",
+    "priceInsteadOf": "instead of {{price}}",
+    "featureOnlineAccess": "Online access",
+    "featureImmediate": "Immediate",
+    "featureGuarantee30Days": "30 days",
+    "labelFormat": "Format",
+    "formatBadgePdf": "PDF",
+    "formatBadgeVideo": "VIDEO",
+    "formatBadgeEbook": "E-BOOK",
+    "formatBadgeAudio": "AUDIO",
+    "labelAccess": "Access",
+    "labelGuarantee": "Guarantee",
+    "valueAccessFull": "Immediate after purchase, online",
+    "valueGuaranteeFull": "Satisfaction guaranteed or refunded within 30 days",
+    "labelRating": "Rating",
+    "valueRating": "{{rating}}/5.0 — {{count}} reviews",
+    "labelQuality": "Quality",
+    "valueQuality": "Verified and approved content",
+    "labelSales": "Sales",
+    "trustSecurePayment": "Secure payment",
+    "trustImmediateAccess": "Immediate access",
+    "trustQualityGuarantee": "Quality guarantee",
+    "tabContentCount": "Content ({{count}})",
+    "tabDetails": "Details",
+    "tabReviewsCount": "Reviews ({{count}})",
+    "curriculumComingSoon": "This product's content will be available soon.",
+    "onlineViewingOnly": "Online viewing only, directly in your account.",
+    "noReviewsYetTitle": "No reviews yet",
+    "beFirstToReview": "Be the first to leave a review on this product!"
   },
   "filters": {
     "all": "All",
@@ -45,24 +71,88 @@
     "sortBy": "Sort by",
     "priceAsc": "Price: low to high",
     "priceDesc": "Price: high to low",
-    "newest": "Newest"
+    "newest": "Newest",
+    "mostPopular": "Most popular",
+    "refineTitle": "Refine",
+    "refineSubtitle": "Species · Formats · Budget",
+    "clearAll": "Clear all",
+    "close": "Close",
+    "speciesSectionTitle": "Which farm animal?",
+    "contentTypeSectionTitle": "Content type",
+    "budgetMax": "Max budget",
+    "viewResults": "View {{count}} result(s)",
+    "maxPriceLabel": "Max {{price}}",
+    "speciesOptions": {
+      "poultry": {
+        "label": "Chickens & poultry",
+        "hint": "Layers, broilers, poultry farming"
+      },
+      "pigs": {
+        "label": "Pigs",
+        "hint": "Pig farming"
+      },
+      "turkeys": {
+        "label": "Turkeys",
+        "hint": "Turkey farming"
+      },
+      "small_ruminants": {
+        "label": "Goats & sheep",
+        "hint": "Goats, sheep"
+      },
+      "cattle": {
+        "label": "Cattle",
+        "hint": "Cows, oxen"
+      },
+      "rabbits": {
+        "label": "Rabbits",
+        "hint": "Rabbit farming"
+      }
+    },
+    "contentTypeOptions": {
+      "course": {
+        "label": "Courses (video)",
+        "hint": "Series, training"
+      },
+      "document": {
+        "label": "Documents",
+        "hint": "PDFs, fact sheets"
+      },
+      "audio": {
+        "label": "Audio",
+        "hint": "Podcasts, recordings"
+      },
+      "article": {
+        "label": "Articles",
+        "hint": "Short reads"
+      },
+      "ebook": {
+        "label": "E-books",
+        "hint": "Digital books"
+      }
+    }
   },
-  "mock": {
-    "product1Title": "Complete guide to laying hen farming",
-    "product1Desc": "Practical guide from breed selection to egg production: nutrition, health, and facility management.",
-    "product2Title": "Complete guide to pig farming",
-    "product2Desc": "Modern pig production: genetics, feeding, veterinary care, health management, and breeding.",
-    "product3Title": "Poultry farming starter kit — special edition",
-    "product3Desc": "Start poultry production: housing, chick selection, feeding, and disease prevention.",
-    "product4Title": "Vaccination and medication — broilers 0–8 weeks",
-    "product4Desc": "Protocols, schedules, and dosages for broiler health.",
-    "product5Title": "Layer management — from first egg to monthly planning",
-    "product5Desc": "Optimize laying performance and flock management.",
-    "product6Title": "Goat and sheep farming — practical guide",
-    "product6Desc": "Breeds, feeding, reproduction, pasture, and veterinary care.",
-    "product7Title": "Health management on the farm — prevention and treatment",
-    "product7Desc": "Biosecurity, vaccination plans, and common disease control.",
-    "product8Title": "Animal feeding — formulation and management",
-    "product8Desc": "Ration design, stock control, and cost optimization."
+  "catalogue": {
+    "eyebrow": "Farmers' Catalogue",
+    "headline": "Training & Resources",
+    "headlineHighlight": "to farm well",
+    "subheading": "Video courses, PDF guides, audio and articles — everything for chickens, pigs, cattle, and other livestock. Choose a species to refine.",
+    "statResources": "Resources",
+    "statSpecies": "Species",
+    "statFormats": "Formats",
+    "searchPlaceholder": "Search courses, guides, species…",
+    "filtersButton": "Filters",
+    "filteredResults": "Filtered results",
+    "allContent": "All content",
+    "loading": "Loading…",
+    "contentCount": "{{count}} item(s)",
+    "loadMore": "Load more",
+    "loadErrorTitle": "Unable to load the catalogue",
+    "noResultsTitle": "No results",
+    "noResultsForQuery": "No resource matches \"{{query}}\". Try other keywords.",
+    "noResultsAvailable": "No resource is available at the moment.",
+    "noResultsFiltered": "No resource matches your filters. Try broadening your search.",
+    "retry": "Retry",
+    "resetFilters": "Reset filters",
+    "defaultLoadError": "Unable to load products."
   }
 }

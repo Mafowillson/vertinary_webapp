@@ -1,255 +1,219 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { FiFileText, FiArrowLeft, FiPhone, FiMail, FiMapPin, FiChevronDown, FiChevronUp, FiAlertTriangle } from 'react-icons/fi'
+import { useLanguage } from '../contexts/LanguageContext'
 
-const sections = [
-  {
-    id: 'acceptance',
-    title: 'Acceptation des conditions',
-    content: (
-      <div className="space-y-3">
-        <p>
-          En accédant et en utilisant le site web et les services de l'Académie des Éleveurs, vous acceptez et convenez d'être lié par les termes et dispositions de cet accord. Si vous n'acceptez pas de respecter ce qui précède, veuillez ne pas utiliser ce service.
-        </p>
-        <p>
-          Ces Conditions d'Utilisation (« Conditions ») régissent votre accès et votre utilisation de notre site web, de nos produits et de nos services (collectivement, le « Service »). Veuillez lire attentivement ces Conditions avant d'utiliser notre Service.
-        </p>
-      </div>
-    ),
-  },
-  {
-    id: 'definitions',
-    title: 'Définitions',
-    content: (
-      <ul>
-        <li><strong>« Service »</strong> — le site web de l'Académie des Éleveurs, les produits, les cours et tous les services associés.</li>
-        <li><strong>« Utilisateur »</strong> — la personne accédant ou utilisant le Service.</li>
-        <li><strong>« Société »</strong> — l'Académie des Éleveurs.</li>
-        <li><strong>« Contenu »</strong> — toutes les informations, textes, graphiques, images, vidéos et autres matériels disponibles via le Service.</li>
-        <li><strong>« Compte »</strong> — le compte que vous créez pour accéder à certaines fonctionnalités du Service.</li>
-      </ul>
-    ),
-  },
-  {
-    id: 'account-registration',
-    title: 'Inscription au compte et sécurité',
-    content: (
-      <div className="space-y-3">
-        <p>Pour accéder à certaines fonctionnalités du Service, vous pouvez être amené à créer un compte. Lors de la création d'un compte, vous acceptez de :</p>
+const getSections = (t) => {
+  const tl = (key, options) => t(key, { ns: 'legal', ...options })
+  const items = (key) => tl(key, { returnObjects: true })
+
+  return [
+    {
+      id: 'acceptance',
+      title: tl('terms.sections.acceptance.title'),
+      content: (
+        <div className="space-y-3">
+          <p>{tl('terms.sections.acceptance.paragraph1')}</p>
+          <p>{tl('terms.sections.acceptance.paragraph2')}</p>
+        </div>
+      ),
+    },
+    {
+      id: 'definitions',
+      title: tl('terms.sections.definitions.title'),
+      content: (
         <ul>
-          <li>Fournir des informations exactes, actuelles et complètes</li>
-          <li>Maintenir et mettre à jour rapidement les informations de votre compte</li>
-          <li>Maintenir la sécurité de votre mot de passe et de votre identification</li>
-          <li>Accepter toute responsabilité pour les activités sous votre compte</li>
-          <li>Nous informer immédiatement de toute utilisation non autorisée de votre compte</li>
+          {items('terms.sections.definitions.items').map((item, idx) => (
+            <li key={idx}><strong>{item.label}</strong> — {item.text}</li>
+          ))}
         </ul>
-        <p>Vous êtes responsable du maintien de la confidentialité de vos identifiants de compte.</p>
-      </div>
-    ),
-  },
-  {
-    id: 'use-of-service',
-    title: 'Utilisation du Service',
-    content: (
-      <div className="space-y-4">
-        <div>
-          <h4>Utilisation autorisée</h4>
-          <p>Vous ne pouvez utiliser le Service qu'à des fins licites et conformément à ces Conditions :</p>
+      ),
+    },
+    {
+      id: 'account-registration',
+      title: tl('terms.sections.accountRegistration.title'),
+      content: (
+        <div className="space-y-3">
+          <p>{tl('terms.sections.accountRegistration.intro')}</p>
           <ul>
-            <li>À des fins éducatives et professionnelles</li>
-            <li>En conformité avec toutes les lois et réglementations applicables</li>
-            <li>Sans violer les droits d'autrui</li>
+            {items('terms.sections.accountRegistration.items').map((item, idx) => (
+              <li key={idx}>{item}</li>
+            ))}
+          </ul>
+          <p>{tl('terms.sections.accountRegistration.outro')}</p>
+        </div>
+      ),
+    },
+    {
+      id: 'use-of-service',
+      title: tl('terms.sections.useOfService.title'),
+      content: (
+        <div className="space-y-4">
+          <div>
+            <h4>{tl('terms.sections.useOfService.authorized.heading')}</h4>
+            <p>{tl('terms.sections.useOfService.authorized.intro')}</p>
+            <ul>
+              {items('terms.sections.useOfService.authorized.items').map((item, idx) => (
+                <li key={idx}>{item}</li>
+              ))}
+            </ul>
+          </div>
+          <div>
+            <h4>{tl('terms.sections.useOfService.prohibited.heading')}</h4>
+            <p>{tl('terms.sections.useOfService.prohibited.intro')}</p>
+            <ul>
+              {items('terms.sections.useOfService.prohibited.items').map((item, idx) => (
+                <li key={idx}>{item}</li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      ),
+    },
+    {
+      id: 'intellectual-property',
+      title: tl('terms.sections.intellectualProperty.title'),
+      content: (
+        <div className="space-y-4">
+          <p>{tl('terms.sections.intellectualProperty.intro')}</p>
+          <div>
+            <h4>{tl('terms.sections.intellectualProperty.ourContent.heading')}</h4>
+            <p>{tl('terms.sections.intellectualProperty.ourContent.body')}</p>
+          </div>
+          <div>
+            <h4>{tl('terms.sections.intellectualProperty.limitedLicense.heading')}</h4>
+            <p>{tl('terms.sections.intellectualProperty.limitedLicense.body')}</p>
+          </div>
+          <div>
+            <h4>{tl('terms.sections.intellectualProperty.restrictions.heading')}</h4>
+            <ul>
+              {items('terms.sections.intellectualProperty.restrictions.items').map((item, idx) => (
+                <li key={idx}>{item}</li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      ),
+    },
+    {
+      id: 'purchases',
+      title: tl('terms.sections.purchases.title'),
+      content: (
+        <div className="space-y-4">
+          <div>
+            <h4>{tl('terms.sections.purchases.pricing.heading')}</h4>
+            <p>{tl('terms.sections.purchases.pricing.body')}</p>
+          </div>
+          <div>
+            <h4>{tl('terms.sections.purchases.paymentTerms.heading')}</h4>
+            <ul>
+              {items('terms.sections.purchases.paymentTerms.items').map((item, idx) => (
+                <li key={idx}>{item}</li>
+              ))}
+            </ul>
+          </div>
+          <div>
+            <h4>{tl('terms.sections.purchases.refunds.heading')}</h4>
+            <p>{tl('terms.sections.purchases.refunds.body')}</p>
+          </div>
+        </div>
+      ),
+    },
+    {
+      id: 'user-content',
+      title: tl('terms.sections.userContent.title'),
+      content: (
+        <div className="space-y-3">
+          <p>{tl('terms.sections.userContent.paragraph1')}</p>
+          <p>{tl('terms.sections.userContent.paragraph2')}</p>
+        </div>
+      ),
+    },
+    {
+      id: 'disclaimers',
+      title: tl('terms.sections.disclaimers.title'),
+      content: (
+        <div className="space-y-3">
+          <p>{tl('terms.sections.disclaimers.statement')}</p>
+          <p>{tl('terms.sections.disclaimers.intro')}</p>
+          <ul>
+            {items('terms.sections.disclaimers.items').map((item, idx) => (
+              <li key={idx}>{item}</li>
+            ))}
+          </ul>
+          <p className="text-sm text-gray-500 italic">{tl('terms.sections.disclaimers.disclaimer')}</p>
+        </div>
+      ),
+    },
+    {
+      id: 'limitation-liability',
+      title: tl('terms.sections.limitationLiability.title'),
+      content: (
+        <div className="space-y-3">
+          <p>{tl('terms.sections.limitationLiability.paragraph1')}</p>
+          <p>{tl('terms.sections.limitationLiability.paragraph2')}</p>
+        </div>
+      ),
+    },
+    {
+      id: 'indemnification',
+      title: tl('terms.sections.indemnification.title'),
+      content: (
+        <div className="space-y-3">
+          <p>{tl('terms.sections.indemnification.intro')}</p>
+          <ul>
+            {items('terms.sections.indemnification.items').map((item, idx) => (
+              <li key={idx}>{item}</li>
+            ))}
           </ul>
         </div>
-        <div>
-          <h4>Activités interdites</h4>
-          <p>Vous acceptez de ne pas :</p>
-          <ul>
-            <li>Violer toute loi ou réglementation applicable</li>
-            <li>Porter atteinte aux droits d'autrui</li>
-            <li>Transmettre tout contenu nuisible, offensant ou illégal</li>
-            <li>Tenter d'obtenir un accès non autorisé au Service</li>
-            <li>Interférer avec ou perturber le Service ou les serveurs</li>
-            <li>Copier, modifier ou distribuer le contenu sans autorisation</li>
-            <li>Utiliser des systèmes automatisés pour accéder au Service</li>
-            <li>Usurper l'identité de toute personne ou entité</li>
-          </ul>
+      ),
+    },
+    {
+      id: 'termination',
+      title: tl('terms.sections.termination.title'),
+      content: (
+        <div className="space-y-3">
+          <p>{tl('terms.sections.termination.paragraph1')}</p>
+          <p>{tl('terms.sections.termination.paragraph2')}</p>
         </div>
-      </div>
-    ),
-  },
-  {
-    id: 'intellectual-property',
-    title: 'Droits de propriété intellectuelle',
-    content: (
-      <div className="space-y-4">
-        <p>
-          Le Service et son contenu original sont la propriété de l'Académie des Éleveurs et sont protégés par les lois internationales sur le droit d'auteur, les marques de commerce et autres lois sur la propriété intellectuelle.
-        </p>
-        <div>
-          <h4>Notre contenu</h4>
-          <p>Tout le contenu fourni par le Service — textes, graphiques, logos, images, vidéos, cours et logiciels — est la propriété de l'Académie des Éleveurs ou de ses fournisseurs de contenu et est protégé par les lois sur le droit d'auteur.</p>
+      ),
+    },
+    {
+      id: 'governing-law',
+      title: tl('terms.sections.governingLaw.title'),
+      content: (
+        <div className="space-y-3">
+          <p>{tl('terms.sections.governingLaw.paragraph1')}</p>
+          <p>{tl('terms.sections.governingLaw.paragraph2')}</p>
         </div>
-        <div>
-          <h4>Licence limitée</h4>
-          <p>Nous vous accordons une licence limitée, non exclusive, non transférable et révocable pour accéder et utiliser le Service à des fins personnelles et non commerciales.</p>
+      ),
+    },
+    {
+      id: 'changes',
+      title: tl('terms.sections.changes.title'),
+      content: (
+        <div className="space-y-3">
+          <p>{tl('terms.sections.changes.paragraph1')}</p>
+          <p>{tl('terms.sections.changes.paragraph2')}</p>
         </div>
-        <div>
-          <h4>Restrictions</h4>
-          <ul>
-            <li>Reproduire, distribuer ou créer des œuvres dérivées à partir de notre contenu</li>
-            <li>Utiliser notre contenu à des fins commerciales sans autorisation</li>
-            <li>Supprimer tout avis de droit d'auteur ou de propriété</li>
-            <li>Partager vos identifiants de compte avec d'autres personnes</li>
-          </ul>
-        </div>
-      </div>
-    ),
-  },
-  {
-    id: 'purchases',
-    title: 'Achats et paiements',
-    content: (
-      <div className="space-y-4">
-        <div>
-          <h4>Tarification</h4>
-          <p>Tous les prix des produits et services sont affichés dans la devise applicable et sont susceptibles d'être modifiés sans préavis. Nous nous réservons le droit de modifier les prix à tout moment.</p>
-        </div>
-        <div>
-          <h4>Conditions de paiement</h4>
-          <ul>
-            <li>Fournir des informations de paiement valides</li>
-            <li>Payer tous les frais encourus par votre compte</li>
-            <li>Nous autoriser à débiter votre moyen de paiement</li>
-          </ul>
-        </div>
-        <div>
-          <h4>Remboursements</h4>
-          <p>Les politiques de remboursement varient selon le type de produit. Les produits numériques peuvent être éligibles à un remboursement dans un délai spécifié après l'achat. Veuillez nous contacter pour connaître les conditions spécifiques.</p>
-        </div>
-      </div>
-    ),
-  },
-  {
-    id: 'user-content',
-    title: 'Contenu généré par les utilisateurs',
-    content: (
-      <div className="space-y-3">
-        <p>
-          Si vous soumettez, publiez ou affichez du contenu sur ou via le Service, vous nous accordez une licence mondiale, non exclusive, libre de redevances pour utiliser, reproduire, modifier et distribuer ce contenu aux fins d'exploitation et de promotion du Service.
-        </p>
-        <p>
-          Vous déclarez et garantissez que vous possédez ou disposez des droits nécessaires pour accorder la licence décrite ci-dessus, et que votre contenu ne viole aucun droit de tiers ni aucune loi applicable.
-        </p>
-      </div>
-    ),
-  },
-  {
-    id: 'disclaimers',
-    title: 'Avertissements',
-    content: (
-      <div className="space-y-3">
-        <p>
-          LE SERVICE EST FOURNI « EN L'ÉTAT » ET « TEL QUE DISPONIBLE » SANS GARANTIE D'AUCUNE SORTE, EXPRESSE OU IMPLICITE.
-        </p>
-        <p>Nous ne garantissons pas que :</p>
-        <ul>
-          <li>Le Service sera ininterrompu ou exempt d'erreurs</li>
-          <li>Les défauts seront corrigés</li>
-          <li>Le Service est exempt de virus ou d'autres composants nuisibles</li>
-          <li>Les informations fournies sont exactes, complètes ou à jour</li>
-        </ul>
-        <p className="text-sm text-gray-500 italic">
-          Le contenu éducatif fourni est uniquement à titre informatif et ne doit pas remplacer les conseils vétérinaires professionnels. Consultez toujours un vétérinaire agréé pour les problèmes de santé spécifiques des animaux.
-        </p>
-      </div>
-    ),
-  },
-  {
-    id: 'limitation-liability',
-    title: 'Limitation de responsabilité',
-    content: (
-      <div className="space-y-3">
-        <p>
-          DANS LA MESURE MAXIMALE PERMISE PAR LA LOI, L'ACADÉMIE DES ÉLEVEURS NE SERA PAS RESPONSABLE DE TOUT DOMMAGE INDIRECT, ACCESSOIRE, SPÉCIAL OU CONSÉCUTIF, NI DE TOUTE PERTE DE BÉNÉFICES OU DE REVENUS.
-        </p>
-        <p>
-          Notre responsabilité totale envers vous pour toutes les réclamations découlant de ou liées à l'utilisation du Service ne dépassera pas le montant que vous nous avez payé au cours des douze (12) mois précédant la réclamation.
-        </p>
-      </div>
-    ),
-  },
-  {
-    id: 'indemnification',
-    title: 'Indemnisation',
-    content: (
-      <div className="space-y-3">
-        <p>
-          Vous acceptez d'indemniser et de dégager de toute responsabilité l'Académie des Éleveurs, ses dirigeants, administrateurs, employés et agents contre toute réclamation, responsabilité, dommage et dépense découlant de ou liés à :
-        </p>
-        <ul>
-          <li>Votre accès ou utilisation du Service</li>
-          <li>Votre violation de ces Conditions</li>
-          <li>Votre violation des droits d'autrui</li>
-          <li>Votre contenu généré par l'utilisateur</li>
-        </ul>
-      </div>
-    ),
-  },
-  {
-    id: 'termination',
-    title: 'Résiliation',
-    content: (
-      <div className="space-y-3">
-        <p>
-          Nous pouvons résilier ou suspendre votre compte et votre accès au Service immédiatement, sans préavis ni responsabilité, pour quelque raison que ce soit, y compris si vous enfreignez ces Conditions.
-        </p>
-        <p>
-          Lors de la résiliation, votre droit d'utiliser le Service cessera immédiatement. Toutes les dispositions de ces Conditions qui, par leur nature, devraient survivre à la résiliation survivront, y compris les dispositions relatives à la propriété, aux exclusions de garantie et aux limitations de responsabilité.
-        </p>
-      </div>
-    ),
-  },
-  {
-    id: 'governing-law',
-    title: 'Droit applicable',
-    content: (
-      <div className="space-y-3">
-        <p>
-          Ces Conditions sont régies et interprétées conformément aux lois du Cameroun, sans égard aux dispositions relatives aux conflits de lois.
-        </p>
-        <p>
-          Tout litige découlant de ou lié à ces Conditions ou au Service sera soumis à la juridiction exclusive des tribunaux situés au Cameroun.
-        </p>
-      </div>
-    ),
-  },
-  {
-    id: 'changes',
-    title: 'Modifications des conditions',
-    content: (
-      <div className="space-y-3">
-        <p>
-          Nous nous réservons le droit, à notre seule discrétion, de modifier ou de remplacer ces Conditions à tout moment. Si une révision est importante, nous fournirons un préavis d'au moins 30 jours avant l'entrée en vigueur des nouvelles conditions.
-        </p>
-        <p>
-          En continuant à accéder ou à utiliser notre Service après l'entrée en vigueur de toute révision, vous acceptez d'être lié par les conditions révisées.
-        </p>
-      </div>
-    ),
-  },
-  {
-    id: 'contact',
-    title: 'Informations de contact',
-    content: (
-      <p>
-        Si vous avez des questions concernant ces Conditions d'Utilisation, veuillez nous contacter via les coordonnées affichées ci-dessous.
-      </p>
-    ),
-  },
-]
+      ),
+    },
+    {
+      id: 'contact',
+      title: tl('terms.sections.contact.title'),
+      content: (
+        <p>{tl('terms.sections.contact.paragraph1')}</p>
+      ),
+    },
+  ]
+}
 
 const TermsOfServicePage = () => {
+  const { t } = useLanguage()
+  const tl = (key, options) => t(key, { ns: 'legal', ...options })
+  const sections = getSections(t)
+
   const [activeId, setActiveId] = useState(sections[0].id)
   const [tocOpen, setTocOpen] = useState(false)
 
@@ -282,7 +246,7 @@ const TermsOfServicePage = () => {
             className="inline-flex items-center gap-2 text-gray-400 hover:text-white transition-colors text-sm mb-8"
           >
             <FiArrowLeft className="w-4 h-4" />
-            Retour à l'accueil
+            {tl('terms.backToHome')}
           </Link>
           <div className="flex items-start gap-5">
             <div className="w-14 h-14 bg-white/10 rounded-2xl flex items-center justify-center flex-shrink-0">
@@ -290,14 +254,14 @@ const TermsOfServicePage = () => {
             </div>
             <div>
               <h1 className="text-3xl sm:text-4xl font-extrabold text-white leading-tight">
-                Conditions d'Utilisation
+                {tl('terms.pageTitle')}
               </h1>
               <div className="flex flex-wrap items-center gap-3 mt-2">
-                <span className="text-gray-400 text-sm">Mise à jour : {lastUpdated}</span>
+                <span className="text-gray-400 text-sm">{tl('terms.updated', { date: lastUpdated })}</span>
                 <span className="text-gray-600">·</span>
-                <span className="text-gray-400 text-sm">~10 min de lecture</span>
+                <span className="text-gray-400 text-sm">{tl('terms.readTime')}</span>
                 <span className="text-gray-600">·</span>
-                <span className="text-gray-400 text-sm">{sections.length} sections</span>
+                <span className="text-gray-400 text-sm">{tl('terms.sectionsCount', { count: sections.length })}</span>
               </div>
             </div>
           </div>
@@ -310,7 +274,7 @@ const TermsOfServicePage = () => {
           <div className="flex items-start gap-2.5">
             <FiAlertTriangle className="w-4 h-4 text-amber-600 flex-shrink-0 mt-0.5" />
             <p className="text-sm text-amber-800">
-              <strong>Avis important :</strong> En utilisant le Service, vous acceptez d'être lié par ces Conditions. Si vous n'acceptez pas ces Conditions, veuillez ne pas utiliser le Service.
+              <strong>{tl('terms.banner.label')}</strong> {tl('terms.banner.text')}
             </p>
           </div>
         </div>
@@ -323,7 +287,7 @@ const TermsOfServicePage = () => {
           {/* Sidebar TOC (desktop) */}
           <aside className="hidden lg:block sticky top-24 self-start">
             <p className="text-[11px] font-extrabold text-gray-400 uppercase tracking-widest mb-4 px-3">
-              Table des matières
+              {tl('terms.toc.heading')}
             </p>
             <nav className="space-y-0.5">
               {sections.map((s, i) => (
@@ -357,7 +321,7 @@ const TermsOfServicePage = () => {
                 onClick={() => setTocOpen(!tocOpen)}
                 className="w-full flex items-center justify-between bg-white border border-gray-200 rounded-2xl px-4 py-3 text-sm font-semibold text-gray-700 shadow-sm"
               >
-                <span>Table des matières · {sections.length} sections</span>
+                <span>{tl('terms.toc.mobileLabel', { count: sections.length })}</span>
                 {tocOpen
                   ? <FiChevronUp className="w-4 h-4 text-gray-500" />
                   : <FiChevronDown className="w-4 h-4 text-gray-500" />
@@ -413,8 +377,8 @@ const TermsOfServicePage = () => {
             {/* Contact card */}
             <div className="mt-6 bg-white border border-gray-200 rounded-2xl p-6 sm:p-8 shadow-sm">
               <div className="mb-5">
-                <h3 className="text-base font-bold text-gray-900">Des questions sur ces conditions ?</h3>
-                <p className="text-sm text-gray-500 mt-1">Contactez-nous pour toute question concernant ces Conditions d'Utilisation.</p>
+                <h3 className="text-base font-bold text-gray-900">{tl('terms.contactCard.heading')}</h3>
+                <p className="text-sm text-gray-500 mt-1">{tl('terms.contactCard.subtext')}</p>
               </div>
               <div className="grid sm:grid-cols-3 gap-3">
                 <a
@@ -427,7 +391,7 @@ const TermsOfServicePage = () => {
                     <FiPhone className="w-4 h-4 text-[#1A7A6E] group-hover:text-white transition-colors" />
                   </div>
                   <div className="min-w-0">
-                    <p className="text-xs font-semibold text-gray-400">WhatsApp</p>
+                    <p className="text-xs font-semibold text-gray-400">{tl('terms.contactCard.whatsappLabel')}</p>
                     <p className="text-sm font-bold text-gray-900 truncate">+237 699 933 135</p>
                   </div>
                 </a>
@@ -436,7 +400,7 @@ const TermsOfServicePage = () => {
                     <FiMail className="w-4 h-4 text-[#1A7A6E]" />
                   </div>
                   <div className="min-w-0">
-                    <p className="text-xs font-semibold text-gray-400">Email</p>
+                    <p className="text-xs font-semibold text-gray-400">{tl('terms.contactCard.emailLabel')}</p>
                     <p className="text-sm font-bold text-gray-900 truncate">legal@academie-eleveurs.com</p>
                   </div>
                 </div>
@@ -445,8 +409,8 @@ const TermsOfServicePage = () => {
                     <FiMapPin className="w-4 h-4 text-[#1A7A6E]" />
                   </div>
                   <div>
-                    <p className="text-xs font-semibold text-gray-400">Adresse</p>
-                    <p className="text-sm font-bold text-gray-900">Cameroun 🇨🇲</p>
+                    <p className="text-xs font-semibold text-gray-400">{tl('terms.contactCard.addressLabel')}</p>
+                    <p className="text-sm font-bold text-gray-900">{tl('terms.contactCard.addressValue')} 🇨🇲</p>
                   </div>
                 </div>
               </div>
@@ -454,7 +418,7 @@ const TermsOfServicePage = () => {
 
             {/* Closing note */}
             <p className="mt-6 text-center text-xs text-gray-400">
-              En utilisant nos services, vous reconnaissez avoir lu, compris et accepté d'être lié par ces Conditions d'Utilisation.
+              {tl('terms.closingNote')}
             </p>
           </main>
         </div>

@@ -1,0 +1,70 @@
+{
+  "header": {
+    "title": "Settings",
+    "subtitle": "Manage the site configuration and social media links"
+  },
+  "tabs": {
+    "social": "Social Media",
+    "exchangeRates": "Exchange Rates",
+    "general": "General"
+  },
+  "messages": {
+    "updateSuccess": "Settings updated successfully!",
+    "updateError": "Failed to update settings. Please try again.",
+    "invalidUrl": "Please enter a valid URL"
+  },
+  "socialLinks": {
+    "sectionTitle": "Social Media Links",
+    "sectionSubtitle": "Update the social media links that appear across the site",
+    "testLinkTitle": "Test link",
+    "whatsapp": {
+      "label": "WhatsApp",
+      "placeholder": "https://wa.me/237699933135",
+      "hint": "Format: https://wa.me/[country code][phone number]"
+    },
+    "facebook": {
+      "label": "Facebook",
+      "placeholder": "https://web.facebook.com/your-page",
+      "hint": "Link to your Facebook page or group"
+    },
+    "youtube": {
+      "label": "YouTube",
+      "placeholder": "https://www.youtube.com/@your-channel",
+      "hint": "Link to your YouTube channel"
+    },
+    "reset": "Reset",
+    "saving": "Saving...",
+    "save": "Save Changes"
+  },
+  "exchangeRates": {
+    "sectionTitle": "Exchange Rates",
+    "sectionSubtitle": "FCFA stays the currency of record — all prices are entered and charged in FCFA. These rates only control the converted display shown to visitors.",
+    "baseCurrencyNote": "FCFA — base currency, not editable (always 1)",
+    "usd": { "label": "US Dollar (USD)", "hint": "How many FCFA is 1 USD worth?" },
+    "eur": { "label": "Euro (EUR)", "hint": "How many FCFA is 1 EUR worth?" },
+    "ngn": { "label": "Naira (NGN)", "hint": "How many FCFA is 1 NGN worth?" },
+    "unitSuffix": "FCFA per 1",
+    "previewTitle": "Preview",
+    "previewLine": "50,000 FCFA ≈",
+    "reset": "Reset",
+    "saving": "Saving...",
+    "save": "Save Rates",
+    "invalidRate": "Rate must be a positive number"
+  },
+  "general": {
+    "sectionTitle": "General Settings",
+    "sectionSubtitle": "Site configuration settings",
+    "siteName": {
+      "label": "Site Name",
+      "readOnlyNote": "This setting cannot be changed"
+    },
+    "currency": {
+      "label": "Currency",
+      "readOnlyNote": "Default currency for all transactions"
+    },
+    "info": {
+      "title": "Information",
+      "text": "General settings are managed by the system. Contact your administrator to change the site name or currency."
+    }
+  }
+}

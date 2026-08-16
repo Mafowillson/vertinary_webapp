@@ -1,0 +1,40 @@
+{
+  "list": {
+    "hero": {
+      "chipServiceCount": "{{count}} services",
+      "chipRegion": "Cameroon & international",
+      "chipResponseTime": "Fast response"
+    },
+    "cta": {
+      "questionLabel": "Got a question?",
+      "titleLine1": "Let's talk about your",
+      "titleLine2": "farming project",
+      "description": "Our team responds within 24h to help you choose the service that fits your needs.",
+      "whatsappButton": "Contact via WhatsApp",
+      "viewProductsButton": "View products"
+    }
+  },
+  "detail": {
+    "loading": "Loading…",
+    "notFound": "This service does not exist or has been removed.",
+    "descriptionHeading": "About this service",
+    "priceLabel": "Price",
+    "quickInfo": {
+      "heading": "Information",
+      "category": "Category",
+      "availability": "Availability",
+      "availabilityValue": "On request",
+      "zone": "Area",
+      "zoneValue": "🌍 Cameroon & intl."
+    },
+    "relatedSectionLabel": "In the same category",
+    "bottomCta": {
+      "readyLabel": "Ready to get started?",
+      "titlePrefix": "Contact us for",
+      "titleHighlight": "this service",
+      "description": "Our team responds within 24h to help you with your farming project.",
+      "whatsappButton": "Contact via WhatsApp",
+      "viewAllButton": "View all services"
+    }
+  }
+}

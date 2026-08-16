@@ -1,0 +1,74 @@
+{
+  "loadError": "无法加载用户。",
+  "statusUpdateError": "无法修改用户状态。",
+  "roleUpdateError": "无法修改用户角色。",
+  "deleteError": "无法删除该用户。",
+  "deleteConfirm": "您确定要删除此用户吗？",
+  "header": {
+    "title": "用户管理",
+    "subtitle": "管理用户账户和权限",
+    "addUser": "添加用户"
+  },
+  "stats": {
+    "total": "用户总数",
+    "admins": "管理员",
+    "active": "活跃用户",
+    "newThisMonth": "本月新增"
+  },
+  "filters": {
+    "searchPlaceholder": "按姓名或邮箱搜索...",
+    "roleAll": "所有角色",
+    "roleAdmin": "管理员",
+    "roleUser": "普通用户",
+    "statusAll": "所有状态",
+    "statusActive": "已激活",
+    "statusInactive": "未激活",
+    "sortRecent": "最近",
+    "sortName": "姓名（A-Z）",
+    "sortEmail": "邮箱（A-Z）"
+  },
+  "roleLabels": {
+    "admin": "管理员",
+    "user": "普通用户"
+  },
+  "statusLabels": {
+    "active": "已激活",
+    "inactive": "未激活"
+  },
+  "listItem": {
+    "orders": "订单",
+    "ordersCount": "{{count}} 个订单",
+    "memberSince": "注册时间",
+    "userId": "用户 ID"
+  },
+  "actions": {
+    "promote": "提升为管理员",
+    "demote": "降级为普通用户",
+    "activate": "激活",
+    "deactivate": "停用",
+    "viewDetails": "查看详情",
+    "delete": "删除用户",
+    "cannotChangeOwnRole": "您不能修改自己的角色",
+    "cannotChangeOwnStatus": "您不能修改自己的状态"
+  },
+  "empty": {
+    "title": "未找到用户",
+    "withFilters": "请尝试调整筛选条件",
+    "noFilters": "用户注册后将显示在此处"
+  },
+  "modal": {
+    "title": "用户详情",
+    "role": "角色",
+    "status": "状态",
+    "userId": "用户 ID",
+    "memberSince": "注册时间",
+    "totalOrders": "订单总数",
+    "ordersCount": "{{count}} 个订单",
+    "selfDisclaimer": "您不能修改自己的角色或状态。",
+    "close": "关闭",
+    "promote": "提升为管理员",
+    "demote": "降级为普通用户",
+    "activateUser": "激活用户",
+    "deactivateUser": "停用用户"
+  }
+}

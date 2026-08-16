@@ -1,124 +1,71 @@
-import api from '../../axiosInterceptor'
-import { getMockProducts, mapMockProductToAPI } from '../data/mockProducts'
-
-// Store translation function globally (set by components)
-let translationFunction = null
-
-export const setTranslationFunction = (t) => {
-  translationFunction = t
-}
-
-// Helper to check if API is available
-const isApiAvailable = async () => {
-  try {
-    await api.get('/health').catch(() => {})
-    return true
-  } catch {
-    return false
-  }
-}
-
-// Helper to filter mock products
-const filterMockProducts = (products, params = {}) => {
-  let filtered = [...products]
-
-  if (params.featured !== undefined) {
-    filtered = filtered.filter(p => p.featured === params.featured)
-  }
-
-  if (params.limit) {
-    filtered = filtered.slice(0, params.limit)
-  }
-
-  if (params.search) {
-    const searchLower = params.search.toLowerCase()
-    filtered = filtered.filter(p => 
-      p.title.toLowerCase().includes(searchLower) ||
-      p.description?.toLowerCase().includes(searchLower)
-    )
-  }
-
-  return filtered.map(mapMockProductToAPI)
-}
+import api, { getApiErrorMessage } from '../../axiosInterceptor'
 
 export const productService = {
   async getAllProducts(params = {}) {
     try {
       const response = await api.get('/products', { params })
-      const data = response.data
-      // If API returns empty array, fall back to mock data
-      if (Array.isArray(data) && data.length === 0) {
-        console.warn('API returned empty products, using mock data')
-        const mockProducts = translationFunction ? getMockProducts(translationFunction) : getMockProducts((key) => key)
-        const filtered = filterMockProducts(mockProducts, params)
-        return {
-          data: filtered,
-          total: filtered.length
-        }
-      }
-      return data
+      return response.data
     } catch (error) {
-      console.warn('API unavailable, using mock data:', error.message)
-      // Use mock data when API is unavailable
-      const mockProducts = translationFunction ? getMockProducts(translationFunction) : getMockProducts((key) => key)
-      const filtered = filterMockProducts(mockProducts, params)
-      return {
-        data: filtered,
-        total: filtered.length
-      }
+      throw new Error(getApiErrorMessage(error))
     }
   },
 
   async getProductById(id) {
     try {
-    const response = await api.get(`/products/${id}`)
-    return response.data
+      const response = await api.get(`/products/${id}`)
+      return response.data
     } catch (error) {
-      console.warn('API unavailable, using mock data:', error.message)
-      // Find in mock data
-      const mockProducts = translationFunction ? getMockProducts(translationFunction) : getMockProducts((key) => key)
-      const product = mockProducts.find(p => p.id === parseInt(id))
-      if (product) {
-        return mapMockProductToAPI(product)
-      }
-      throw new Error('Product not found')
+      throw new Error(getApiErrorMessage(error))
     }
   },
 
   async searchProducts(query) {
     try {
       const response = await api.get('/products/search', { params: { q: query } })
-      const data = response.data
-      // If API returns empty array, fall back to mock data
-      if (Array.isArray(data) && data.length === 0) {
-        console.warn('API returned empty search results, using mock data')
-        const mockProducts = translationFunction ? getMockProducts(translationFunction) : getMockProducts((key) => key)
-        const filtered = filterMockProducts(mockProducts, { search: query })
-        return filtered
-      }
-      return data
+      return response.data
     } catch (error) {
-      console.warn('API unavailable, using mock data:', error.message)
-      // Search in mock data
-      const mockProducts = translationFunction ? getMockProducts(translationFunction) : getMockProducts((key) => key)
-      const filtered = filterMockProducts(mockProducts, { search: query })
-      return filtered
+      throw new Error(getApiErrorMessage(error))
     }
   },
 
   async createProduct(productData) {
-    const response = await api.post('/products', productData)
-    return response.data
+    try {
+      const response = await api.post('/products', productData)
+      return response.data
+    } catch (error) {
+      throw new Error(getApiErrorMessage(error))
+    }
   },
 
   async updateProduct(id, productData) {
-    const response = await api.put(`/products/${id}`, productData)
-    return response.data
+    try {
+      const response = await api.put(`/products/${id}`, productData)
+      return response.data
+    } catch (error) {
+      throw new Error(getApiErrorMessage(error))
+    }
   },
 
   async deleteProduct(id) {
-    const response = await api.delete(`/products/${id}`)
-    return response.data
+    try {
+      const response = await api.delete(`/products/${id}`)
+      return response.data
+    } catch (error) {
+      throw new Error(getApiErrorMessage(error))
+    }
+  },
+
+  async uploadProductImage(file, onUploadProgress) {
+    try {
+      const formData = new FormData()
+      formData.append('file', file)
+      const { data } = await api.post('/products/images', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+        onUploadProgress,
+      })
+      return data.url
+    } catch (error) {
+      throw new Error(getApiErrorMessage(error))
+    }
   },
 }
-

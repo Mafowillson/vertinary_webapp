@@ -1,0 +1,86 @@
+{
+  "hero": {
+    "badge": "Fondateur & Expert Vérifié",
+    "titleLine1": "La vision",
+    "titleHighlightLine1": "derrière",
+    "titleHighlightLine2": "l'Académie",
+    "social": {
+      "youtube": "YouTube",
+      "facebook": "Facebook",
+      "whatsapp": "WhatsApp"
+    },
+    "floatingGuides": "Guides",
+    "floatingBreeders": "Éleveurs"
+  },
+  "stats": {
+    "breedersTrained": "Éleveurs formés",
+    "guidesCreated": "Guides créés",
+    "yearsExpertise": "Années d'expertise",
+    "videos": "Vidéos éducatives"
+  },
+  "pillars": {
+    "eyebrow": "Ce qui nous guide",
+    "heading": "Nos quatre piliers",
+    "education": {
+      "title": "Éducation",
+      "description": "Rendre les connaissances vétérinaires accessibles à chaque éleveur, partout."
+    },
+    "globalReach": {
+      "title": "Portée Mondiale",
+      "description": "Connecter les éleveurs camerounais et internationaux autour du savoir partagé."
+    },
+    "innovation": {
+      "title": "Innovation",
+      "description": "Créer des produits et outils innovants pour accélérer la croissance en élevage."
+    },
+    "passion": {
+      "title": "Passion",
+      "description": "Chaque contenu naît d'une passion authentique pour le bien-être animal."
+    }
+  },
+  "timeline": {
+    "eyebrow": "Évolution",
+    "heading": "Notre parcours",
+    "milestones": {
+      "2020": { "title": "Début du parcours", "description": "Commencement des études en médecine vétérinaire" },
+      "2021": { "title": "Création de contenu", "description": "Lancement de la chaîne YouTube et page Facebook" },
+      "2022": { "title": "Premier livre", "description": "Publication du premier livre \"TOUT SUR L'ÉLEVAGE\"" },
+      "2023": { "title": "L'Académie", "description": "Création de l'Académie des Éleveurs" },
+      "2024": { "title": "Plateforme digitale", "description": "Lancement de la plateforme web éducative" }
+    }
+  },
+  "credentials": {
+    "eyebrow": "Expertise",
+    "heading": "Réalisations & Reconnaissances",
+    "tabs": {
+      "formation": "Formation",
+      "innovation": "Innovation"
+    },
+    "items": {
+      "vetStudent": { "label": "Étudiant Docteur en Médecine Vétérinaire", "sub": "Formation continue" },
+      "animalProdEngineer": { "label": "Ingénieur en Production Animale", "sub": "Expertise en gestion animale" },
+      "author": { "label": "Auteur — série \"TOUT SUR L'ÉLEVAGE\"", "sub": "Plusieurs livres publiés" },
+      "founder": { "label": "Fondateur de l'Académie des Éleveurs", "sub": "Plateforme éducative" },
+      "manufacturer": { "label": "Fabricant de l'Accélérateur de Croissance Bio", "sub": "Produit innovant" },
+      "contentCreator": { "label": "Créateur de contenu éducatif", "sub": "YouTube & Facebook" }
+    }
+  },
+  "quote": {
+    "eyebrow": "Notre vision",
+    "text": "Créer une communauté mondiale d'éleveurs éduqués et prospères, où les connaissances vétérinaires sont accessibles à",
+    "highlight": "tous, partout.",
+    "cards": {
+      "accessibility": { "title": "Accessibilité", "body": "L'information ne devrait pas être un privilège. Nous la démocratisons." },
+      "community": { "title": "Communauté", "body": "Ensemble, nous construisons un réseau d'éleveurs solidaires et informés." },
+      "sustainability": { "title": "Durabilité", "body": "Un élevage éduqué, c'est une agriculture plus durable pour demain." }
+    }
+  },
+  "cta": {
+    "eyebrow": "Rejoignez-nous",
+    "headingLine1": "Prêt à transformer",
+    "headingLine2": "votre élevage ?",
+    "text": "Explorez nos ressources, formations et livres pour maîtriser votre métier d'éleveur.",
+    "resourcesButton": "Voir les ressources",
+    "contactButton": "Nous contacter"
+  }
+}

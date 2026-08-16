@@ -10,5 +10,10 @@ export const appService = {
     const response = await api.put('/config/social-links', links)
     return response.data
   },
+
+  async updateExchangeRates(rates) {
+    const response = await api.put('/config/exchange-rates', rates)
+    return response.data
+  },
 }
 

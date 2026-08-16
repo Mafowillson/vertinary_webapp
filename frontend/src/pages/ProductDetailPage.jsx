@@ -1,26 +1,31 @@
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
-import { productService, setTranslationFunction } from '../services/productService'
+import { productService } from '../services/productService'
+import { orderService } from '../services/orderService'
+import { lessonService } from '../services/lessonService'
 import { useAuth } from '../contexts/AuthContext'
 import { useApp } from '../contexts/AppContext'
 import { useLanguage } from '../contexts/LanguageContext'
 import { useCart } from '../contexts/CartContext'
+import { useCurrency } from '../contexts/CurrencyContext'
 import CountdownTimer from '../components/CountdownTimer/CountdownTimer'
-import { formatCurrency } from '../utils/formatters'
 import {
   FiDownload, FiShoppingCart, FiMessageCircle, FiArrowLeft, FiStar,
   FiCheck, FiShield, FiClock, FiZap, FiBookOpen, FiFileText, FiVideo,
-  FiShare2, FiHeart, FiPlay, FiHeadphones, FiAward,
+  FiShare2, FiHeart, FiPlay, FiHeadphones, FiAward, FiPlayCircle, FiMonitor,
 } from 'react-icons/fi'
 
+const LESSON_ICONS = { video: FiVideo, audio: FiHeadphones, pdf: FiFileText }
+
+// `labelKey` resolves via t() at render time (module scope has no access to t()).
 const FORMAT_MAP = {
-  'PDF Guide':     { label: 'PDF',    gradient: 'from-amber-400 to-orange-600',   badgeBg: 'bg-amber-500',   Icon: FiFileText   },
-  'Video Lecture': { label: 'VIDÉO',  gradient: 'from-blue-500 to-indigo-700',    badgeBg: 'bg-blue-600',    Icon: FiPlay       },
-  'E-book':        { label: 'E-BOOK', gradient: 'from-violet-500 to-purple-700',  badgeBg: 'bg-violet-600',  Icon: FiBookOpen   },
-  'Audio':         { label: 'AUDIO',  gradient: 'from-teal-400 to-emerald-600',   badgeBg: 'bg-teal-600',    Icon: FiHeadphones },
+  'PDF Guide':     { labelKey: 'detail.formatBadgePdf',   gradient: 'from-amber-400 to-orange-600',   badgeBg: 'bg-amber-500',   Icon: FiFileText   },
+  'Video Lecture': { labelKey: 'detail.formatBadgeVideo', gradient: 'from-blue-500 to-indigo-700',    badgeBg: 'bg-blue-600',    Icon: FiPlay       },
+  'E-book':        { labelKey: 'detail.formatBadgeEbook', gradient: 'from-violet-500 to-purple-700',  badgeBg: 'bg-violet-600',  Icon: FiBookOpen   },
+  'Audio':         { labelKey: 'detail.formatBadgeAudio', gradient: 'from-teal-400 to-emerald-600',   badgeBg: 'bg-teal-600',    Icon: FiHeadphones },
 }
 const DEFAULT_FMT = {
-  label: 'PDF', gradient: 'from-emerald-500 to-teal-700', badgeBg: 'bg-emerald-600', Icon: FiFileText,
+  labelKey: 'detail.formatBadgePdf', gradient: 'from-emerald-500 to-teal-700', badgeBg: 'bg-emerald-600', Icon: FiFileText,
 }
 
 const CROSS_SVG = `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
@@ -48,6 +53,7 @@ const ProductDetailPage = () => {
   const { isAuthenticated } = useAuth()
   const { socialLinks } = useApp()
   const { t } = useLanguage()
+  const { format: formatPrice } = useCurrency()
   const { addToCart, isInCart } = useCart()
   const [product, setProduct] = useState(null)
   const [loading, setLoading] = useState(true)
@@ -55,8 +61,8 @@ const ProductDetailPage = () => {
   const [imageZoom, setImageZoom] = useState(false)
   const [cartAdded, setCartAdded] = useState(false)
   const [imgError, setImgError] = useState(false)
-
-  useEffect(() => { setTranslationFunction(t) }, [t])
+  const [lessons, setLessons] = useState([])
+  const [owned, setOwned] = useState(false)
 
   useEffect(() => {
     const loadProduct = async () => {
@@ -72,7 +78,34 @@ const ProductDetailPage = () => {
     loadProduct()
   }, [id, t])
 
+  useEffect(() => {
+    lessonService.getLessons(id).then(setLessons).catch(() => setLessons([]))
+  }, [id])
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      setOwned(false)
+      return
+    }
+    let cancelled = false
+    orderService
+      .getUserOrders()
+      .then((orders) => {
+        if (cancelled) return
+        const hasCompletedOrder = orders.some(
+          (o) => String(o.productId ?? o.product_id) === String(id) && o.status === 'completed'
+        )
+        setOwned(hasCompletedOrder)
+      })
+      .catch(() => setOwned(false))
+    return () => { cancelled = true }
+  }, [id, isAuthenticated])
+
   const handlePurchase = () => {
+    if (owned) {
+      navigate(`/learn/${id}`)
+      return
+    }
     if (!isAuthenticated) {
       navigate('/login', { state: { returnTo: `/products/${id}` } })
       return
@@ -113,7 +146,7 @@ const ProductDetailPage = () => {
       <div className="min-h-screen bg-slate-50 flex items-center justify-center">
         <div className="text-center">
           <div className="w-12 h-12 rounded-full border-4 border-emerald-200 border-t-emerald-600 animate-spin mx-auto" />
-          <p className="mt-4 text-slate-500 text-sm font-medium">Chargement du produit…</p>
+          <p className="mt-4 text-slate-500 text-sm font-medium">{t('detail.loadingProduct', { ns: 'product' })}</p>
         </div>
       </div>
     )
@@ -131,7 +164,7 @@ const ProductDetailPage = () => {
             {t('detail.productNotFound', { ns: 'product' })}
           </h2>
           <p className="text-slate-500 text-sm mb-6">
-            Le produit que vous recherchez n'existe pas ou a été supprimé.
+            {t('detail.productNotFoundDesc', { ns: 'product' })}
           </p>
           <Link
             to="/products"
@@ -160,9 +193,10 @@ const ProductDetailPage = () => {
     product.sold ?? product.purchase_count ?? product.purchaseCount ?? 0
 
   const TABS = [
-    { id: 'description', label: 'Description' },
-    { id: 'details',     label: 'Détails' },
-    { id: 'reviews',     label: `Avis (${reviewCount})` },
+    { id: 'description', label: t('detail.description', { ns: 'product' }) },
+    { id: 'curriculum',  label: t('detail.tabContentCount', { ns: 'product', count: lessons.length }) },
+    { id: 'details',     label: t('detail.tabDetails', { ns: 'product' }) },
+    { id: 'reviews',     label: t('detail.tabReviewsCount', { ns: 'product', count: reviewCount }) },
   ]
 
   return (
@@ -176,11 +210,11 @@ const ProductDetailPage = () => {
             className="inline-flex items-center gap-2 text-sm font-semibold text-slate-600 hover:text-emerald-700 transition-colors group shrink-0"
           >
             <FiArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
-            Catalogue
+            {t('detail.catalogueLink', { ns: 'product' })}
           </Link>
           <p className="hidden sm:block text-xs text-slate-400 truncate">{product.title}</p>
           <span className={`${fmt.badgeBg} text-white text-[10px] font-extrabold px-2.5 py-1 rounded-lg shrink-0`}>
-            {fmt.label}
+            {t(fmt.labelKey, { ns: 'product' })}
           </span>
         </div>
       </div>
@@ -227,7 +261,7 @@ const ProductDetailPage = () => {
                 <div className="absolute top-4 right-4">
                   <span className="inline-flex items-center gap-1 bg-amber-400 text-amber-950 text-[11px] font-extrabold px-2.5 py-1.5 rounded-xl shadow-lg">
                     <FiAward className="w-3.5 h-3.5" />
-                    TOP VENTE
+                    {t('detail.topSeller', { ns: 'product' })}
                   </span>
                 </div>
               )}
@@ -242,11 +276,11 @@ const ProductDetailPage = () => {
             <div className="mt-4 flex items-center gap-3">
               <button className="flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 rounded-xl text-sm font-semibold text-slate-600 hover:bg-slate-50 hover:border-slate-300 transition-all shadow-sm">
                 <FiShare2 className="w-4 h-4" />
-                Partager
+                {t('detail.share', { ns: 'product' })}
               </button>
               {downloadCount > 0 && (
                 <p className="ml-auto text-xs text-slate-400 tabular-nums">
-                  {downloadCount.toLocaleString()} ventes
+                  {t('detail.salesCountLabel', { ns: 'product', count: downloadCount.toLocaleString() })}
                 </p>
               )}
             </div>
@@ -258,7 +292,7 @@ const ProductDetailPage = () => {
             {/* Category + title + rating */}
             <div>
               <p className="text-emerald-700 text-[11px] font-extrabold uppercase tracking-widest mb-2">
-                {product.category || 'Ressource vétérinaire'}
+                {product.category || t('detail.defaultCategory', { ns: 'product' })}
               </p>
               <h1 className="text-2xl sm:text-3xl lg:text-[2rem] font-extrabold text-slate-900 leading-tight mb-3">
                 {product.title}
@@ -277,7 +311,7 @@ const ProductDetailPage = () => {
                 </div>
                 {downloadCount > 0 && (
                   <span className="text-sm text-slate-400 tabular-nums">
-                    {downloadCount.toLocaleString()} vendus
+                    {t('detail.soldCount', { ns: 'product', count: downloadCount.toLocaleString() })}
                   </span>
                 )}
               </div>
@@ -291,16 +325,16 @@ const ProductDetailPage = () => {
                     <FiZap className="w-4 h-4 text-white" />
                   </div>
                   <div>
-                    <p className="text-sm font-extrabold text-rose-900 leading-tight">Offre limitée</p>
+                    <p className="text-sm font-extrabold text-rose-900 leading-tight">{t('detail.limitedOffer', { ns: 'product' })}</p>
                     <p className="text-xs text-rose-600 mt-0.5">
-                      Économisez {formatCurrency(originalPrice - price)} — expire bientôt
+                      {t('detail.saveAmountExpiring', { ns: 'product', amount: formatPrice(originalPrice - price) })}
                     </p>
                   </div>
                 </div>
                 <div className="bg-white/70 rounded-xl p-3 border border-rose-100">
                   <p className="flex items-center gap-1.5 text-[10px] font-extrabold uppercase tracking-widest text-rose-400 mb-2">
                     <FiClock className="w-3 h-3" />
-                    Cette offre expire dans
+                    {t('detail.offerExpiresIn', { ns: 'product' })}
                   </p>
                   <CountdownTimer targetDate={discountEndDate} />
                 </div>
@@ -312,7 +346,7 @@ const ProductDetailPage = () => {
               {originalPrice && hasActiveDiscount && (
                 <div className="flex items-center gap-2 mb-1.5">
                   <span className="text-base text-slate-400 line-through font-medium tabular-nums">
-                    {formatCurrency(originalPrice)}
+                    {formatPrice(originalPrice)}
                   </span>
                   <span className="bg-rose-100 text-rose-700 text-xs font-extrabold px-2 py-0.5 rounded-lg">
                     -{discountPercentage}%
@@ -324,19 +358,19 @@ const ProductDetailPage = () => {
                   hasActiveDiscount ? 'text-rose-600' : 'text-slate-900'
                 }`}
               >
-                {formatCurrency(price)}
+                {formatPrice(price)}
               </span>
               {hasActiveDiscount && (
-                <p className="mt-1.5 text-sm text-slate-400">au lieu de {formatCurrency(originalPrice)}</p>
+                <p className="mt-1.5 text-sm text-slate-400">{t('detail.priceInsteadOf', { ns: 'product', price: formatPrice(originalPrice) })}</p>
               )}
             </div>
 
             {/* Feature pills */}
             <div className="grid grid-cols-3 gap-2.5">
               {[
-                { Icon: FiDownload, title: 'Téléchargement', sub: 'Immédiat' },
-                { Icon: FiShield,   title: 'Garantie',      sub: '30 jours' },
-                { Icon: fmt.Icon,   title: 'Format',        sub: fmt.label  },
+                { Icon: FiMonitor, title: t('detail.featureOnlineAccess', { ns: 'product' }), sub: t('detail.featureImmediate', { ns: 'product' }) },
+                { Icon: FiShield,  title: t('detail.labelGuarantee', { ns: 'product' }),       sub: t('detail.featureGuarantee30Days', { ns: 'product' }) },
+                { Icon: fmt.Icon,  title: t('detail.labelFormat', { ns: 'product' }),          sub: t(fmt.labelKey, { ns: 'product' })  },
               ].map(({ Icon, title, sub }) => (
                 <div
                   key={title}
@@ -357,10 +391,11 @@ const ProductDetailPage = () => {
                 onClick={handlePurchase}
                 className="w-full flex items-center justify-center gap-3 bg-emerald-600 hover:bg-emerald-700 active:scale-[0.99] text-white font-extrabold py-4 px-6 rounded-xl text-base transition-all shadow-md shadow-emerald-200/80 hover:shadow-lg hover:shadow-emerald-200/80 hover:-translate-y-0.5"
               >
-                <FiDownload className="w-5 h-5" />
-                {t('detail.downloadNow', { ns: 'product' })}
+                {owned ? <FiPlayCircle className="w-5 h-5" /> : <FiShoppingCart className="w-5 h-5" />}
+                {owned ? t('detail.continueLearning', { ns: 'product' }) : t('detail.buyNow', { ns: 'product' })}
               </button>
 
+              {!owned && (
               <button
                 onClick={handleAddToCart}
                 disabled={!product || cartAdded || (product && isInCart(product.id))}
@@ -384,6 +419,7 @@ const ProductDetailPage = () => {
                   </>
                 )}
               </button>
+              )}
 
               {socialLinks.whatsapp && (
                 <a
@@ -401,9 +437,9 @@ const ProductDetailPage = () => {
             {/* Trust strip */}
             <div className="flex items-center justify-around py-4 px-5 bg-white rounded-xl border border-slate-100 shadow-sm">
               {[
-                { Icon: FiShield,   text: 'Paiement sécurisé' },
-                { Icon: FiDownload, text: 'Accès immédiat' },
-                { Icon: FiCheck,    text: 'Garantie qualité' },
+                { Icon: FiShield,  text: t('detail.trustSecurePayment', { ns: 'product' }) },
+                { Icon: FiMonitor, text: t('detail.trustImmediateAccess', { ns: 'product' }) },
+                { Icon: FiCheck,   text: t('detail.trustQualityGuarantee', { ns: 'product' }) },
               ].map(({ Icon, text }) => (
                 <div key={text} className="flex flex-col items-center gap-1.5 text-center">
                   <div className="w-8 h-8 rounded-full bg-emerald-50 flex items-center justify-center">
@@ -445,15 +481,51 @@ const ProductDetailPage = () => {
               </p>
             )}
 
+            {activeTab === 'curriculum' && (
+              lessons.length === 0 ? (
+                <p className="text-slate-500 text-sm">{t('detail.curriculumComingSoon', { ns: 'product' })}</p>
+              ) : (
+                <div className="space-y-2">
+                  {lessons.map((lesson, index) => {
+                    const LessonIcon = LESSON_ICONS[lesson.contentType] || FiFileText
+                    return (
+                      <div
+                        key={lesson.id}
+                        className="flex items-center gap-3 p-3.5 rounded-xl bg-slate-50 border border-slate-100"
+                      >
+                        <span className="w-7 h-7 rounded-lg bg-white border border-slate-200 flex items-center justify-center text-xs font-bold text-slate-400 shrink-0">
+                          {index + 1}
+                        </span>
+                        <div className="w-9 h-9 rounded-lg bg-emerald-100 flex items-center justify-center shrink-0">
+                          <LessonIcon className="w-4 h-4 text-emerald-700" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm font-semibold text-slate-800 truncate">{lesson.title}</p>
+                          {lesson.description && (
+                            <p className="text-xs text-slate-400 truncate">{lesson.description}</p>
+                          )}
+                        </div>
+                        {!owned && <FiShield className="w-4 h-4 text-slate-300 shrink-0" />}
+                      </div>
+                    )
+                  })}
+                  <p className="text-xs text-slate-400 pt-2 flex items-center gap-1.5">
+                    <FiMonitor className="w-3.5 h-3.5" />
+                    {t('detail.onlineViewingOnly', { ns: 'product' })}
+                  </p>
+                </div>
+              )
+            )}
+
             {activeTab === 'details' && (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 {[
-                  { Icon: fmt.Icon,   label: 'Format',          value: format },
-                  { Icon: FiDownload, label: 'Téléchargement',  value: 'Immédiat après achat' },
-                  { Icon: FiShield,   label: 'Garantie',        value: 'Satisfait ou remboursé sous 30 jours' },
-                  { Icon: FiStar,     label: 'Note',            value: `${rating}/5.0 — ${reviewCount} avis` },
-                  { Icon: FiCheck,    label: 'Qualité',         value: 'Contenu vérifié et approuvé' },
-                  { Icon: FiDownload, label: 'Ventes',          value: downloadCount.toLocaleString() },
+                  { Icon: fmt.Icon,   label: t('detail.labelFormat', { ns: 'product' }),   value: format },
+                  { Icon: FiMonitor,  label: t('detail.labelAccess', { ns: 'product' }),   value: t('detail.valueAccessFull', { ns: 'product' }) },
+                  { Icon: FiShield,   label: t('detail.labelGuarantee', { ns: 'product' }),value: t('detail.valueGuaranteeFull', { ns: 'product' }) },
+                  { Icon: FiStar,     label: t('detail.labelRating', { ns: 'product' }),   value: t('detail.valueRating', { ns: 'product', rating, count: reviewCount }) },
+                  { Icon: FiCheck,    label: t('detail.labelQuality', { ns: 'product' }),  value: t('detail.valueQuality', { ns: 'product' }) },
+                  { Icon: FiDownload, label: t('detail.labelSales', { ns: 'product' }),    value: downloadCount.toLocaleString() },
                 ].map(({ Icon, label, value }) => (
                   <div
                     key={label}
@@ -480,8 +552,8 @@ const ProductDetailPage = () => {
                     <FiStar key={i} className="w-8 h-8 text-slate-200 fill-current" />
                   ))}
                 </div>
-                <p className="text-slate-700 font-bold mb-1">Aucun avis pour le moment</p>
-                <p className="text-slate-400 text-sm">Soyez le premier à laisser un avis sur ce produit !</p>
+                <p className="text-slate-700 font-bold mb-1">{t('detail.noReviewsYetTitle', { ns: 'product' })}</p>
+                <p className="text-slate-400 text-sm">{t('detail.beFirstToReview', { ns: 'product' })}</p>
               </div>
             )}
           </div>

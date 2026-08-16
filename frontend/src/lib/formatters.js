@@ -2,10 +2,12 @@ import i18next from 'i18next'
 
 export function formatCurrency(amount, currency) {
   const locale = i18next.language || 'en'
-  return new Intl.NumberFormat(locale, {
-    style: 'currency',
-    currency: currency || 'USD',
-  }).format(amount)
+  // "FCFA" isn't a valid ISO 4217 code, so Intl's `style: 'currency'` can't be used —
+  // format the number with locale-aware grouping and append the currency label as
+  // text, same approach already used in the admin pages. Site currency defaults to
+  // FCFA (the actual configured currency — see SiteConfig/AppContext) rather than USD.
+  const symbol = currency || 'FCFA'
+  return `${new Intl.NumberFormat(locale).format(amount)} ${symbol}`
 }
 
 export function formatDate(date) {

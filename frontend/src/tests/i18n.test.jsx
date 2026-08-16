@@ -11,7 +11,7 @@ import { formatCurrency } from '../lib/formatters.js'
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const localesRoot = join(__dirname, '../../public/locales')
 const SUPPORTED = ['en', 'fr', 'zh', 'hi', 'es']
-const NAMESPACES = ['common', 'auth', 'product', 'checkout', 'library', 'admin', 'errors']
+const NAMESPACES = ['common', 'auth', 'product', 'checkout', 'library', 'errors', 'landing', 'about', 'services', 'legal', 'adminDashboard', 'adminProducts', 'adminOrders', 'adminUsers', 'adminAnalytics', 'adminSettings']
 
 function collectLeafKeys(obj, prefix = '') {
   const keys = []

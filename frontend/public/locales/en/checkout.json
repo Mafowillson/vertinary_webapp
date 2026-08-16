@@ -70,7 +70,9 @@
     "paymentDetails": "Payment details",
     "price": "Price",
     "reduction": "Discount",
-    "securePaymentNote": "Secure checkout"
+    "securePaymentNote": "Secure checkout",
+    "emailPlaceholder": "you@example.com",
+    "orderCreationFailed": "Order creation failed."
   },
   "confirmation": {
     "title": "Thank you",
@@ -91,21 +93,23 @@
     "digitalAccess": "Digital access",
     "thisProduct": "this product",
     "congratulations": "Congratulations",
-    "purchaseSuccessMessage": "You can download your purchase immediately.",
-    "downloadDocument": "Download your document",
-    "downloadFileInstruction": "Use the button below to download your file.",
-    "downloadButton": "Download now",
+    "purchaseSuccessMessage": "You can access your purchase online right away.",
+    "accessContent": "Access your content",
+    "accessContentInstruction": "Watch, listen, or read directly in your account — no download needed.",
+    "accessContentButton": "Start learning",
     "needHelp": "Need help?",
     "contactWhatsAppHelp": "Message us on WhatsApp if something goes wrong:",
     "contactWhatsApp": "WhatsApp support",
     "securePurchase": "Secure purchase",
     "securePurchaseMessage": "Your transaction is protected with encryption.",
     "nextSteps": "Next steps",
-    "step1": "Click the download button above",
-    "step2": "Save the file on your device",
-    "step3": "Start learning and apply on your farm",
+    "step1": "Click \"Start learning\" to access your content",
+    "step2": "It opens right in your account's course player",
+    "step3": "Watch, listen, or read at your own pace — no download needed",
     "faqTitle": "I don't see my file — what should I do?",
     "faqAnswer": "Disable pop-up blockers, refresh the page, or contact us on WhatsApp.",
-    "instructions": "Instructions"
+    "instructions": "Instructions",
+    "onlinePaymentMethod": "Online",
+    "notAvailable": "Not available"
   }
 }

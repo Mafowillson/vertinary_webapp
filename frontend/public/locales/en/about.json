@@ -1,0 +1,86 @@
+{
+  "hero": {
+    "badge": "Founder & Verified Expert",
+    "titleLine1": "The vision",
+    "titleHighlightLine1": "behind",
+    "titleHighlightLine2": "the Academy",
+    "social": {
+      "youtube": "YouTube",
+      "facebook": "Facebook",
+      "whatsapp": "WhatsApp"
+    },
+    "floatingGuides": "Guides",
+    "floatingBreeders": "Breeders"
+  },
+  "stats": {
+    "breedersTrained": "Breeders trained",
+    "guidesCreated": "Guides created",
+    "yearsExpertise": "Years of expertise",
+    "videos": "Educational videos"
+  },
+  "pillars": {
+    "eyebrow": "What guides us",
+    "heading": "Our four pillars",
+    "education": {
+      "title": "Education",
+      "description": "Making veterinary knowledge accessible to every breeder, everywhere."
+    },
+    "globalReach": {
+      "title": "Global Reach",
+      "description": "Connecting Cameroonian and international breeders through shared knowledge."
+    },
+    "innovation": {
+      "title": "Innovation",
+      "description": "Creating innovative products and tools to accelerate growth in livestock farming."
+    },
+    "passion": {
+      "title": "Passion",
+      "description": "Every piece of content is born from a genuine passion for animal welfare."
+    }
+  },
+  "timeline": {
+    "eyebrow": "Evolution",
+    "heading": "Our journey",
+    "milestones": {
+      "2020": { "title": "The journey begins", "description": "Started veterinary medicine studies" },
+      "2021": { "title": "Content creation", "description": "Launched the YouTube channel and Facebook page" },
+      "2022": { "title": "First book", "description": "Published the first book \"ALL ABOUT LIVESTOCK FARMING\"" },
+      "2023": { "title": "The Academy", "description": "Founded the Breeders' Academy" },
+      "2024": { "title": "Digital platform", "description": "Launched the educational web platform" }
+    }
+  },
+  "credentials": {
+    "eyebrow": "Expertise",
+    "heading": "Achievements & Recognition",
+    "tabs": {
+      "formation": "Education",
+      "innovation": "Innovation"
+    },
+    "items": {
+      "vetStudent": { "label": "Veterinary Medicine Doctoral Student", "sub": "Continuing education" },
+      "animalProdEngineer": { "label": "Animal Production Engineer", "sub": "Expertise in animal management" },
+      "author": { "label": "Author — \"All About Livestock Farming\" series", "sub": "Several books published" },
+      "founder": { "label": "Founder of the Breeders' Academy", "sub": "Educational platform" },
+      "manufacturer": { "label": "Manufacturer of the Organic Growth Accelerator", "sub": "Innovative product" },
+      "contentCreator": { "label": "Educational content creator", "sub": "YouTube & Facebook" }
+    }
+  },
+  "quote": {
+    "eyebrow": "Our vision",
+    "text": "Building a global community of educated, thriving breeders, where veterinary knowledge is accessible to",
+    "highlight": "everyone, everywhere.",
+    "cards": {
+      "accessibility": { "title": "Accessibility", "body": "Information shouldn't be a privilege. We're democratizing it." },
+      "community": { "title": "Community", "body": "Together, we're building a network of supportive, informed breeders." },
+      "sustainability": { "title": "Sustainability", "body": "Educated farming means more sustainable agriculture for tomorrow." }
+    }
+  },
+  "cta": {
+    "eyebrow": "Join us",
+    "headingLine1": "Ready to transform",
+    "headingLine2": "your farm?",
+    "text": "Explore our resources, courses and books to master your craft as a breeder.",
+    "resourcesButton": "Browse resources",
+    "contactButton": "Contact us"
+  }
+}

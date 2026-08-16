@@ -1,7 +1,9 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { Trans } from 'react-i18next'
 import { FiAlertCircle, FiArrowLeft, FiArrowRight, FiMail } from 'react-icons/fi'
 import { authService } from '../../services/authService'
+import { useLanguage } from '../../contexts/LanguageContext'
 import AuthLayout from '../../components/Layout/AuthLayout'
 
 const Spinner = () => (
@@ -16,6 +18,7 @@ const ForgotPasswordPage = () => {
   const [error, setError] = useState('')
   const [success, setSuccess] = useState(false)
   const [loading, setLoading] = useState(false)
+  const { t } = useLanguage()
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -25,14 +28,14 @@ const ForgotPasswordPage = () => {
       await authService.forgotPassword(email.trim())
       setSuccess(true)
     } catch (err) {
-      setError(err.message || 'Une erreur est survenue. Veuillez réessayer.')
+      setError(err.message || t('passwordReset.genericError', { ns: 'auth' }))
     } finally {
       setLoading(false)
     }
   }
 
   return (
-    <AuthLayout quote="Pas de panique, on vous aide à retrouver l'accès à votre compte.">
+    <AuthLayout quote={t('passwordReset.forgotQuote', { ns: 'auth' })}>
       <div className="space-y-6">
 
         {/* Icon + heading */}
@@ -41,9 +44,9 @@ const ForgotPasswordPage = () => {
             <FiMail className="w-6 h-6 text-[#1A7A6E]" />
           </div>
           <div>
-            <h1 className="text-2xl font-extrabold text-gray-900">Mot de passe oublié ?</h1>
+            <h1 className="text-2xl font-extrabold text-gray-900">{t('passwordReset.title', { ns: 'auth' })}</h1>
             <p className="mt-1 text-sm text-gray-500">
-              Entrez votre email et nous vous enverrons un lien de réinitialisation.
+              {t('passwordReset.instruction', { ns: 'auth' })}
             </p>
           </div>
         </div>
@@ -57,13 +60,15 @@ const ForgotPasswordPage = () => {
                   <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                 </svg>
               </div>
-              <p className="text-sm font-semibold text-green-800">Email envoyé !</p>
+              <p className="text-sm font-semibold text-green-800">{t('passwordReset.emailSentTitle', { ns: 'auth' })}</p>
               <p className="text-sm text-green-700">
-                Si un compte existe pour <strong>{email}</strong>, vous recevrez un lien de réinitialisation dans quelques minutes.
+                <Trans i18nKey="passwordReset.success" ns="auth" values={{ email }}>
+                  Si un compte existe pour <strong>{{ email }}</strong>, vous recevrez un lien de réinitialisation dans quelques minutes.
+                </Trans>
               </p>
             </div>
             <p className="text-xs text-gray-500 text-center">
-              Vérifiez vos spams si vous ne voyez pas l'email.
+              {t('passwordReset.checkSpam', { ns: 'auth' })}
             </p>
           </div>
         ) : (
@@ -79,7 +84,7 @@ const ForgotPasswordPage = () => {
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-1.5">
                 <label htmlFor="email" className="block text-sm font-semibold text-gray-700">
-                  Adresse email
+                  {t('login.emailLabel', { ns: 'auth' })}
                 </label>
                 <input
                   id="email"
@@ -88,7 +93,7 @@ const ForgotPasswordPage = () => {
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="vous@exemple.com"
+                  placeholder={t('login.emailPlaceholder', { ns: 'auth' })}
                   className="w-full px-4 py-3 text-sm border border-gray-200 rounded-xl bg-gray-50 focus:bg-white focus:border-[#1A7A6E] focus:ring-2 focus:ring-[#1A7A6E]/20 outline-none transition-all placeholder-gray-400"
                 />
               </div>
@@ -99,9 +104,9 @@ const ForgotPasswordPage = () => {
                 className="w-full flex items-center justify-center gap-2 bg-[#1A7A6E] hover:bg-[#155f55] text-white font-bold py-3 rounded-xl transition-all duration-200 shadow-sm hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {loading ? (
-                  <><Spinner /> Envoi en cours...</>
+                  <><Spinner /> {t('passwordReset.sending', { ns: 'auth' })}</>
                 ) : (
-                  <>Envoyer le lien <FiArrowRight className="w-4 h-4" /></>
+                  <>{t('passwordReset.submitButton', { ns: 'auth' })} <FiArrowRight className="w-4 h-4" /></>
                 )}
               </button>
             </form>
@@ -114,7 +119,7 @@ const ForgotPasswordPage = () => {
           className="flex items-center justify-center gap-2 text-sm font-semibold text-gray-500 hover:text-gray-800 transition-colors pt-2 border-t border-gray-100"
         >
           <FiArrowLeft className="w-4 h-4" />
-          Retour à la connexion
+          {t('passwordReset.backToLogin', { ns: 'auth' })}
         </Link>
 
       </div>

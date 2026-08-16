@@ -1,0 +1,59 @@
+{
+  "loadError": "ऑर्डर लोड नहीं हो सके।",
+  "header": {
+    "title": "ऑर्डर और भुगतान",
+    "subtitle": "ग्राहक ऑर्डर प्रबंधित करें और भुगतान ट्रैक करें"
+  },
+  "stats": {
+    "total": "कुल ऑर्डर",
+    "completed": "पूर्ण",
+    "pending": "लंबित",
+    "totalRevenue": "कुल राजस्व"
+  },
+  "statusLabels": {
+    "all": "सभी",
+    "completed": "पूर्ण",
+    "pending": "लंबित",
+    "failed": "असफल"
+  },
+  "paymentLabels": {
+    "mobileMoney": "मोबाइल मनी",
+    "orangeMoney": "ऑरेंज मनी",
+    "bankTransfer": "बैंक ट्रांसफर",
+    "online": "डेबिट/क्रेडिट कार्ड",
+    "unpaid": "भुगतान नहीं हुआ"
+  },
+  "filters": {
+    "searchPlaceholder": "ऑर्डर नंबर, ग्राहक या उत्पाद से खोजें...",
+    "sortRecent": "सबसे हाल का",
+    "sortDate": "तारीख (हाल का)",
+    "sortAmount": "राशि (घटते क्रम में)"
+  },
+  "card": {
+    "product": "उत्पाद",
+    "amount": "राशि",
+    "payment": "भुगतान",
+    "viewDetails": "विवरण देखें"
+  },
+  "list": {
+    "customer": "ग्राहक",
+    "product": "उत्पाद",
+    "paymentAndDate": "भुगतान और तारीख"
+  },
+  "empty": {
+    "title": "कोई ऑर्डर नहीं मिला",
+    "withFilters": "अपने फ़िल्टर समायोजित करने का प्रयास करें",
+    "noFilters": "जब ग्राहक खरीदारी करेंगे, तो ऑर्डर यहाँ दिखाई देंगे"
+  },
+  "modal": {
+    "title": "ऑर्डर विवरण",
+    "orderNumber": "ऑर्डर नंबर",
+    "customerInfo": "ग्राहक जानकारी",
+    "product": "उत्पाद",
+    "amount": "राशि",
+    "paymentMethod": "भुगतान का तरीका",
+    "orderDate": "ऑर्डर की तारीख",
+    "status": "स्थिति",
+    "close": "बंद करें"
+  }
+}

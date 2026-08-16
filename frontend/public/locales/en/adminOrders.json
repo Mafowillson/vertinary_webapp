@@ -1,0 +1,59 @@
+{
+  "loadError": "Unable to load orders.",
+  "header": {
+    "title": "Orders & Payments",
+    "subtitle": "Manage customer orders and track payments"
+  },
+  "stats": {
+    "total": "Total Orders",
+    "completed": "Completed",
+    "pending": "Pending",
+    "totalRevenue": "Total Revenue"
+  },
+  "statusLabels": {
+    "all": "All",
+    "completed": "Completed",
+    "pending": "Pending",
+    "failed": "Failed"
+  },
+  "paymentLabels": {
+    "mobileMoney": "Mobile Money",
+    "orangeMoney": "Orange Money",
+    "bankTransfer": "Bank Transfer",
+    "online": "Credit Card",
+    "unpaid": "Unpaid"
+  },
+  "filters": {
+    "searchPlaceholder": "Search by order number, customer or product...",
+    "sortRecent": "Most recent",
+    "sortDate": "Date (recent)",
+    "sortAmount": "Amount (descending)"
+  },
+  "card": {
+    "product": "Product",
+    "amount": "Amount",
+    "payment": "Payment",
+    "viewDetails": "View details"
+  },
+  "list": {
+    "customer": "Customer",
+    "product": "Product",
+    "paymentAndDate": "Payment & Date"
+  },
+  "empty": {
+    "title": "No orders found",
+    "withFilters": "Try adjusting your filters",
+    "noFilters": "Orders will appear here once customers make purchases"
+  },
+  "modal": {
+    "title": "Order Details",
+    "orderNumber": "Order Number",
+    "customerInfo": "Customer Information",
+    "product": "Product",
+    "amount": "Amount",
+    "paymentMethod": "Payment Method",
+    "orderDate": "Order Date",
+    "status": "Status",
+    "close": "Close"
+  }
+}

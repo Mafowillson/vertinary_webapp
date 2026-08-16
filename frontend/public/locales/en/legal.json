@@ -1,0 +1,316 @@
+{
+  "privacy": {
+    "pageTitle": "Privacy Policy",
+    "backToHome": "Back to home",
+    "updated": "Updated: {{date}}",
+    "readTime": "~8 min read",
+    "sectionsCount": "{{count}} sections",
+    "toc": {
+      "heading": "Table of contents",
+      "mobileLabel": "Table of contents · {{count}} sections"
+    },
+    "sections": {
+      "introduction": {
+        "title": "Introduction",
+        "paragraph1": "Welcome to Académie des Éleveurs (\"we\", \"our\", or \"us\"). We are committed to protecting your privacy and ensuring the security of your personal information. This Privacy Policy explains how we collect, use, disclose, and protect your information when you visit our website and use our services.",
+        "paragraph2": "By using our services, you agree to the collection and use of information in accordance with this policy. If you do not agree with our policies and practices, please do not use our services."
+      },
+      "informationCollection": {
+        "title": "Information we collect",
+        "personalInfo": {
+          "heading": "Personal information",
+          "intro": "We may collect the following types of personal information:",
+          "items": [
+            "Name and contact details (email address, phone number)",
+            "Account credentials (username, password)",
+            "Payment information (credit card details, billing address)",
+            "Professional information (veterinary license number, clinic information)",
+            "Purchase history and transaction records"
+          ]
+        },
+        "autoInfo": {
+          "heading": "Information collected automatically",
+          "intro": "When you visit our website, we automatically collect certain information:",
+          "items": [
+            "IP address and device information",
+            "Browser type and version",
+            "Pages visited and time spent on pages",
+            "Referring website addresses",
+            "Cookies and similar tracking technologies"
+          ]
+        }
+      },
+      "howWeUse": {
+        "title": "How we use your information",
+        "intro": "We use the information collected for the following purposes:",
+        "items": [
+          "Providing, maintaining, and improving our services",
+          "Processing transactions and sending related information",
+          "Sending administrative information and updates",
+          "Responding to your inquiries and providing customer support",
+          "Sending marketing communications (with your consent)",
+          "Detecting, preventing, and resolving technical issues",
+          "Complying with legal obligations and enforcing our terms",
+          "Protecting the rights, property, and safety of our users"
+        ]
+      },
+      "informationSharing": {
+        "title": "Sharing and disclosure of information",
+        "intro": "We do not sell, trade, or rent your personal information to third parties. We may only share your information under the following circumstances:",
+        "serviceProviders": {
+          "heading": "Service providers",
+          "body": "We may share information with third-party service providers who perform services on our behalf, such as payment processing, data analysis, and email delivery."
+        },
+        "legalRequirements": {
+          "heading": "Legal requirements",
+          "body": "We may disclose information if required by law or in response to valid requests from public authorities."
+        },
+        "businessTransfers": {
+          "heading": "Business transfers",
+          "body": "In the event of a merger, acquisition, or asset sale, your information may be transferred to the acquiring entity."
+        }
+      },
+      "dataSecurity": {
+        "title": "Data security",
+        "intro": "We implement appropriate technical and organizational security measures to protect your personal information against unauthorized access, alteration, disclosure, or destruction. These measures include:",
+        "items": [
+          "256-bit SSL encryption for data transmission",
+          "Secure server infrastructure with regular security audits",
+          "Access controls and authentication mechanisms",
+          "Regular backups and disaster recovery procedures",
+          "Data handling practices aligned with HIPAA standards"
+        ],
+        "disclaimer": "No method of transmission over the Internet is 100% secure. While we strive to use commercially acceptable means to protect your information, we cannot guarantee absolute security."
+      },
+      "cookies": {
+        "title": "Cookies and tracking technologies",
+        "intro": "We use cookies and similar tracking technologies to track activity on our website and store certain information.",
+        "types": {
+          "heading": "Types of cookies we use",
+          "items": [
+            { "label": "Essential cookies:", "text": "Necessary for the website to function properly" },
+            { "label": "Analytics cookies:", "text": "Help us understand how visitors interact with our site" },
+            { "label": "Preference cookies:", "text": "Remember your preferences and settings" },
+            { "label": "Marketing cookies:", "text": "Used to deliver relevant advertisements" }
+          ]
+        },
+        "outro": "You can set your browser to refuse all cookies. However, some features of the site may no longer work properly."
+      },
+      "yourRights": {
+        "title": "Your rights and choices",
+        "intro": "You have the following rights regarding your personal information:",
+        "items": [
+          { "label": "Access:", "text": "Request access to your personal information" },
+          { "label": "Correction:", "text": "Request correction of inaccurate information" },
+          { "label": "Deletion:", "text": "Request deletion of your personal information" },
+          { "label": "Objection:", "text": "Object to the processing of your personal information" },
+          { "label": "Portability:", "text": "Request the transfer of your data to another service" },
+          { "label": "Withdrawal:", "text": "Withdraw your consent to data processing" }
+        ],
+        "outro": "To exercise these rights, please contact us using the details below."
+      },
+      "dataRetention": {
+        "title": "Data retention",
+        "paragraph1": "We will only retain your personal information for as long as necessary to fulfill the purposes described in this Privacy Policy, unless a longer retention period is required or permitted by law.",
+        "paragraph2": "When we no longer need your personal information, we will securely delete or anonymize it in accordance with our data retention policies."
+      },
+      "childrenPrivacy": {
+        "title": "Children's privacy",
+        "paragraph1": "Our services are not intended for individuals under the age of 18. We do not knowingly collect personal information from minors. If you are a parent or guardian and believe your child has provided us with personal information, please contact us immediately."
+      },
+      "internationalTransfers": {
+        "title": "International data transfers",
+        "paragraph1": "Your information may be transferred to and maintained on computers located outside your country, where data protection laws may differ from those of your jurisdiction.",
+        "paragraph2": "By using our services, you consent to the transfer of your information. We will take all reasonably necessary steps to ensure that your data is treated securely in accordance with this Privacy Policy."
+      },
+      "changes": {
+        "title": "Changes to this policy",
+        "paragraph1": "We may update our Privacy Policy from time to time. We will notify you of any changes by posting the new Policy on this page and updating the \"Last updated\" date.",
+        "paragraph2": "You are advised to review this Policy periodically for any changes. Changes take effect as soon as they are posted on this page."
+      },
+      "contact": {
+        "title": "Contact us",
+        "paragraph1": "If you have any questions about this Privacy Policy or our data practices, please contact us using the details shown below."
+      }
+    },
+    "contactCard": {
+      "heading": "Questions about this policy?",
+      "subtext": "Our team is available to answer any of your questions.",
+      "whatsappLabel": "WhatsApp",
+      "emailLabel": "Email",
+      "addressLabel": "Address",
+      "addressValue": "Cameroon"
+    },
+    "closingNote": "By using our services, you acknowledge that you have read and understood this Privacy Policy."
+  },
+  "terms": {
+    "pageTitle": "Terms of Service",
+    "backToHome": "Back to home",
+    "updated": "Updated: {{date}}",
+    "readTime": "~10 min read",
+    "sectionsCount": "{{count}} sections",
+    "banner": {
+      "label": "Important notice:",
+      "text": "By using the Service, you agree to be bound by these Terms. If you do not agree to these Terms, please do not use the Service."
+    },
+    "toc": {
+      "heading": "Table of contents",
+      "mobileLabel": "Table of contents · {{count}} sections"
+    },
+    "sections": {
+      "acceptance": {
+        "title": "Acceptance of terms",
+        "paragraph1": "By accessing and using the Académie des Éleveurs website and services, you accept and agree to be bound by the terms and provisions of this agreement. If you do not agree to abide by the above, please do not use this service.",
+        "paragraph2": "These Terms of Service (\"Terms\") govern your access to and use of our website, products, and services (collectively, the \"Service\"). Please read these Terms carefully before using our Service."
+      },
+      "definitions": {
+        "title": "Definitions",
+        "items": [
+          { "label": "\"Service\"", "text": "the Académie des Éleveurs website, products, courses, and all associated services." },
+          { "label": "\"User\"", "text": "the person accessing or using the Service." },
+          { "label": "\"Company\"", "text": "Académie des Éleveurs." },
+          { "label": "\"Content\"", "text": "all information, text, graphics, images, videos, and other materials available through the Service." },
+          { "label": "\"Account\"", "text": "the account you create to access certain features of the Service." }
+        ]
+      },
+      "accountRegistration": {
+        "title": "Account registration and security",
+        "intro": "To access certain features of the Service, you may be required to create an account. When creating an account, you agree to:",
+        "items": [
+          "Provide accurate, current, and complete information",
+          "Maintain and promptly update your account information",
+          "Maintain the security of your password and login credentials",
+          "Accept full responsibility for all activities under your account",
+          "Notify us immediately of any unauthorized use of your account"
+        ],
+        "outro": "You are responsible for maintaining the confidentiality of your account credentials."
+      },
+      "useOfService": {
+        "title": "Use of the Service",
+        "authorized": {
+          "heading": "Authorized use",
+          "intro": "You may only use the Service for lawful purposes and in accordance with these Terms:",
+          "items": [
+            "For educational and professional purposes",
+            "In compliance with all applicable laws and regulations",
+            "Without infringing on the rights of others"
+          ]
+        },
+        "prohibited": {
+          "heading": "Prohibited activities",
+          "intro": "You agree not to:",
+          "items": [
+            "Violate any applicable law or regulation",
+            "Infringe on the rights of others",
+            "Transmit any harmful, offensive, or unlawful content",
+            "Attempt to gain unauthorized access to the Service",
+            "Interfere with or disrupt the Service or its servers",
+            "Copy, modify, or distribute content without authorization",
+            "Use automated systems to access the Service",
+            "Impersonate any person or entity"
+          ]
+        }
+      },
+      "intellectualProperty": {
+        "title": "Intellectual property rights",
+        "intro": "The Service and its original content are the property of Académie des Éleveurs and are protected by international copyright, trademark, and other intellectual property laws.",
+        "ourContent": {
+          "heading": "Our content",
+          "body": "All content provided through the Service — text, graphics, logos, images, videos, courses, and software — is the property of Académie des Éleveurs or its content providers and is protected by copyright laws."
+        },
+        "limitedLicense": {
+          "heading": "Limited license",
+          "body": "We grant you a limited, non-exclusive, non-transferable, and revocable license to access and use the Service for personal, non-commercial purposes."
+        },
+        "restrictions": {
+          "heading": "Restrictions",
+          "items": [
+            "Reproducing, distributing, or creating derivative works from our content",
+            "Using our content for commercial purposes without authorization",
+            "Removing any copyright or proprietary notices",
+            "Sharing your account credentials with other people"
+          ]
+        }
+      },
+      "purchases": {
+        "title": "Purchases and payments",
+        "pricing": {
+          "heading": "Pricing",
+          "body": "All prices for products and services are displayed in the applicable currency and are subject to change without notice. We reserve the right to modify prices at any time."
+        },
+        "paymentTerms": {
+          "heading": "Payment terms",
+          "items": [
+            "Provide valid payment information",
+            "Pay all charges incurred on your account",
+            "Authorize us to charge your chosen payment method"
+          ]
+        },
+        "refunds": {
+          "heading": "Refunds",
+          "body": "Refund policies vary depending on the type of product. Digital products may be eligible for a refund within a specified period after purchase. Please contact us for specific terms."
+        }
+      },
+      "userContent": {
+        "title": "User-generated content",
+        "paragraph1": "If you submit, post, or display content on or through the Service, you grant us a worldwide, non-exclusive, royalty-free license to use, reproduce, modify, and distribute that content for the purposes of operating and promoting the Service.",
+        "paragraph2": "You represent and warrant that you own or have the necessary rights to grant the license described above, and that your content does not violate any third-party rights or applicable law."
+      },
+      "disclaimers": {
+        "title": "Disclaimers",
+        "statement": "THE SERVICE IS PROVIDED \"AS IS\" AND \"AS AVAILABLE\" WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED.",
+        "intro": "We do not warrant that:",
+        "items": [
+          "The Service will be uninterrupted or error-free",
+          "Defects will be corrected",
+          "The Service is free of viruses or other harmful components",
+          "The information provided is accurate, complete, or up to date"
+        ],
+        "disclaimer": "The educational content provided is for informational purposes only and is not a substitute for professional veterinary advice. Always consult a licensed veterinarian for specific animal health concerns."
+      },
+      "limitationLiability": {
+        "title": "Limitation of liability",
+        "paragraph1": "TO THE MAXIMUM EXTENT PERMITTED BY LAW, ACADÉMIE DES ÉLEVEURS SHALL NOT BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, OR CONSEQUENTIAL DAMAGES, NOR FOR ANY LOSS OF PROFITS OR REVENUE.",
+        "paragraph2": "Our total liability to you for all claims arising out of or related to the use of the Service shall not exceed the amount you paid us during the twelve (12) months preceding the claim."
+      },
+      "indemnification": {
+        "title": "Indemnification",
+        "intro": "You agree to indemnify and hold harmless Académie des Éleveurs, its officers, directors, employees, and agents from any claim, liability, damage, and expense arising out of or related to:",
+        "items": [
+          "Your access to or use of the Service",
+          "Your breach of these Terms",
+          "Your violation of the rights of others",
+          "Your user-generated content"
+        ]
+      },
+      "termination": {
+        "title": "Termination",
+        "paragraph1": "We may terminate or suspend your account and access to the Service immediately, without prior notice or liability, for any reason whatsoever, including if you breach these Terms.",
+        "paragraph2": "Upon termination, your right to use the Service will cease immediately. All provisions of these Terms which by their nature should survive termination shall survive, including ownership provisions, warranty disclaimers, and limitations of liability."
+      },
+      "governingLaw": {
+        "title": "Governing law",
+        "paragraph1": "These Terms are governed by and construed in accordance with the laws of Cameroon, without regard to its conflict of law provisions.",
+        "paragraph2": "Any dispute arising out of or related to these Terms or the Service shall be subject to the exclusive jurisdiction of the courts located in Cameroon."
+      },
+      "changes": {
+        "title": "Changes to these terms",
+        "paragraph1": "We reserve the right, at our sole discretion, to modify or replace these Terms at any time. If a revision is material, we will provide at least 30 days' notice before the new terms take effect.",
+        "paragraph2": "By continuing to access or use our Service after any revision takes effect, you agree to be bound by the revised terms."
+      },
+      "contact": {
+        "title": "Contact information",
+        "paragraph1": "If you have any questions about these Terms of Service, please contact us using the details shown below."
+      }
+    },
+    "contactCard": {
+      "heading": "Questions about these terms?",
+      "subtext": "Contact us with any questions about these Terms of Service.",
+      "whatsappLabel": "WhatsApp",
+      "emailLabel": "Email",
+      "addressLabel": "Address",
+      "addressValue": "Cameroon"
+    },
+    "closingNote": "By using our services, you acknowledge that you have read, understood, and agreed to be bound by these Terms of Service."
+  }
+}

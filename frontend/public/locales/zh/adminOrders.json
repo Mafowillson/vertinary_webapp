@@ -1,0 +1,59 @@
+{
+  "loadError": "无法加载订单。",
+  "header": {
+    "title": "订单与支付",
+    "subtitle": "管理客户订单并跟踪付款"
+  },
+  "stats": {
+    "total": "订单总数",
+    "completed": "已完成",
+    "pending": "待处理",
+    "totalRevenue": "总收入"
+  },
+  "statusLabels": {
+    "all": "全部",
+    "completed": "已完成",
+    "pending": "待处理",
+    "failed": "已失败"
+  },
+  "paymentLabels": {
+    "mobileMoney": "Mobile Money",
+    "orangeMoney": "Orange Money",
+    "bankTransfer": "银行转账",
+    "online": "银行卡",
+    "unpaid": "未支付"
+  },
+  "filters": {
+    "searchPlaceholder": "按订单号、客户或产品搜索...",
+    "sortRecent": "最新",
+    "sortDate": "日期（最新）",
+    "sortAmount": "金额（降序）"
+  },
+  "card": {
+    "product": "产品",
+    "amount": "金额",
+    "payment": "支付方式",
+    "viewDetails": "查看详情"
+  },
+  "list": {
+    "customer": "客户",
+    "product": "产品",
+    "paymentAndDate": "支付方式与日期"
+  },
+  "empty": {
+    "title": "未找到订单",
+    "withFilters": "请尝试调整筛选条件",
+    "noFilters": "客户完成购买后，订单将显示在此处"
+  },
+  "modal": {
+    "title": "订单详情",
+    "orderNumber": "订单号",
+    "customerInfo": "客户信息",
+    "product": "产品",
+    "amount": "金额",
+    "paymentMethod": "支付方式",
+    "orderDate": "下单日期",
+    "status": "状态",
+    "close": "关闭"
+  }
+}

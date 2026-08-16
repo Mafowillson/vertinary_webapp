@@ -95,6 +95,22 @@ def ensure_preferred_language_column() -> None:
         )
 
 
+def ensure_exchange_rates_column() -> None:
+    inspector = inspect(engine)
+    if "site_config" not in inspector.get_table_names():
+        return
+    columns = {column["name"] for column in inspector.get_columns("site_config")}
+    if "exchange_rates" in columns:
+        return
+    default_rates = '{"FCFA": 1, "USD": 0.00164, "EUR": 0.00152, "NGN": 2.6}'
+    with engine.begin() as connection:
+        connection.execute(
+            text(
+                f"ALTER TABLE site_config ADD COLUMN exchange_rates JSON NOT NULL DEFAULT '{default_rates}'::json"
+            )
+        )
+
+
 def get_db():
     """Dependency to get database session."""
     db = SessionLocal()

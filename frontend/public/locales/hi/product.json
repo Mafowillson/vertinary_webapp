@@ -1,5 +1,10 @@
 {
-  "types": { "course": "पाठ्यक्रम", "document": "दस्तावेज़", "article": "लेख", "audio": "ऑडियो" },
+  "types": {
+    "course": "पाठ्यक्रम",
+    "document": "दस्तावेज़",
+    "article": "लेख",
+    "audio": "ऑडियो"
+  },
   "detail": {
     "price": "मूल्य",
     "currency": "मुद्रा",
@@ -10,28 +15,54 @@
     "addedToCart": "जोड़ा गया!",
     "inCart": "कार्ट में",
     "addToCart": "कार्ट में जोड़ें",
-    "productNotFound": "उत्पाद नहीं मила",
+    "productNotFound": "उत्पाद नहीं मिला",
     "backToProducts": "उत्पादों पर वापस",
     "description": "विवरण",
     "noDescriptionAvailable": "कोई विवरण नहीं।",
     "limitedOffer": "सीमित ऑफ़र",
     "saveMoney": "बचत",
-    "downloadNow": "अभी डाउनलोड",
+    "buyNow": "अभी खरीदें",
+    "continueLearning": "जारी रखें",
     "loginToAddToCart": "कार्ट में जोड़ने के लिए लॉग इन",
-    "loginRequired": "लॉग इन आवश्यक"
-  },
-  "upload": {
-    "title": "उत्पाद अपलोड",
-    "titleLabel": "शीर्षक",
-    "descriptionLabel": "विवरण",
-    "typeLabel": "प्रकार",
-    "priceLabel": "मूल्य",
-    "categoryLabel": "श्रेणी",
-    "coverLabel": "कवर छवि",
-    "fileLabel": "फ़ाइल",
-    "publishButton": "प्रकाशित करें",
-    "uploadSuccess": "अपलोड सफल",
-    "publishSuccess": "उत्पाद लाइव है"
+    "loginRequired": "लॉग इन आवश्यक",
+    "loadingProduct": "उत्पाद लोड हो रहा है…",
+    "productNotFoundDesc": "आप जिस उत्पाद की तलाश कर रहे हैं वह मौजूद नहीं है या हटा दिया गया है।",
+    "catalogueLink": "कैटलॉग",
+    "topSeller": "टॉप सेलर",
+    "share": "साझा करें",
+    "salesCountLabel": "{{count}} बिक्री",
+    "soldCount": "{{count}} बेचे गए",
+    "defaultCategory": "पशु चिकित्सा संसाधन",
+    "saveAmountExpiring": "{{amount}} बचाएं — जल्द समाप्त हो रहा है",
+    "offerExpiresIn": "यह ऑफ़र समाप्त होने में",
+    "priceInsteadOf": "{{price}} के बजाय",
+    "featureOnlineAccess": "ऑनलाइन पहुंच",
+    "featureImmediate": "तत्काल",
+    "featureGuarantee30Days": "30 दिन",
+    "labelFormat": "प्रारूप",
+    "formatBadgePdf": "पीडीएफ़",
+    "formatBadgeVideo": "वीडियो",
+    "formatBadgeEbook": "ई-बुक",
+    "formatBadgeAudio": "ऑडियो",
+    "labelAccess": "पहुंच",
+    "labelGuarantee": "गारंटी",
+    "valueAccessFull": "खरीद के बाद तुरंत, ऑनलाइन",
+    "valueGuaranteeFull": "30 दिनों में संतुष्टि की गारंटी या धनवापसी",
+    "labelRating": "रेटिंग",
+    "valueRating": "{{rating}}/5.0 — {{count}} समीक्षाएँ",
+    "labelQuality": "गुणवत्ता",
+    "valueQuality": "सत्यापित और स्वीकृत सामग्री",
+    "labelSales": "बिक्री",
+    "trustSecurePayment": "सुरक्षित भुगतान",
+    "trustImmediateAccess": "तत्काल पहुंच",
+    "trustQualityGuarantee": "गुणवत्ता की गारंटी",
+    "tabContentCount": "सामग्री ({{count}})",
+    "tabDetails": "विवरण",
+    "tabReviewsCount": "समीक्षाएँ ({{count}})",
+    "curriculumComingSoon": "इस उत्पाद की सामग्री जल्द ही उपलब्ध होगी।",
+    "onlineViewingOnly": "केवल ऑनलाइन देखना, सीधे आपके खाते में।",
+    "noReviewsYetTitle": "अभी तक कोई समीक्षा नहीं",
+    "beFirstToReview": "इस उत्पाद पर समीक्षा छोड़ने वाले पहले व्यक्ति बनें!"
   },
   "filters": {
     "all": "सभी",
@@ -40,24 +71,88 @@
     "sortBy": "क्रमबद्ध",
     "priceAsc": "मूल्य बढ़ते",
     "priceDesc": "मूल्य घटते",
-    "newest": "नवीनतम"
+    "newest": "नवीनतम",
+    "mostPopular": "सबसे लोकप्रिय",
+    "refineTitle": "फ़िल्टर करें",
+    "refineSubtitle": "प्रजाति · प्रारूप · बजट",
+    "clearAll": "सभी हटाएं",
+    "close": "बंद करें",
+    "speciesSectionTitle": "किस पालन के लिए?",
+    "contentTypeSectionTitle": "सामग्री प्रकार",
+    "budgetMax": "अधिकतम बजट",
+    "viewResults": "{{count}} परिणाम देखें",
+    "maxPriceLabel": "अधिकतम {{price}}",
+    "speciesOptions": {
+      "poultry": {
+        "label": "मुर्गियां और कुक्कुट",
+        "hint": "अंडेदार, मांस, कुक्कुट पालन"
+      },
+      "pigs": {
+        "label": "सुअर",
+        "hint": "सुअर पालन"
+      },
+      "turkeys": {
+        "label": "टर्की",
+        "hint": "टर्की पालन"
+      },
+      "small_ruminants": {
+        "label": "बकरी और भेड़",
+        "hint": "बकरी, भेड़"
+      },
+      "cattle": {
+        "label": "गोवंश",
+        "hint": "गाय, बैल"
+      },
+      "rabbits": {
+        "label": "खरगोश",
+        "hint": "खरगोश पालन"
+      }
+    },
+    "contentTypeOptions": {
+      "course": {
+        "label": "पाठ्यक्रम (वीडियो)",
+        "hint": "श्रृंखला, प्रशिक्षण"
+      },
+      "document": {
+        "label": "दस्तावेज़",
+        "hint": "पीडीएफ़, फ़ैक्ट शीट"
+      },
+      "audio": {
+        "label": "ऑडियो",
+        "hint": "पॉडकास्ट, रिकॉर्डिंग"
+      },
+      "article": {
+        "label": "लेख",
+        "hint": "संक्षिप्त पठन"
+      },
+      "ebook": {
+        "label": "ई-बुक्स",
+        "hint": "डिजिटल किताबें"
+      }
+    }
   },
-  "mock": {
-    "product1Title": "अंडेदार मुर्गी पालन की संपूर्ण मार्गदर्शिका",
-    "product1Desc": "नसल चयन से अंड उत्पादन: पोषण, स्वास्थ्य और सुविधाएँ।",
-    "product2Title": "सुअर पालन — संपूर्ण मार्गदर्शिका",
-    "product2Desc": "आधुनिक सुअर पालन: आनुवंशिकी, भोजन, पशुचिकित्सा और प्रजनन।",
-    "product3Title": "कुक्कुट पालन स्टार्टर किट — विशेष संस्करण",
-    "product3Desc": "शेड, चूज़ा चयन, खाना और रोग रोधी।",
-    "product4Title": "0–8 सप्ताह ब्रॉयलर टीकाकरण व औषधि",
-    "product4Desc": "अनुसूचियाँ और मात्रा।",
-    "product5Title": "अंड उत्पादन प्रबंधन",
-    "product5Desc": "उत्पादन अनुकूलन।",
-    "product6Title": "बकरी व भेड़ पालन — व्यावहारिक गाइड",
-    "product6Desc": "नसलें, भोजन, प्रजनन, चारागाह व देखभाल।",
-    "product7Title": "फार्म स्वास्थ्य प्रबंधन — रोकथाम व उपचार",
-    "product7Desc": "जैविक सुरक्षा, टीकाकरण व नियंत्रण।",
-    "product8Title": "पशु आहार — संरचना व प्रबंधन",
-    "product8Desc": "राशन, स्टॉक व लागत।"
+  "catalogue": {
+    "eyebrow": "पशुपालक कैटलॉग",
+    "headline": "प्रशिक्षण और संसाधन",
+    "headlineHighlight": "बेहतर पालन के लिए",
+    "subheading": "वीडियो पाठ्यक्रम, पीडीएफ़ गाइड, ऑडियो और लेख — मुर्गियों, सुअरों, गोवंश और अन्य पशुपालन के लिए सब कुछ। फ़िल्टर करने के लिए एक प्रजाति चुनें।",
+    "statResources": "संसाधन",
+    "statSpecies": "प्रजातियां",
+    "statFormats": "प्रारूप",
+    "searchPlaceholder": "पाठ्यक्रम, गाइड, प्रजातियां खोजें…",
+    "filtersButton": "फ़िल्टर",
+    "filteredResults": "फ़िल्टर किए गए परिणाम",
+    "allContent": "सभी सामग्री",
+    "loading": "लोड हो रहा है…",
+    "contentCount": "{{count}} सामग्री",
+    "loadMore": "और लोड करें",
+    "loadErrorTitle": "कैटलॉग लोड करने में असमर्थ",
+    "noResultsTitle": "कोई परिणाम नहीं",
+    "noResultsForQuery": "\"{{query}}\" से कोई संसाधन मेल नहीं खाता। अन्य कीवर्ड आज़माएं।",
+    "noResultsAvailable": "अभी कोई संसाधन उपलब्ध नहीं है।",
+    "noResultsFiltered": "आपके फ़िल्टर से कोई संसाधन मेल नहीं खाता। अपनी खोज का विस्तार करने का प्रयास करें।",
+    "retry": "पुनः प्रयास करें",
+    "resetFilters": "फ़िल्टर रीसेट करें",
+    "defaultLoadError": "उत्पाद लोड करने में असमर्थ।"
   }
 }

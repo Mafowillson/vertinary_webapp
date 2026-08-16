@@ -66,7 +66,9 @@
     "paymentDetails": "支付详情",
     "price": "价格",
     "reduction": "折扣",
-    "securePaymentNote": "安全结账"
+    "securePaymentNote": "安全结账",
+    "emailPlaceholder": "请输入您的邮箱",
+    "orderCreationFailed": "订单创建失败。"
   },
   "confirmation": {
     "title": "谢谢",
@@ -87,21 +89,23 @@
     "digitalAccess": "数字访问",
     "thisProduct": "此产品",
     "congratulations": "恭喜",
-    "purchaseSuccessMessage": "您可立即下载已购内容。",
-    "downloadDocument": "下载文档",
-    "downloadFileInstruction": "点击下方按钮下载。",
-    "downloadButton": "立即下载",
+    "purchaseSuccessMessage": "您现在即可在线访问已购内容。",
+    "accessContent": "访问您的内容",
+    "accessContentInstruction": "直接在您的账户中观看、收听或阅读——无需下载。",
+    "accessContentButton": "开始学习",
     "needHelp": "需要帮助？",
     "contactWhatsAppHelp": "如有问题请通过 WhatsApp 联系我们：",
     "contactWhatsApp": "WhatsApp 支持",
     "securePurchase": "安全购买",
     "securePurchaseMessage": "交易经加密保护。",
     "nextSteps": "下一步",
-    "step1": "点击上方下载按钮",
-    "step2": "将文件保存到设备",
-    "step3": "在牧场学以致用",
+    "step1": "点击「开始学习」访问您的内容",
+    "step2": "内容将直接在您账户的课程播放器中打开",
+    "step3": "按自己的节奏观看、收听或阅读——无需下载",
     "faqTitle": "看不到文件怎么办？",
     "faqAnswer": "关闭弹窗拦截、刷新页面或通过 WhatsApp 联系我们。",
-    "instructions": "说明"
+    "instructions": "说明",
+    "onlinePaymentMethod": "在线",
+    "notAvailable": "暂无"
   }
 }

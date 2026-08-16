@@ -66,7 +66,9 @@
     "paymentDetails": "Détails du paiement",
     "price": "Prix",
     "reduction": "Réduction",
-    "securePaymentNote": "Paiement sécurisé"
+    "securePaymentNote": "Paiement sécurisé",
+    "emailPlaceholder": "you@example.com",
+    "orderCreationFailed": "La création de la commande a échoué."
   },
   "confirmation": {
     "title": "Merci",
@@ -87,21 +89,23 @@
     "digitalAccess": "Accès numérique",
     "thisProduct": "ce produit",
     "congratulations": "Félicitations",
-    "purchaseSuccessMessage": "Vous pouvez télécharger votre achat immédiatement.",
-    "downloadDocument": "Télécharger votre document",
-    "downloadFileInstruction": "Utilisez le bouton ci-dessous pour télécharger.",
-    "downloadButton": "Télécharger maintenant",
+    "purchaseSuccessMessage": "Vous pouvez accéder à votre achat en ligne dès maintenant.",
+    "accessContent": "Accédez à votre contenu",
+    "accessContentInstruction": "Regardez, écoutez ou lisez directement depuis votre compte — aucun téléchargement requis.",
+    "accessContentButton": "Commencer",
     "needHelp": "Besoin d'aide ?",
     "contactWhatsAppHelp": "Écrivez-nous sur WhatsApp en cas de problème :",
     "contactWhatsApp": "Support WhatsApp",
     "securePurchase": "Achat sécurisé",
     "securePurchaseMessage": "Votre transaction est protégée par cryptage.",
     "nextSteps": "Prochaines étapes",
-    "step1": "Cliquez sur le bouton de téléchargement",
-    "step2": "Enregistrez le fichier sur votre appareil",
-    "step3": "Mettez en pratique sur votre exploitation",
+    "step1": "Cliquez sur « Commencer » pour accéder à votre contenu",
+    "step2": "Il s'ouvre directement dans l'espace de cours de votre compte",
+    "step3": "Regardez, écoutez ou lisez à votre rythme, sans téléchargement",
     "faqTitle": "Je ne vois pas mon fichier — que faire ?",
     "faqAnswer": "Désactivez les bloqueurs de fenêtres, rafraîchissez ou contactez-nous sur WhatsApp.",
-    "instructions": "Instructions"
+    "instructions": "Instructions",
+    "onlinePaymentMethod": "En ligne",
+    "notAvailable": "Non disponible"
   }
 }

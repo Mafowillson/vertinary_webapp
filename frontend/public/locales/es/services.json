@@ -1,0 +1,40 @@
+{
+  "list": {
+    "hero": {
+      "chipServiceCount": "{{count}} servicios",
+      "chipRegion": "Camerún e internacional",
+      "chipResponseTime": "Respuesta rápida"
+    },
+    "cta": {
+      "questionLabel": "¿Tiene alguna pregunta?",
+      "titleLine1": "Hablemos de su proyecto",
+      "titleLine2": "de ganadería",
+      "description": "Nuestro equipo responde en menos de 24 h para ayudarle a elegir el servicio adecuado a sus necesidades.",
+      "whatsappButton": "Contactar por WhatsApp",
+      "viewProductsButton": "Ver productos"
+    }
+  },
+  "detail": {
+    "loading": "Cargando…",
+    "notFound": "Este servicio no existe o ha sido eliminado.",
+    "descriptionHeading": "Sobre este servicio",
+    "priceLabel": "Precio",
+    "quickInfo": {
+      "heading": "Información",
+      "category": "Categoría",
+      "availability": "Disponibilidad",
+      "availabilityValue": "Bajo pedido",
+      "zone": "Zona",
+      "zoneValue": "🌍 Camerún e intl."
+    },
+    "relatedSectionLabel": "En la misma categoría",
+    "bottomCta": {
+      "readyLabel": "¿Listo para empezar?",
+      "titlePrefix": "Contáctenos para",
+      "titleHighlight": "este servicio",
+      "description": "Nuestro equipo responde en menos de 24 h para ayudarle con su proyecto de ganadería.",
+      "whatsappButton": "Contactar por WhatsApp",
+      "viewAllButton": "Ver todos los servicios"
+    }
+  }
+}

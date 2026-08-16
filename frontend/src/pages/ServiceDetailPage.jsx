@@ -3,7 +3,7 @@ import { useParams, useNavigate, Link } from 'react-router-dom'
 import { getServiceById, getServices } from '../data/mockServices'
 import { useLanguage } from '../contexts/LanguageContext'
 import { useApp } from '../contexts/AppContext'
-import { formatCurrency } from '../utils/formatters'
+import { useCurrency } from '../contexts/CurrencyContext'
 import {
   FiArrowLeft, FiMessageCircle, FiCheck,
   FiArrowRight, FiPhone, FiTag
@@ -23,6 +23,7 @@ const ServiceDetailPage = () => {
   const { id } = useParams()
   const navigate = useNavigate()
   const { t } = useLanguage()
+  const { format } = useCurrency()
   const { socialLinks } = useApp()
   const [service, setService] = useState(null)
   const [related, setRelated] = useState([])
@@ -51,7 +52,7 @@ const ServiceDetailPage = () => {
       <div className="flex justify-center items-center min-h-screen bg-white">
         <div className="flex flex-col items-center gap-4">
           <div className="w-12 h-12 border-4 border-[#1A7A6E]/20 border-t-[#1A7A6E] rounded-full animate-spin" />
-          <p className="text-gray-400 text-sm font-medium">Chargement…</p>
+          <p className="text-gray-400 text-sm font-medium">{t('detail.loading', { ns: 'services' })}</p>
         </div>
       </div>
     )
@@ -65,7 +66,7 @@ const ServiceDetailPage = () => {
           {t('services.serviceNotFound', { ns: 'common' })}
         </h2>
         <p className="text-gray-500 mb-8 max-w-sm">
-          Ce service n'existe pas ou a été retiré.
+          {t('detail.notFound', { ns: 'services' })}
         </p>
         <button
           type="button"
@@ -122,8 +123,8 @@ const ServiceDetailPage = () => {
             {/* Price chip on hero */}
             {service.price ? (
               <div className="flex-shrink-0 bg-white rounded-2xl px-6 py-4 shadow-2xl text-center min-w-[140px]">
-                <p className="text-[10px] font-bold uppercase tracking-wider text-gray-400 mb-1">Prix</p>
-                <p className={`text-2xl font-black ${style.text}`}>{formatCurrency(service.price)}</p>
+                <p className="text-[10px] font-bold uppercase tracking-wider text-gray-400 mb-1">{t('detail.priceLabel', { ns: 'services' })}</p>
+                <p className={`text-2xl font-black ${style.text}`}>{format(service.price)}</p>
               </div>
             ) : (
               <div className="flex-shrink-0 bg-white/20 backdrop-blur-sm rounded-2xl px-6 py-4 border border-white/30 text-center min-w-[140px]">
@@ -149,7 +150,7 @@ const ServiceDetailPage = () => {
               {/* Description */}
               <div>
                 <h2 className="text-xs font-bold uppercase tracking-widest text-gray-400 mb-3">
-                  À propos de ce service
+                  {t('detail.descriptionHeading', { ns: 'services' })}
                 </h2>
                 <p className="text-gray-700 text-lg leading-relaxed">
                   {service.description}
@@ -218,21 +219,21 @@ const ServiceDetailPage = () => {
 
                 {/* Quick-info chips */}
                 <div className={`rounded-2xl border ${style.border} ${style.light} p-5 space-y-3`}>
-                  <p className="text-xs font-bold uppercase tracking-widest text-gray-400">Informations</p>
+                  <p className="text-xs font-bold uppercase tracking-widest text-gray-400">{t('detail.quickInfo.heading', { ns: 'services' })}</p>
                   <div className="space-y-2">
                     <div className="flex items-center justify-between text-sm">
-                      <span className="text-gray-500">Catégorie</span>
+                      <span className="text-gray-500">{t('detail.quickInfo.category', { ns: 'services' })}</span>
                       <span className={`font-bold ${style.text}`}>
                         {t(`services.${service.category}`, { ns: 'common', defaultValue: service.category })}
                       </span>
                     </div>
                     <div className="flex items-center justify-between text-sm">
-                      <span className="text-gray-500">Disponibilité</span>
-                      <span className="font-bold text-gray-700">Sur demande</span>
+                      <span className="text-gray-500">{t('detail.quickInfo.availability', { ns: 'services' })}</span>
+                      <span className="font-bold text-gray-700">{t('detail.quickInfo.availabilityValue', { ns: 'services' })}</span>
                     </div>
                     <div className="flex items-center justify-between text-sm">
-                      <span className="text-gray-500">Zone</span>
-                      <span className="font-bold text-gray-700">🌍 Cameroun & intl.</span>
+                      <span className="text-gray-500">{t('detail.quickInfo.zone', { ns: 'services' })}</span>
+                      <span className="font-bold text-gray-700">{t('detail.quickInfo.zoneValue', { ns: 'services' })}</span>
                     </div>
                   </div>
                 </div>
@@ -248,7 +249,7 @@ const ServiceDetailPage = () => {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex items-center justify-between mb-8">
               <div>
-                <p className="text-xs font-bold uppercase tracking-widest text-gray-400 mb-1">Dans la même catégorie</p>
+                <p className="text-xs font-bold uppercase tracking-widest text-gray-400 mb-1">{t('detail.relatedSectionLabel', { ns: 'services' })}</p>
                 <h2 className="text-2xl font-black text-gray-900">
                   {t('services.otherServices', { ns: 'common' })}
                 </h2>
@@ -284,15 +285,15 @@ const ServiceDetailPage = () => {
       {/* ── BOTTOM CTA ──────────────────────────────────────────────── */}
       <section className="py-16 bg-white border-t border-gray-100">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <p className="text-[#1A7A6E] font-bold text-xs uppercase tracking-[0.2em] mb-3">Prêt à démarrer ?</p>
+          <p className="text-[#1A7A6E] font-bold text-xs uppercase tracking-[0.2em] mb-3">{t('detail.bottomCta.readyLabel', { ns: 'services' })}</p>
           <h2 className="text-3xl md:text-4xl font-black text-gray-900 mb-4 leading-tight">
-            Contactez-nous pour{' '}
+            {t('detail.bottomCta.titlePrefix', { ns: 'services' })}{' '}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#1A7A6E] to-teal-400">
-              ce service
+              {t('detail.bottomCta.titleHighlight', { ns: 'services' })}
             </span>
           </h2>
           <p className="text-gray-500 mb-8 max-w-md mx-auto">
-            Notre équipe répond sous 24h pour vous accompagner dans votre projet d'élevage.
+            {t('detail.bottomCta.description', { ns: 'services' })}
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             {socialLinks?.whatsapp && (
@@ -303,14 +304,14 @@ const ServiceDetailPage = () => {
                 className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-[#1A7A6E] hover:bg-[#155f55] text-white rounded-xl font-bold text-sm transition-all shadow-lg hover:shadow-[#1A7A6E]/30 hover:-translate-y-0.5"
               >
                 <FiPhone className="w-4 h-4" />
-                Contacter via WhatsApp
+                {t('detail.bottomCta.whatsappButton', { ns: 'services' })}
               </a>
             )}
             <Link
               to="/services"
               className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-xl font-bold text-sm transition-all"
             >
-              Voir tous les services
+              {t('detail.bottomCta.viewAllButton', { ns: 'services' })}
               <FiArrowRight className="w-4 h-4" />
             </Link>
           </div>

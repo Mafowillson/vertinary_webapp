@@ -15,14 +15,27 @@
     "toggleMenu": "Toggle menu"
   },
   "footer": {
-    "rights": "All rights reserved",
     "contact": "Contact",
     "privacy": "Privacy policy",
     "terms": "Terms of service",
-    "quickLinks": "Quick links",
-    "description": "Your partner for success in livestock farming: professional guides, courses, and documents on farm animal rearing, health, and welfare.",
-    "developedBy": "Developed by",
-    "store": "Store"
+    "findResources": "Find Resources",
+    "ourBooks": "Our Books & E-Books",
+    "onlineTraining": "Online Training",
+    "proServices": "Pro Services",
+    "support": "Support",
+    "helpCenter": "Help Center",
+    "contactUs": "Contact Us",
+    "brandDescription": "Platform dedicated to sharing veterinary knowledge — books, courses, and resources for farmers in Cameroon and around the world.",
+    "brandName": "Academie des Eleveurs",
+    "country": "Cameroon 🇨🇲",
+    "stayInformed": "Stay informed",
+    "emailPlaceholder": "Your email",
+    "copyright": "© {{year}} Academie des Eleveurs.",
+    "foundedWith": "Founded with",
+    "byAuthor": "by {{name}}",
+    "privacyShort": "Privacy",
+    "termsShort": "Terms",
+    "language": "French (CM)"
   },
   "buttons": {
     "payNow": "Pay now",
@@ -38,7 +51,8 @@
     "viewDetails": "View details",
     "download": "Download",
     "watchNow": "Watch now",
-    "readNow": "Read now"
+    "readNow": "Read now",
+    "addToCart": "Add"
   },
   "status": {
     "loading": "Loading...",
@@ -182,5 +196,24 @@
     "article": "item",
     "articles": "items",
     "productsLabel": "Products"
+  },
+  "productCard": {
+    "formatPdf": "PDF",
+    "formatVideo": "VIDEO",
+    "formatEbook": "E-BOOK",
+    "formatAudio": "AUDIO",
+    "defaultCategory": "Animal health",
+    "topBadge": "TOP",
+    "limitedOffer": "Limited offer",
+    "dayAbbr": "d",
+    "hourAbbr": "h",
+    "minuteAbbr": "m"
+  },
+  "chat": {
+    "openLabel": "Open chat",
+    "closeLabel": "Close chat",
+    "title": "Support Chat",
+    "comingSoon": "Support chat is coming soon!",
+    "contactSocial": "Feel free to reach out to us on our social networks."
   }
 }

@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { FiAlertCircle, FiEye, FiEyeOff, FiLock, FiArrowLeft, FiArrowRight } from 'react-icons/fi'
 import { authService } from '../../services/authService'
+import { useLanguage } from '../../contexts/LanguageContext'
 import AuthLayout from '../../components/Layout/AuthLayout'
 
 const Spinner = () => (
@@ -23,6 +24,7 @@ const ResetPasswordPage = () => {
   const [error, setError] = useState('')
   const [success, setSuccess] = useState(false)
   const [loading, setLoading] = useState(false)
+  const { t } = useLanguage()
 
   const passwordsMatch = confirmPassword && password === confirmPassword
 
@@ -31,15 +33,15 @@ const ResetPasswordPage = () => {
     setError('')
 
     if (!token.trim()) {
-      setError('Lien invalide ou expiré. Demandez un nouveau lien.')
+      setError(t('passwordReset.invalidLink', { ns: 'auth' }))
       return
     }
     if (password !== confirmPassword) {
-      setError('Les mots de passe ne correspondent pas.')
+      setError(t('passwordsDoNotMatch', { ns: 'errors' }))
       return
     }
     if (password.length < 8) {
-      setError('Le mot de passe doit contenir au moins 8 caractères.')
+      setError(t('common.passwordTooShort', { ns: 'auth' }))
       return
     }
 
@@ -49,7 +51,7 @@ const ResetPasswordPage = () => {
       setSuccess(true)
       setTimeout(() => navigate('/login', { replace: true }), 2500)
     } catch (err) {
-      setError(err.message || 'Impossible de réinitialiser le mot de passe. Veuillez réessayer.')
+      setError(err.message || t('passwordReset.resetError', { ns: 'auth' }))
     } finally {
       setLoading(false)
     }
@@ -58,28 +60,28 @@ const ResetPasswordPage = () => {
   /* ── Invalid / missing token ── */
   if (!token.trim() && !success) {
     return (
-      <AuthLayout quote="Créez un mot de passe fort pour sécuriser votre compte.">
+      <AuthLayout quote={t('passwordReset.resetQuote', { ns: 'auth' })}>
         <div className="space-y-6">
           <div className="w-14 h-14 bg-red-50 border border-red-100 rounded-2xl flex items-center justify-center">
             <FiLock className="w-6 h-6 text-red-500" />
           </div>
           <div>
-            <h1 className="text-2xl font-extrabold text-gray-900">Lien invalide</h1>
+            <h1 className="text-2xl font-extrabold text-gray-900">{t('passwordReset.invalidLinkTitle', { ns: 'auth' })}</h1>
             <p className="mt-2 text-sm text-gray-500">
-              Ce lien est invalide ou a expiré. Demandez-en un nouveau depuis la page mot de passe oublié.
+              {t('passwordReset.invalidLinkMessage', { ns: 'auth' })}
             </p>
           </div>
           <Link
             to="/forgot-password"
             className="flex items-center justify-center gap-2 w-full bg-[#1A7A6E] hover:bg-[#155f55] text-white font-bold py-3 rounded-xl transition-all shadow-sm"
           >
-            Demander un nouveau lien <FiArrowRight className="w-4 h-4" />
+            {t('passwordReset.requestNewLink', { ns: 'auth' })} <FiArrowRight className="w-4 h-4" />
           </Link>
           <Link
             to="/login"
             className="flex items-center justify-center gap-2 text-sm font-semibold text-gray-500 hover:text-gray-800 transition-colors pt-2 border-t border-gray-100"
           >
-            <FiArrowLeft className="w-4 h-4" /> Retour à la connexion
+            <FiArrowLeft className="w-4 h-4" /> {t('passwordReset.backToLogin', { ns: 'auth' })}
           </Link>
         </div>
       </AuthLayout>
@@ -87,7 +89,7 @@ const ResetPasswordPage = () => {
   }
 
   return (
-    <AuthLayout quote="Créez un mot de passe fort pour sécuriser votre compte.">
+    <AuthLayout quote={t('passwordReset.resetQuote', { ns: 'auth' })}>
       <div className="space-y-6">
 
         {/* Icon + heading */}
@@ -96,9 +98,9 @@ const ResetPasswordPage = () => {
             <FiLock className="w-6 h-6 text-[#1A7A6E]" />
           </div>
           <div>
-            <h1 className="text-2xl font-extrabold text-gray-900">Nouveau mot de passe</h1>
+            <h1 className="text-2xl font-extrabold text-gray-900">{t('passwordReset.newPasswordTitle', { ns: 'auth' })}</h1>
             <p className="mt-1 text-sm text-gray-500">
-              Choisissez un mot de passe sécurisé d'au moins 8 caractères.
+              {t('passwordReset.newPasswordHint', { ns: 'auth' })}
             </p>
           </div>
         </div>
@@ -111,9 +113,9 @@ const ResetPasswordPage = () => {
                 <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
               </svg>
             </div>
-            <p className="text-sm font-semibold text-green-800">Mot de passe mis à jour !</p>
+            <p className="text-sm font-semibold text-green-800">{t('passwordReset.successTitle', { ns: 'auth' })}</p>
             <p className="text-sm text-green-700">
-              Vous allez être redirigé vers la page de connexion…
+              {t('common.redirectingToLogin', { ns: 'auth' })}
             </p>
           </div>
         ) : (
@@ -131,7 +133,7 @@ const ResetPasswordPage = () => {
               {/* New password */}
               <div className="space-y-1.5">
                 <label htmlFor="password" className="block text-sm font-semibold text-gray-700">
-                  Nouveau mot de passe
+                  {t('passwordReset.newPasswordTitle', { ns: 'auth' })}
                 </label>
                 <div className="relative">
                   <input
@@ -148,7 +150,7 @@ const ResetPasswordPage = () => {
                     type="button"
                     onClick={() => setShowPassword((v) => !v)}
                     className="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
-                    aria-label={showPassword ? 'Masquer' : 'Afficher'}
+                    aria-label={showPassword ? t('login.hidePassword', { ns: 'auth' }) : t('login.showPassword', { ns: 'auth' })}
                   >
                     {showPassword ? <FiEyeOff className="w-4 h-4" /> : <FiEye className="w-4 h-4" />}
                   </button>
@@ -158,7 +160,7 @@ const ResetPasswordPage = () => {
               {/* Confirm password */}
               <div className="space-y-1.5">
                 <label htmlFor="confirmPassword" className="block text-sm font-semibold text-gray-700">
-                  Confirmer le mot de passe
+                  {t('passwordReset.confirmLabel', { ns: 'auth' })}
                 </label>
                 <div className="relative">
                   <input
@@ -181,13 +183,13 @@ const ResetPasswordPage = () => {
                     type="button"
                     onClick={() => setShowConfirm((v) => !v)}
                     className="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
-                    aria-label={showConfirm ? 'Masquer' : 'Afficher'}
+                    aria-label={showConfirm ? t('login.hidePassword', { ns: 'auth' }) : t('login.showPassword', { ns: 'auth' })}
                   >
                     {showConfirm ? <FiEyeOff className="w-4 h-4" /> : <FiEye className="w-4 h-4" />}
                   </button>
                 </div>
                 {confirmPassword && !passwordsMatch && (
-                  <p className="text-xs text-red-500 font-medium">Les mots de passe ne correspondent pas.</p>
+                  <p className="text-xs text-red-500 font-medium">{t('passwordsDoNotMatch', { ns: 'errors' })}</p>
                 )}
               </div>
 
@@ -198,9 +200,9 @@ const ResetPasswordPage = () => {
                 className="w-full flex items-center justify-center gap-2 bg-[#1A7A6E] hover:bg-[#155f55] text-white font-bold py-3 rounded-xl transition-all duration-200 shadow-sm hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed mt-2"
               >
                 {loading ? (
-                  <><Spinner /> Enregistrement...</>
+                  <><Spinner /> {t('passwordReset.saving', { ns: 'auth' })}</>
                 ) : (
-                  <>Enregistrer le mot de passe <FiArrowRight className="w-4 h-4" /></>
+                  <>{t('passwordReset.saveButton', { ns: 'auth' })} <FiArrowRight className="w-4 h-4" /></>
                 )}
               </button>
             </form>
@@ -212,7 +214,7 @@ const ResetPasswordPage = () => {
           to="/login"
           className="flex items-center justify-center gap-2 text-sm font-semibold text-gray-500 hover:text-gray-800 transition-colors pt-2 border-t border-gray-100"
         >
-          <FiArrowLeft className="w-4 h-4" /> Retour à la connexion
+          <FiArrowLeft className="w-4 h-4" /> {t('passwordReset.backToLogin', { ns: 'auth' })}
         </Link>
 
       </div>
