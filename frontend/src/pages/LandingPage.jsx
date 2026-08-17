@@ -483,7 +483,7 @@ const LandingPage = () => {
         <div className="absolute bottom-0 left-0 w-56 h-56 bg-white/5 rounded-full translate-y-1/2 -translate-x-1/4 pointer-events-none" />
 
         <div className="relative max-w-3xl mx-auto px-4 sm:px-6 text-center">
-          <div className="text-5xl mb-5">🐾</div>
+          {/* <div className="text-5xl mb-5">🐾</div> */}
           <h2 className="text-3xl sm:text-4xl font-extrabold text-white mb-4">
             {t('cta.heading', { ns: 'landing' })}
           </h2>
