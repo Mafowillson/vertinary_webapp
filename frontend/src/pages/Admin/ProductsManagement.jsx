@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { productService } from '../../services/productService'
 import { formatCurrency } from '../../utils/formatters'
 import { useLanguage } from '../../contexts/LanguageContext'
@@ -12,9 +12,7 @@ import {
   FiPackage,
   FiDollarSign,
   FiTrendingUp,
-  FiFilter,
   FiX,
-  FiEye,
   FiAlertCircle,
 } from 'react-icons/fi'
 import ProductForm from '../../components/Admin/ProductForm'
@@ -29,18 +27,9 @@ const ProductsManagement = () => {
   const [editingProduct, setEditingProduct] = useState(null)
   const [searchQuery, setSearchQuery] = useState('')
   const [viewMode, setViewMode] = useState('grid') // 'grid' or 'list'
-  const [showFilters, setShowFilters] = useState(false)
   const [sortBy, setSortBy] = useState('recent') // 'recent', 'price', 'sales', 'name'
 
-  useEffect(() => {
-    loadProducts()
-  }, [])
-
-  useEffect(() => {
-    filterAndSortProducts()
-  }, [products, searchQuery, sortBy])
-
-  const loadProducts = async () => {
+  const loadProducts = useCallback(async () => {
     setLoading(true)
     setError('')
     try {
@@ -51,9 +40,13 @@ const ProductsManagement = () => {
     } finally {
       setLoading(false)
     }
-  }
+  }, [t])
 
-  const filterAndSortProducts = () => {
+  useEffect(() => {
+    loadProducts()
+  }, [loadProducts])
+
+  const filterAndSortProducts = useCallback(() => {
     let filtered = [...products]
 
     // Search filter
@@ -82,7 +75,11 @@ const ProductsManagement = () => {
     })
 
     setFilteredProducts(filtered)
-  }
+  }, [products, searchQuery, sortBy])
+
+  useEffect(() => {
+    filterAndSortProducts()
+  }, [filterAndSortProducts])
 
   const handleEdit = (product) => {
     setEditingProduct(product)

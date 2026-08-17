@@ -3,6 +3,7 @@ import { authService } from '../services/authService'
 
 const AuthContext = createContext(null)
 
+// eslint-disable-next-line react-refresh/only-export-components -- hook co-located with its provider by design
 export const useAuth = () => {
   const context = useContext(AuthContext)
   if (!context) {

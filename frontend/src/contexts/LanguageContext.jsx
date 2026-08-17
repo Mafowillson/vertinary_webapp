@@ -25,11 +25,17 @@ export function LanguageProvider({ children }) {
       },
       i18n,
     }
+    // i18n mutates in place rather than returning a new instance on language
+    // change, so `i18n.language`/`i18n.resolvedLanguage` must stay as explicit
+    // deps — without them this would go stale after a language switch even
+    // though the component re-renders (via useTranslation's own subscription).
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [i18n, i18n.language, i18n.resolvedLanguage])
 
   return <LanguageContext.Provider value={value}>{children}</LanguageContext.Provider>
 }
 
+// eslint-disable-next-line react-refresh/only-export-components -- hook co-located with its provider by design
 export function useLanguage() {
   const ctx = useContext(LanguageContext)
   if (!ctx) {

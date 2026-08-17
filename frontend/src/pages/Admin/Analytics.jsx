@@ -1,10 +1,9 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import {
   FiDollarSign,
   FiPackage,
   FiUsers,
   FiTrendingUp,
-  FiTrendingDown,
   FiBarChart2,
   FiActivity,
   FiArrowUpRight,
@@ -37,11 +36,7 @@ const Analytics = () => {
     topProducts: [],
   })
 
-  useEffect(() => {
-    loadAnalytics()
-  }, [timeframe])
-
-  const loadAnalytics = async () => {
+  const loadAnalytics = useCallback(async () => {
     setLoading(true)
     setError('')
     try {
@@ -52,7 +47,11 @@ const Analytics = () => {
     } finally {
       setLoading(false)
     }
-  }
+  }, [timeframe, t])
+
+  useEffect(() => {
+    loadAnalytics()
+  }, [loadAnalytics])
 
   const formatCurrency = (amount) => {
     return new Intl.NumberFormat('fr-FR').format(amount) + ' FCFA'

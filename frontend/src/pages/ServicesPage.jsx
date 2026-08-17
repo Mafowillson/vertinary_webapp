@@ -17,13 +17,13 @@ const categories = [
 ]
 
 const ServicesPage = () => {
-  const { t, i18n } = useLanguage()
+  const { t } = useLanguage()
   const [selected, setSelected] = useState('all')
   const [loading] = useState(false)
 
   const tc = (key, opts) => t(key, { ns: 'common', ...opts })
 
-  const services = useMemo(() => getServices(t), [t, i18n.language])
+  const services = useMemo(() => getServices(t), [t])
 
   const filtered = useMemo(
     () => selected === 'all' ? services : services.filter(s => s.category === selected),

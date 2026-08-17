@@ -48,7 +48,6 @@ const SettingsManagement = () => {
 
   useEffect(() => {
     setRateFormData(ratesToFcfaPerUnit(siteConfig.exchangeRates))
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [siteConfig.exchangeRates])
 
   useEffect(() => {
@@ -58,7 +57,6 @@ const SettingsManagement = () => {
       rateFormData.EUR !== original.EUR ||
       rateFormData.NGN !== original.NGN
     )
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [rateFormData, siteConfig.exchangeRates])
 
   const handleRateChange = (e) => {

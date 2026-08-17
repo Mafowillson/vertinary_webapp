@@ -29,7 +29,7 @@ const AuthLayout = ({ children, quote }) => (
       <div className="relative z-10 space-y-8">
         {quote && (
           <blockquote className="text-white/90 text-xl font-bold leading-snug">
-            "{quote}"
+            &ldquo;{quote}&rdquo;
           </blockquote>
         )}
         <ul className="space-y-3.5">

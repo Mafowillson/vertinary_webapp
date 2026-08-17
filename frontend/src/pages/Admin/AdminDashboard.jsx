@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { Routes, Route, Link, useLocation } from 'react-router-dom'
 import {
   FiPackage,
@@ -34,11 +34,7 @@ const AdminDashboard = () => {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
 
-  useEffect(() => {
-    loadOverview()
-  }, [timeframe])
-
-  const loadOverview = async () => {
+  const loadOverview = useCallback(async () => {
     setLoading(true)
     setError('')
     try {
@@ -53,7 +49,11 @@ const AdminDashboard = () => {
     } finally {
       setLoading(false)
     }
-  }
+  }, [timeframe, t])
+
+  useEffect(() => {
+    loadOverview()
+  }, [loadOverview])
 
   // Get user initials for avatar
   const getUserInitials = (name) => {

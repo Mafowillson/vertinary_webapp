@@ -1,18 +1,16 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { adminService } from '../../services/adminService'
 import { formatCurrency, formatDate } from '../../utils/formatters'
 import { useLanguage } from '../../contexts/LanguageContext'
 import {
   FiEye,
   FiSearch,
-  FiFilter,
   FiX,
   FiDollarSign,
   FiPackage,
   FiClock,
   FiCheckCircle,
   FiAlertCircle,
-  FiUser,
   FiCalendar,
   FiCreditCard,
   FiMoreVertical,
@@ -28,17 +26,9 @@ const OrdersManagement = () => {
   const [statusFilter, setStatusFilter] = useState('all') // 'all', 'pending', 'completed', 'failed'
   const [sortBy, setSortBy] = useState('recent') // 'recent', 'amount', 'date'
   const [selectedOrder, setSelectedOrder] = useState(null)
-  const [viewMode, setViewMode] = useState('cards') // 'cards' or 'timeline'
+  const [viewMode] = useState('cards') // 'cards' or 'timeline'
 
-  useEffect(() => {
-    loadOrders()
-  }, [])
-
-  useEffect(() => {
-    filterAndSortOrders()
-  }, [orders, searchQuery, statusFilter, sortBy])
-
-  const loadOrders = async () => {
+  const loadOrders = useCallback(async () => {
     setLoading(true)
     setError('')
     try {
@@ -49,9 +39,13 @@ const OrdersManagement = () => {
     } finally {
       setLoading(false)
     }
-  }
+  }, [t])
 
-  const filterAndSortOrders = () => {
+  useEffect(() => {
+    loadOrders()
+  }, [loadOrders])
+
+  const filterAndSortOrders = useCallback(() => {
     let filtered = [...orders]
 
     // Status filter
@@ -85,7 +79,11 @@ const OrdersManagement = () => {
     })
 
     setFilteredOrders(filtered)
-  }
+  }, [orders, searchQuery, statusFilter, sortBy])
+
+  useEffect(() => {
+    filterAndSortOrders()
+  }, [filterAndSortOrders])
 
   const getUserInitials = (name) => {
     if (!name) return 'U'

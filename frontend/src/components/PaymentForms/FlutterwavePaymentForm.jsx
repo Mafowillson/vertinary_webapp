@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useLanguage } from '../../contexts/LanguageContext'
 import { FiSmartphone, FiLock } from 'react-icons/fi'
 
-const FlutterwavePaymentForm = ({ onPaymentSubmit, processing }) => {
+const FlutterwavePaymentForm = ({ onPaymentSubmit }) => {
   const { t } = useLanguage()
   const tp = (k) => t(`payment.${k}`, { ns: 'checkout' })
   const [selectedMethod, setSelectedMethod] = useState('mobile_money')

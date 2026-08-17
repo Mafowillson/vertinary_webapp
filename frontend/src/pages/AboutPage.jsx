@@ -327,7 +327,7 @@ const AboutPage = () => {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <p className="text-[#1A7A6E] font-bold text-sm uppercase tracking-[0.2em] mb-6">{t('quote.eyebrow', { ns: 'about' })}</p>
           <blockquote className="relative">
-            <span className="absolute -top-8 left-0 text-[120px] leading-none text-[#1A7A6E]/10 font-black select-none">"</span>
+            <span className="absolute -top-8 left-0 text-[120px] leading-none text-[#1A7A6E]/10 font-black select-none">&ldquo;</span>
             <p className="relative text-2xl md:text-3xl font-bold text-gray-900 leading-relaxed">
               {t('quote.text', { ns: 'about' })}{' '}
               <span className="text-[#1A7A6E]">{t('quote.highlight', { ns: 'about' })}</span>

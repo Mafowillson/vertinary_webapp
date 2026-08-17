@@ -1,10 +1,9 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import {
   FiUsers,
   FiSearch,
   FiX,
   FiUserPlus,
-  FiEdit,
   FiTrash2,
   FiShield,
   FiUser,
@@ -13,7 +12,6 @@ import {
   FiCheckCircle,
   FiXCircle,
   FiMoreVertical,
-  FiFilter,
   FiAlertCircle,
 } from 'react-icons/fi'
 import { formatDate } from '../../utils/formatters'
@@ -34,15 +32,7 @@ const UserManagement = () => {
   const [sortBy, setSortBy] = useState('recent') // 'recent', 'name', 'email'
   const [selectedUser, setSelectedUser] = useState(null)
 
-  useEffect(() => {
-    loadUsers()
-  }, [])
-
-  useEffect(() => {
-    filterAndSortUsers()
-  }, [users, searchQuery, roleFilter, statusFilter, sortBy])
-
-  const loadUsers = async () => {
+  const loadUsers = useCallback(async () => {
     setLoading(true)
     setError('')
     try {
@@ -53,9 +43,13 @@ const UserManagement = () => {
     } finally {
       setLoading(false)
     }
-  }
+  }, [t])
 
-  const filterAndSortUsers = () => {
+  useEffect(() => {
+    loadUsers()
+  }, [loadUsers])
+
+  const filterAndSortUsers = useCallback(() => {
     let filtered = [...users]
 
     // Role filter
@@ -94,7 +88,11 @@ const UserManagement = () => {
     })
 
     setFilteredUsers(filtered)
-  }
+  }, [users, searchQuery, roleFilter, statusFilter, sortBy])
+
+  useEffect(() => {
+    filterAndSortUsers()
+  }, [filterAndSortUsers])
 
   const handleToggleStatus = async (userId) => {
     setError('')

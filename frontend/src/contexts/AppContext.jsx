@@ -3,6 +3,7 @@ import { appService } from '../services/appService'
 
 const AppContext = createContext(null)
 
+// eslint-disable-next-line react-refresh/only-export-components -- hook co-located with its provider by design
 export const useApp = () => {
   const context = useContext(AppContext)
   if (!context) {
@@ -28,13 +29,13 @@ export const AppProvider = ({ children }) => {
     const loadConfig = async () => {
       try {
         const config = await appService.getSiteConfig()
-        setSocialLinks(config.socialLinks || socialLinks)
+        setSocialLinks((prev) => config.socialLinks || prev)
         // Preserve siteName - it should never be changed/translated
-        setSiteConfig({ 
-          ...siteConfig, 
+        setSiteConfig((prev) => ({
+          ...prev,
           ...config,
           siteName: "L'Académie DES Éleveurs" // Always keep the original site name
-        })
+        }))
       } catch (error) {
         console.error('Failed to load site config:', error)
       } finally {
@@ -45,12 +46,8 @@ export const AppProvider = ({ children }) => {
   }, [])
 
   const updateSocialLinks = async (links) => {
-    try {
-      await appService.updateSocialLinks(links)
-      setSocialLinks(links)
-    } catch (error) {
-      throw error
-    }
+    await appService.updateSocialLinks(links)
+    setSocialLinks(links)
   }
 
   const updateExchangeRates = async (rates) => {

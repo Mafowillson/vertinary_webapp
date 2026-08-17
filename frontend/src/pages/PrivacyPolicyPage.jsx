@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import { FiShield, FiArrowLeft, FiPhone, FiMail, FiMapPin, FiChevronDown, FiChevronUp } from 'react-icons/fi'
 import { useLanguage } from '../contexts/LanguageContext'
@@ -179,7 +179,7 @@ const getSections = (t) => {
 const PrivacyPolicyPage = () => {
   const { t } = useLanguage()
   const tl = (key, options) => t(key, { ns: 'legal', ...options })
-  const sections = getSections(t)
+  const sections = useMemo(() => getSections(t), [t])
 
   const [activeId, setActiveId] = useState(sections[0].id)
   const [tocOpen, setTocOpen] = useState(false)
@@ -198,7 +198,7 @@ const PrivacyPolicyPage = () => {
       if (el) observer.observe(el)
     })
     return () => observer.disconnect()
-  }, [])
+  }, [sections])
 
   const lastUpdated = new Date().toLocaleDateString('fr-FR', { year: 'numeric', month: 'long', day: 'numeric' })
 

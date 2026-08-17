@@ -2,6 +2,7 @@ import { createContext, useContext, useState, useEffect } from 'react'
 
 const CartContext = createContext(null)
 
+// eslint-disable-next-line react-refresh/only-export-components -- hook co-located with its provider by design
 export const useCart = () => {
   const context = useContext(CartContext)
   if (!context) {

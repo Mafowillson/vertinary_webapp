@@ -130,9 +130,9 @@ const CategoryCard = ({ category }) => {
 
 const LandingPage = () => {
   const location = useLocation()
-  const { t, language } = useLanguage()
+  const { t } = useLanguage()
 
-  const services = useMemo(() => getServices(t), [t, language])
+  const services = useMemo(() => getServices(t), [t])
   const featuredServices = useMemo(() => services.slice(0, 4), [services])
 
   useEffect(() => {

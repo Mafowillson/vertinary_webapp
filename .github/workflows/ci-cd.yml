@@ -18,13 +18,18 @@ jobs:
     env:
       DATABASE_URL: postgresql://test:test@localhost:5432/test
       SECRET_KEY: ci-test-secret
+    defaults:
+      run:
+        working-directory: backend
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - run: pip install -r backend/requirements.txt
-      - run: pytest backend/tests
+      - run: pip install -r requirements.txt
+      # rootdir must be backend/ so `app` is importable as a top-level package
+      # (matches how the Dockerfile and local dev both run it).
+      - run: pytest tests
 
   test-frontend:
     runs-on: ubuntu-latest

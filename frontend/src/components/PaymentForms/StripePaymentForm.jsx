@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useLanguage } from '../../contexts/LanguageContext'
 import { FiCreditCard, FiLock } from 'react-icons/fi'
 
-const StripePaymentForm = ({ onPaymentSubmit, processing }) => {
+const StripePaymentForm = ({ onPaymentSubmit }) => {
   const { t } = useLanguage()
   const tp = (k) => t(`payment.${k}`, { ns: 'checkout' })
   const [cardData, setCardData] = useState({

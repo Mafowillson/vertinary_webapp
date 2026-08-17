@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import {
   FiVideo,
   FiHeadphones,
@@ -8,7 +8,6 @@ import {
   FiChevronDown,
   FiUpload,
   FiAlertCircle,
-  FiPlus,
 } from 'react-icons/fi'
 import { lessonService } from '../../services/lessonService'
 import { formatFileSize } from '../../utils/formatters'
@@ -35,11 +34,7 @@ const LessonManager = ({ productId }) => {
   const [uploading, setUploading] = useState(false)
   const [progress, setProgress] = useState(0)
 
-  useEffect(() => {
-    loadLessons()
-  }, [productId])
-
-  const loadLessons = async () => {
+  const loadLessons = useCallback(async () => {
     setLoading(true)
     setError('')
     try {
@@ -50,7 +45,11 @@ const LessonManager = ({ productId }) => {
     } finally {
       setLoading(false)
     }
-  }
+  }, [productId, t])
+
+  useEffect(() => {
+    loadLessons()
+  }, [loadLessons])
 
   const resetForm = () => {
     setTitle('')

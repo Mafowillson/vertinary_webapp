@@ -8,13 +8,11 @@ import { useCart } from '../contexts/CartContext'
 import { useCurrency } from '../contexts/CurrencyContext'
 import StripePaymentForm from '../components/PaymentForms/StripePaymentForm'
 import FlutterwavePaymentForm from '../components/PaymentForms/FlutterwavePaymentForm'
-import { 
-  FiArrowLeft, 
-  FiCreditCard, 
-  FiAlertCircle, 
-  FiMail, 
-  FiShield, 
-  FiCheck,
+import {
+  FiArrowLeft,
+  FiAlertCircle,
+  FiMail,
+  FiShield,
   FiArrowRight,
   FiLock
 } from 'react-icons/fi'
@@ -36,7 +34,7 @@ const CheckoutPage = () => {
   const [error, setError] = useState('')
   const [email, setEmail] = useState(user?.email || '')
   const [paymentMethod, setPaymentMethod] = useState('stripe')
-  const [paymentData, setPaymentData] = useState(null)
+  const [, setPaymentData] = useState(null)
 
   // Determine if this is a single-product or cart checkout
   const isCartCheckout = !productId
@@ -63,7 +61,10 @@ const CheckoutPage = () => {
       }
     }
     loadProducts()
-  }, [productId, t, isCartCheckout, cartItems.length])
+    // tprod is recreated every render but only wraps the current `t`, which is
+    // already a dep — omitting it avoids refetching products on every render.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [productId, t, isCartCheckout, cartItems, navigate])
 
   useEffect(() => {
     if (user?.email) {
