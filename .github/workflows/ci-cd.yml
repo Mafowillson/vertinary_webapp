@@ -27,9 +27,10 @@ jobs:
         with:
           python-version: "3.12"
       - run: pip install -r requirements.txt
-      # rootdir must be backend/ so `app` is importable as a top-level package
-      # (matches how the Dockerfile and local dev both run it).
-      - run: pytest tests
+      # `python -m pytest` (not the bare `pytest` script) so the cwd (backend/)
+      # is prepended to sys.path — otherwise `app` isn't importable, since
+      # tests/ has no __init__.py to trigger pytest's own rootdir insertion.
+      - run: python -m pytest tests
 
   test-frontend:
     runs-on: ubuntu-latest
