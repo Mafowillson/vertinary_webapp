@@ -3,6 +3,7 @@ import { useParams, useNavigate, Link } from 'react-router-dom'
 import { productService } from '../services/productService'
 import { orderService } from '../services/orderService'
 import { lessonService } from '../services/lessonService'
+import { reviewService } from '../services/reviewService'
 import { useAuth } from '../contexts/AuthContext'
 import { useApp } from '../contexts/AppContext'
 import { useLanguage } from '../contexts/LanguageContext'
@@ -50,9 +51,9 @@ function PlaceholderCover({ format }) {
 const ProductDetailPage = () => {
   const { id } = useParams()
   const navigate = useNavigate()
-  const { isAuthenticated } = useAuth()
+  const { isAuthenticated, user } = useAuth()
   const { socialLinks } = useApp()
-  const { t } = useLanguage()
+  const { t, language } = useLanguage()
   const { format: formatPrice } = useCurrency()
   const { addToCart, isInCart } = useCart()
   const [product, setProduct] = useState(null)
@@ -63,12 +64,25 @@ const ProductDetailPage = () => {
   const [imgError, setImgError] = useState(false)
   const [lessons, setLessons] = useState([])
   const [owned, setOwned] = useState(false)
+  const [liked, setLiked] = useState(false)
+  const [likeCount, setLikeCount] = useState(0)
+  const [likeSubmitting, setLikeSubmitting] = useState(false)
+  const [shareCopied, setShareCopied] = useState(false)
+  const [reviews, setReviews] = useState([])
+  const [reviewsLoading, setReviewsLoading] = useState(true)
+  const [editingReviewId, setEditingReviewId] = useState(null)
+  const [reviewRating, setReviewRating] = useState(5)
+  const [reviewBody, setReviewBody] = useState('')
+  const [reviewFormError, setReviewFormError] = useState('')
+  const [submittingReview, setSubmittingReview] = useState(false)
 
   useEffect(() => {
     const loadProduct = async () => {
       try {
         const data = await productService.getProductById(id)
         setProduct(data)
+        setLiked(Boolean(data.liked_by_me))
+        setLikeCount(data.like_count || 0)
       } catch (error) {
         console.error('Failed to load product:', error)
       } finally {
@@ -80,6 +94,15 @@ const ProductDetailPage = () => {
 
   useEffect(() => {
     lessonService.getLessons(id).then(setLessons).catch(() => setLessons([]))
+  }, [id])
+
+  useEffect(() => {
+    setReviewsLoading(true)
+    reviewService
+      .getReviews(id)
+      .then(setReviews)
+      .catch(() => setReviews([]))
+      .finally(() => setReviewsLoading(false))
   }, [id])
 
   useEffect(() => {
@@ -135,6 +158,113 @@ const ProductDetailPage = () => {
     setTimeout(() => setCartAdded(false), 2000)
   }
 
+  const handleToggleLike = async () => {
+    if (!isAuthenticated) {
+      navigate('/login', { state: { returnTo: `/products/${id}` } })
+      return
+    }
+    if (likeSubmitting) return
+    setLikeSubmitting(true)
+    const wasLiked = liked
+    // Optimistic update, rolled back on failure below.
+    setLiked(!wasLiked)
+    setLikeCount((c) => c + (wasLiked ? -1 : 1))
+    try {
+      const result = wasLiked
+        ? await reviewService.unlikeProduct(id)
+        : await reviewService.likeProduct(id)
+      setLiked(result.liked)
+      setLikeCount(result.like_count)
+    } catch (error) {
+      setLiked(wasLiked)
+      setLikeCount((c) => c + (wasLiked ? 1 : -1))
+    } finally {
+      setLikeSubmitting(false)
+    }
+  }
+
+  const handleShare = async () => {
+    const shareData = { title: product?.title, url: window.location.href }
+    if (navigator.share) {
+      try {
+        await navigator.share(shareData)
+      } catch (error) {
+        // User cancelled the native share sheet — not an error worth surfacing.
+      }
+      return
+    }
+    try {
+      await navigator.clipboard.writeText(window.location.href)
+      setShareCopied(true)
+      setTimeout(() => setShareCopied(false), 2000)
+    } catch (error) {
+      // Clipboard API unavailable (non-HTTPS, permissions) — nothing more we can do here.
+    }
+  }
+
+  const myReview = user ? reviews.find((r) => r.user_id === user.id) : null
+
+  const resetReviewForm = () => {
+    setEditingReviewId(null)
+    setReviewRating(5)
+    setReviewBody('')
+    setReviewFormError('')
+  }
+
+  const startReviewForm = () => {
+    if (myReview) {
+      setEditingReviewId(myReview.id)
+      setReviewRating(myReview.rating || 5)
+      setReviewBody(myReview.body)
+    } else {
+      setEditingReviewId('new')
+      setReviewRating(5)
+      setReviewBody('')
+    }
+    setReviewFormError('')
+  }
+
+  const handleSubmitReview = async (e) => {
+    e.preventDefault()
+    if (!reviewBody.trim()) {
+      setReviewFormError(t('detail.reviewBodyRequired', { ns: 'product' }))
+      return
+    }
+    setSubmittingReview(true)
+    try {
+      if (myReview) {
+        const updated = await reviewService.updateReview(id, myReview.id, {
+          body: reviewBody.trim(),
+          rating: reviewRating,
+        })
+        setReviews((prev) => prev.map((r) => (r.id === updated.id ? updated : r)))
+      } else {
+        const created = await reviewService.createReview(id, {
+          body: reviewBody.trim(),
+          rating: reviewRating,
+        })
+        setReviews((prev) => [created, ...prev])
+      }
+      resetReviewForm()
+    } catch (error) {
+      setReviewFormError(error.message)
+    } finally {
+      setSubmittingReview(false)
+    }
+  }
+
+  const handleDeleteReview = async () => {
+    if (!myReview) return
+    if (!window.confirm(t('detail.deleteReviewConfirm', { ns: 'product' }))) return
+    try {
+      await reviewService.deleteReview(id, myReview.id)
+      setReviews((prev) => prev.filter((r) => r.id !== myReview.id))
+      resetReviewForm()
+    } catch (error) {
+      // Nothing actionable client-side beyond leaving the review list unchanged.
+    }
+  }
+
   const originalPrice = product?.original_price || product?.originalPrice
   const imageUrl      = product?.image_url || product?.imageUrl
   const price         = product?.price
@@ -186,8 +316,14 @@ const ProductDetailPage = () => {
 
   const format      = product.format || 'PDF Guide'
   const fmt         = FORMAT_MAP[format] || DEFAULT_FMT
-  const rating      = 4.8
-  const reviewCount = product.purchase_count || product.purchaseCount || 0
+  const ratedReviews = reviews.filter((r) => r.rating != null)
+  const rating      = ratedReviews.length > 0
+    ? ratedReviews.reduce((sum, r) => sum + r.rating, 0) / ratedReviews.length
+    : 0
+  // Derived from the live `reviews` array (already fetched for the tab) rather
+  // than product.review_count, which is just a page-load snapshot and would
+  // otherwise go stale the moment a review is added/removed on this page.
+  const reviewCount = reviews.length
   const downloadCount =
     product.download_count ?? product.downloadCount ??
     product.sold ?? product.purchase_count ?? product.purchaseCount ?? 0
@@ -267,17 +403,32 @@ const ProductDetailPage = () => {
               )}
 
               {/* Favorite */}
-              <button className="absolute bottom-4 right-4 w-9 h-9 bg-white/90 backdrop-blur-sm rounded-full shadow-md flex items-center justify-center hover:bg-white hover:scale-110 transition-all">
-                <FiHeart className="w-4 h-4 text-slate-500 hover:text-rose-500 transition-colors" />
+              <button
+                onClick={(e) => { e.stopPropagation(); handleToggleLike() }}
+                disabled={likeSubmitting}
+                aria-label={t(liked ? 'detail.favoriteRemove' : 'detail.favoriteAdd', { ns: 'product' })}
+                aria-pressed={liked}
+                className="absolute bottom-4 right-4 w-9 h-9 bg-white/90 backdrop-blur-sm rounded-full shadow-md flex items-center justify-center hover:bg-white hover:scale-110 transition-all disabled:opacity-60"
+              >
+                <FiHeart className={`w-4 h-4 transition-colors ${liked ? 'text-rose-500 fill-current' : 'text-slate-500 hover:text-rose-500'}`} />
               </button>
             </div>
 
             {/* Below-image row */}
             <div className="mt-4 flex items-center gap-3">
-              <button className="flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 rounded-xl text-sm font-semibold text-slate-600 hover:bg-slate-50 hover:border-slate-300 transition-all shadow-sm">
-                <FiShare2 className="w-4 h-4" />
-                {t('detail.share', { ns: 'product' })}
+              <button
+                onClick={handleShare}
+                className="flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 rounded-xl text-sm font-semibold text-slate-600 hover:bg-slate-50 hover:border-slate-300 transition-all shadow-sm"
+              >
+                {shareCopied ? <FiCheck className="w-4 h-4 text-emerald-600" /> : <FiShare2 className="w-4 h-4" />}
+                {shareCopied ? t('detail.linkCopied', { ns: 'product' }) : t('detail.share', { ns: 'product' })}
               </button>
+              {likeCount > 0 && (
+                <span className="flex items-center gap-1 text-xs text-slate-400">
+                  <FiHeart className="w-3.5 h-3.5" />
+                  {likeCount}
+                </span>
+              )}
               {downloadCount > 0 && (
                 <p className="ml-auto text-xs text-slate-400 tabular-nums">
                   {t('detail.salesCountLabel', { ns: 'product', count: downloadCount.toLocaleString() })}
@@ -298,17 +449,19 @@ const ProductDetailPage = () => {
                 {product.title}
               </h1>
               <div className="flex flex-wrap items-center gap-3">
-                <div className="flex items-center gap-0.5">
-                  {[...Array(5)].map((_, i) => (
-                    <FiStar
-                      key={i}
-                      className={`w-4 h-4 ${
-                        i < Math.floor(rating) ? 'text-amber-400 fill-current' : 'text-slate-200 fill-current'
-                      }`}
-                    />
-                  ))}
-                  <span className="ml-1.5 text-sm font-bold text-slate-700">{rating}</span>
-                </div>
+                {ratedReviews.length > 0 && (
+                  <div className="flex items-center gap-0.5">
+                    {[...Array(5)].map((_, i) => (
+                      <FiStar
+                        key={i}
+                        className={`w-4 h-4 ${
+                          i < Math.round(rating) ? 'text-amber-400 fill-current' : 'text-slate-200 fill-current'
+                        }`}
+                      />
+                    ))}
+                    <span className="ml-1.5 text-sm font-bold text-slate-700">{rating.toFixed(1)}</span>
+                  </div>
+                )}
                 {downloadCount > 0 && (
                   <span className="text-sm text-slate-400 tabular-nums">
                     {t('detail.soldCount', { ns: 'product', count: downloadCount.toLocaleString() })}
@@ -523,7 +676,9 @@ const ProductDetailPage = () => {
                   { Icon: fmt.Icon,   label: t('detail.labelFormat', { ns: 'product' }),   value: format },
                   { Icon: FiMonitor,  label: t('detail.labelAccess', { ns: 'product' }),   value: t('detail.valueAccessFull', { ns: 'product' }) },
                   { Icon: FiShield,   label: t('detail.labelGuarantee', { ns: 'product' }),value: t('detail.valueGuaranteeFull', { ns: 'product' }) },
-                  { Icon: FiStar,     label: t('detail.labelRating', { ns: 'product' }),   value: t('detail.valueRating', { ns: 'product', rating, count: reviewCount }) },
+                  { Icon: FiStar,     label: t('detail.labelRating', { ns: 'product' }),   value: ratedReviews.length > 0
+                      ? t('detail.valueRating', { ns: 'product', rating: rating.toFixed(1), count: reviewCount })
+                      : t('detail.noRatingsYet', { ns: 'product' }) },
                   { Icon: FiCheck,    label: t('detail.labelQuality', { ns: 'product' }),  value: t('detail.valueQuality', { ns: 'product' }) },
                   { Icon: FiDownload, label: t('detail.labelSales', { ns: 'product' }),    value: downloadCount.toLocaleString() },
                 ].map(({ Icon, label, value }) => (
@@ -546,14 +701,126 @@ const ProductDetailPage = () => {
             )}
 
             {activeTab === 'reviews' && (
-              <div className="flex flex-col items-center py-10 text-center">
-                <div className="flex items-center gap-1 mb-4">
-                  {[...Array(5)].map((_, i) => (
-                    <FiStar key={i} className="w-8 h-8 text-slate-200 fill-current" />
-                  ))}
+              <div className="space-y-6">
+                {/* Write / edit / status area */}
+                <div className="rounded-xl border border-slate-100 bg-slate-50 p-5">
+                  {editingReviewId ? (
+                    <form onSubmit={handleSubmitReview} className="space-y-3">
+                      <p className="text-sm font-bold text-slate-800">
+                        {myReview ? t('detail.yourReview', { ns: 'product' }) : t('detail.writeReview', { ns: 'product' })}
+                      </p>
+                      <div>
+                        <p className="text-xs font-semibold text-slate-500 mb-1.5">{t('detail.yourRating', { ns: 'product' })}</p>
+                        <div className="flex items-center gap-1">
+                          {[1, 2, 3, 4, 5].map((n) => (
+                            <button key={n} type="button" onClick={() => setReviewRating(n)} aria-label={String(n)}>
+                              <FiStar className={`w-6 h-6 ${n <= reviewRating ? 'text-amber-400 fill-current' : 'text-slate-200 fill-current'}`} />
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                      <textarea
+                        value={reviewBody}
+                        onChange={(e) => setReviewBody(e.target.value)}
+                        placeholder={t('detail.reviewPlaceholder', { ns: 'product' })}
+                        rows={4}
+                        className="w-full rounded-lg border border-slate-200 p-3 text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                      />
+                      {reviewFormError && <p className="text-sm text-rose-600">{reviewFormError}</p>}
+                      <div className="flex items-center gap-2">
+                        <button
+                          type="submit"
+                          disabled={submittingReview}
+                          className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 disabled:opacity-60 text-white text-sm font-bold rounded-lg transition-colors"
+                        >
+                          {submittingReview ? t('detail.submittingReview', { ns: 'product' }) : t('detail.submitReview', { ns: 'product' })}
+                        </button>
+                        <button
+                          type="button"
+                          onClick={resetReviewForm}
+                          className="px-4 py-2 text-sm font-semibold text-slate-500 hover:text-slate-700"
+                        >
+                          {t('detail.cancel', { ns: 'product' })}
+                        </button>
+                      </div>
+                    </form>
+                  ) : myReview ? (
+                    <div className="flex items-start justify-between gap-4">
+                      <div className="min-w-0">
+                        <p className="text-xs font-semibold text-slate-500 mb-1">{t('detail.yourReview', { ns: 'product' })}</p>
+                        {myReview.rating != null && (
+                          <div className="flex items-center gap-0.5 mb-1">
+                            {[...Array(5)].map((_, i) => (
+                              <FiStar key={i} className={`w-3.5 h-3.5 ${i < myReview.rating ? 'text-amber-400 fill-current' : 'text-slate-200 fill-current'}`} />
+                            ))}
+                          </div>
+                        )}
+                        <p className="text-sm text-slate-700">{myReview.body}</p>
+                      </div>
+                      <div className="flex items-center gap-3 shrink-0">
+                        <button onClick={startReviewForm} className="text-xs font-bold text-emerald-700 hover:underline">
+                          {t('detail.editReview', { ns: 'product' })}
+                        </button>
+                        <button onClick={handleDeleteReview} className="text-xs font-bold text-rose-600 hover:underline">
+                          {t('detail.deleteReview', { ns: 'product' })}
+                        </button>
+                      </div>
+                    </div>
+                  ) : !isAuthenticated ? (
+                    <button
+                      onClick={() => navigate('/login', { state: { returnTo: `/products/${id}` } })}
+                      className="text-sm font-bold text-emerald-700 hover:underline"
+                    >
+                      {t('detail.loginToReview', { ns: 'product' })}
+                    </button>
+                  ) : !owned ? (
+                    <p className="text-sm text-slate-500">{t('detail.purchaseToReview', { ns: 'product' })}</p>
+                  ) : (
+                    <button
+                      onClick={startReviewForm}
+                      className="inline-flex items-center gap-2 px-4 py-2 border-2 border-emerald-600 text-emerald-700 text-sm font-bold rounded-lg hover:bg-emerald-50 transition-colors"
+                    >
+                      <FiStar className="w-4 h-4" />
+                      {t('detail.writeReview', { ns: 'product' })}
+                    </button>
+                  )}
                 </div>
-                <p className="text-slate-700 font-bold mb-1">{t('detail.noReviewsYetTitle', { ns: 'product' })}</p>
-                <p className="text-slate-400 text-sm">{t('detail.beFirstToReview', { ns: 'product' })}</p>
+
+                {/* Review list */}
+                {reviewsLoading ? (
+                  <div className="flex justify-center py-8">
+                    <div className="w-8 h-8 rounded-full border-4 border-emerald-200 border-t-emerald-600 animate-spin" />
+                  </div>
+                ) : reviews.length === 0 ? (
+                  <div className="flex flex-col items-center py-10 text-center">
+                    <div className="flex items-center gap-1 mb-4">
+                      {[...Array(5)].map((_, i) => (
+                        <FiStar key={i} className="w-8 h-8 text-slate-200 fill-current" />
+                      ))}
+                    </div>
+                    <p className="text-slate-700 font-bold mb-1">{t('detail.noReviewsYetTitle', { ns: 'product' })}</p>
+                    <p className="text-slate-400 text-sm">{t('detail.beFirstToReview', { ns: 'product' })}</p>
+                  </div>
+                ) : (
+                  <div className="space-y-4">
+                    {reviews.map((r) => (
+                      <div key={r.id} className="border-b border-slate-100 pb-4 last:border-0 last:pb-0">
+                        <div className="flex items-center justify-between gap-3 mb-1.5">
+                          <p className="text-sm font-bold text-slate-800">{r.user_name}</p>
+                          <p className="text-xs text-slate-400">{new Date(r.created_at).toLocaleDateString(language)}</p>
+                        </div>
+                        {r.rating != null && (
+                          <div className="flex items-center gap-0.5 mb-1.5">
+                            {[...Array(5)].map((_, i) => (
+                              <FiStar key={i} className={`w-3.5 h-3.5 ${i < r.rating ? 'text-amber-400 fill-current' : 'text-slate-200 fill-current'}`} />
+                            ))}
+                          </div>
+                        )}
+                        <p className="text-sm text-slate-600 leading-relaxed whitespace-pre-line">{r.body}</p>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
             )}
           </div>

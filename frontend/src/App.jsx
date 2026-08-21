@@ -6,6 +6,7 @@ import { ThemeProvider } from './contexts/ThemeContext'
 import { LanguageProvider } from './contexts/LanguageContext'
 import { CartProvider } from './contexts/CartContext'
 import Layout from './components/Layout/Layout'
+import ScrollToTop from './components/ScrollToTop'
 import LandingPage from './pages/LandingPage'
 import ProductsPage from './pages/ProductsPage'
 import ProductDetailPage from './pages/ProductDetailPage'
@@ -37,6 +38,7 @@ function App() {
             <AppProvider>
             <CurrencyProvider>
               <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+                <ScrollToTop />
                 <Routes>
                   <Route path="/" element={<Layout />}>
                     <Route index element={<LandingPage />} />

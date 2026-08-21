@@ -14,6 +14,8 @@ import {
   FiTrendingUp,
   FiMoreHorizontal,
   FiAlertCircle,
+  FiMenu,
+  FiX,
 } from 'react-icons/fi'
 import { useAuth } from '../../contexts/AuthContext'
 import { useLanguage } from '../../contexts/LanguageContext'
@@ -33,6 +35,13 @@ const AdminDashboard = () => {
   const [recentOrders, setRecentOrders] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
+  const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false)
+
+  // Close the mobile sidebar drawer on every navigation, otherwise it stays
+  // open covering the page you just navigated to.
+  useEffect(() => {
+    setMobileSidebarOpen(false)
+  }, [location.pathname])
 
   const loadOverview = useCallback(async () => {
     setLoading(true)
@@ -93,15 +102,36 @@ const AdminDashboard = () => {
   return (
     <div className="bg-gray-50">
       {/* h-16 (4rem) accounts for the sticky site header above this */}
-      <div className="flex h-[calc(100vh-4rem)] overflow-hidden">
-        {/* Left Sidebar */}
-        <aside className="w-64 bg-white border-r border-gray-100 flex flex-col">
+      <div className="flex h-[calc(100vh-4rem)] overflow-hidden relative">
+        {/* Backdrop — closes the drawer on outside click, mobile only */}
+        {mobileSidebarOpen && (
+          <div
+            className="fixed inset-0 top-16 bg-black/40 z-40 lg:hidden"
+            onClick={() => setMobileSidebarOpen(false)}
+          />
+        )}
+
+        {/* Left Sidebar — off-canvas drawer on mobile, static column on lg+ */}
+        <aside
+          className={`fixed top-16 bottom-0 left-0 z-50 w-64 bg-white border-r border-gray-100 flex flex-col
+            transform transition-transform duration-200 ease-in-out
+            ${mobileSidebarOpen ? 'translate-x-0' : '-translate-x-full'}
+            lg:static lg:translate-x-0 lg:z-auto`}
+        >
           {/* Section badge — branding already lives in the site header above */}
-          <div className="px-5 py-5 border-b border-gray-100">
+          <div className="px-5 py-5 border-b border-gray-100 flex items-center justify-between">
             <div className="inline-flex items-center gap-2 bg-primary-50 text-primary-700 rounded-xl px-3 py-1.5">
               <FiGrid className="w-3.5 h-3.5" />
               <span className="text-xs font-bold uppercase tracking-wide">{t('badge', { ns: 'adminDashboard' })}</span>
             </div>
+            <button
+              type="button"
+              onClick={() => setMobileSidebarOpen(false)}
+              className="lg:hidden p-2 text-gray-400 hover:text-gray-600 rounded-lg hover:bg-gray-50"
+              aria-label={t('sidebar.closeMenu', { ns: 'adminDashboard' })}
+            >
+              <FiX className="w-5 h-5" />
+            </button>
           </div>
 
           {/* Navigation */}
@@ -208,13 +238,23 @@ const AdminDashboard = () => {
         {/* Main Content Area */}
         <div className="flex-1 flex flex-col overflow-hidden">
           {/* Slim context bar: current section + who's logged in */}
-          <header className="bg-white border-b border-gray-100 px-6 py-3">
-            <div className="flex items-center justify-between">
-              <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide">
-                {t('header.breadcrumbRoot', { ns: 'adminDashboard' })} <span className="text-gray-300 mx-1">/</span>
-                <span className="text-primary-700">{currentSectionLabel}</span>
-              </p>
-              <div className="flex items-center space-x-2.5">
+          <header className="bg-white border-b border-gray-100 px-4 sm:px-6 py-3">
+            <div className="flex items-center justify-between gap-3">
+              <div className="flex items-center gap-2 min-w-0">
+                <button
+                  type="button"
+                  onClick={() => setMobileSidebarOpen(true)}
+                  className="lg:hidden p-1.5 -ml-1.5 text-gray-500 hover:text-primary-700 rounded-lg hover:bg-gray-50 flex-shrink-0"
+                  aria-label={t('sidebar.openMenu', { ns: 'adminDashboard' })}
+                >
+                  <FiMenu className="w-5 h-5" />
+                </button>
+                <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide truncate">
+                  {t('header.breadcrumbRoot', { ns: 'adminDashboard' })} <span className="text-gray-300 mx-1">/</span>
+                  <span className="text-primary-700">{currentSectionLabel}</span>
+                </p>
+              </div>
+              <div className="flex items-center space-x-2.5 flex-shrink-0">
                 <div className="text-right hidden sm:block">
                   <p className="text-sm font-medium text-gray-900 leading-tight">{user?.name}</p>
                   <p className="text-xs text-gray-400 leading-tight">{user?.role}</p>

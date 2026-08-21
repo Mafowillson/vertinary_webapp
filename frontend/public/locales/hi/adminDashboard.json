@@ -11,7 +11,9 @@
       "management": "प्रबंधन",
       "system": "सिस्टम"
     },
-    "backToSite": "साइट पर वापस जाएं"
+    "backToSite": "साइट पर वापस जाएं",
+    "openMenu": "एडमिन मेनू खोलें",
+    "closeMenu": "एडमिन मेनू बंद करें"
   },
   "header": {
     "breadcrumbRoot": "प्रशासन"

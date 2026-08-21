@@ -1,19 +1,19 @@
 import { useState } from 'react'
 import { useLanguage } from '../../contexts/LanguageContext'
 import { FiSmartphone, FiLock } from 'react-icons/fi'
+import mtnLogo from '../../assets/payment-logos/mtn.svg'
+import orangeMoneyLogo from '../../assets/payment-logos/orange-money.svg'
 
 const FlutterwavePaymentForm = ({ onPaymentSubmit }) => {
   const { t } = useLanguage()
   const tp = (k) => t(`payment.${k}`, { ns: 'checkout' })
-  const [selectedMethod, setSelectedMethod] = useState('mobile_money')
+  const [selectedMethod, setSelectedMethod] = useState('mtn')
   const [phoneNumber, setPhoneNumber] = useState('')
   const [errors, setErrors] = useState({})
 
   const mobileMoneyOptions = [
-    { id: 'mtn', name: 'MTN Mobile Money', icon: '📱', color: 'bg-yellow-500' },
-    { id: 'orange', name: 'Orange Money', icon: '🍊', color: 'bg-orange-500' },
-    { id: 'moov', name: 'Moov Money', icon: '💳', color: 'bg-blue-500' },
-    { id: 'airtel', name: 'Airtel Money', icon: '📲', color: 'bg-red-500' },
+    { id: 'mtn', name: 'MTN Mobile Money', logo: mtnLogo },
+    { id: 'orange', name: 'Orange Money', logo: orangeMoneyLogo },
   ]
 
   const formatPhoneNumber = (value) => {
@@ -72,15 +72,15 @@ const FlutterwavePaymentForm = ({ onPaymentSubmit }) => {
                   setErrors({ ...errors, method: '' })
                 }
               }}
-              className={`p-4 border-2 rounded-lg transition-all ${
+              className={`p-4 border-2 rounded-lg transition-all bg-white ${
                 selectedMethod === option.id
-                  ? `${option.color} border-${option.color.split('-')[1]}-600 text-white`
-                  : 'border-gray-300 bg-white hover:border-gray-400 text-gray-700'
+                  ? 'border-green-600 ring-2 ring-green-500 ring-offset-1'
+                  : 'border-gray-300 hover:border-gray-400'
               }`}
             >
               <div className="flex flex-col items-center space-y-2">
-                <span className="text-2xl">{option.icon}</span>
-                <span className="text-xs font-medium text-center">{option.name}</span>
+                <img src={option.logo} alt={option.name} className="h-8 w-auto object-contain" />
+                <span className="text-xs font-medium text-center text-gray-700">{option.name}</span>
               </div>
             </button>
           ))}
